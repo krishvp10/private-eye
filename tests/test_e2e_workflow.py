@@ -10,6 +10,7 @@ Validates the complete autonomous browser agent loop:
 7. Strict verification: ZERO raw PII leaked across the wire or in server logs.
 """
 
+import socket
 import threading
 import time
 
@@ -22,8 +23,15 @@ from demo_sites.server import app as demo_app
 from server.api import RUN_AUDIT_LOGS
 from server.api import app as server_app
 
-DEMO_PORT = 9007
-SERVER_PORT = 8007
+
+def _get_free_port() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return int(s.getsockname()[1])
+
+
+DEMO_PORT = _get_free_port()
+SERVER_PORT = _get_free_port()
 DEMO_URL = f"http://127.0.0.1:{DEMO_PORT}"
 SERVER_URL = f"http://127.0.0.1:{SERVER_PORT}"
 
@@ -37,12 +45,14 @@ def run_services():
     demo_thread.start()
 
     # Start VLM server
-    server_config = uvicorn.Config(server_app, host="127.0.0.1", port=SERVER_PORT, log_level="error")
+    server_config = uvicorn.Config(
+        server_app, host="127.0.0.1", port=SERVER_PORT, log_level="error"
+    )
     backend_server = uvicorn.Server(server_config)
     backend_thread = threading.Thread(target=backend_server.run, daemon=True)
     backend_thread.start()
 
-    time.sleep(1.2)
+    time.sleep(2.0)
     yield
 
     demo_server.should_exit = True
@@ -76,15 +86,21 @@ async def test_golden_e2e_kyc_workflow():
     for entry in RUN_AUDIT_LOGS:
         # Check that on /kyc steps, redactions were applied
         if "/kyc" in entry["url"]:
-            assert entry["redactions_count"] >= 7, f"Expected redactions on KYC page, got {entry['redactions_count']}"
+            assert entry["redactions_count"] >= 7, (
+                f"Expected redactions on KYC page, got {entry['redactions_count']}"
+            )
 
         # Verify no raw secret values in server audit log entries
         entry_str = str(entry)
         for secret in raw_secrets:
             if len(secret) > 4:
-                assert secret not in entry_str, f"CRITICAL LEAK: Raw secret '{secret}' discovered in server logs!"
+                assert secret not in entry_str, (
+                    f"CRITICAL LEAK: Raw secret '{secret}' discovered in server logs!"
+                )
 
         # Verify fill operations only use value_ref
         if entry["action_type"] == "fill":
             assert entry["value_ref"] is not None
-            assert entry["value_ref"].startswith("user_profile.") or entry["value_ref"].startswith("profile.")
+            assert entry["value_ref"].startswith("user_profile.") or entry["value_ref"].startswith(
+                "profile."
+            )
