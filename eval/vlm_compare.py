@@ -15,13 +15,17 @@ async def probe(mode: str, url: str, server_url: str) -> dict[str, Any]:
     started = time.perf_counter()
     health = httpx.get(f"{server_url}/v1/health", timeout=5).json()
     result = await run(url, server_url, 20)
-    result.update({
-        "mode": mode,
-        "reported_server_mode": health.get("mode"),
-        "action_count": len(result["actions"]),
-        "successful_steps": sum(1 for action in result["actions"] if action["execution_ms"] >= 0),
-        "elapsed_ms": round((time.perf_counter() - started) * 1000, 2),
-    })
+    result.update(
+        {
+            "mode": mode,
+            "reported_server_mode": health.get("mode"),
+            "action_count": len(result["actions"]),
+            "successful_steps": sum(
+                1 for action in result["actions"] if action["execution_ms"] >= 0
+            ),
+            "elapsed_ms": round((time.perf_counter() - started) * 1000, 2),
+        }
+    )
     return result
 
 

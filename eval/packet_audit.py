@@ -69,7 +69,9 @@ class PacketAuditEngine:
         self.vault = vault or LocalVault()
         self.records: list[PacketAuditRecord] = []
 
-    def audit_payload(self, payload: str | bytes, packet_id: str | None = None) -> PacketAuditRecord:
+    def audit_payload(
+        self, payload: str | bytes, packet_id: str | None = None
+    ) -> PacketAuditRecord:
         """Thoroughly audit a single outbound payload string or raw bytes."""
         ts = time.time()
         if isinstance(payload, bytes):
@@ -125,7 +127,11 @@ class PacketAuditEngine:
 
         # Aggregate summary hash chaining all packet hashes
         chain = "".join(r.sha256_hash for r in self.records)
-        summary_hash = hashlib.sha256(chain.encode("utf-8")).hexdigest() if chain else "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        summary_hash = (
+            hashlib.sha256(chain.encode("utf-8")).hexdigest()
+            if chain
+            else "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        )
 
         cert = AuditCertificate(
             audit_id=f"AUDIT-{int(time.time())}-{summary_hash[:8].upper()}",
@@ -133,7 +139,9 @@ class PacketAuditEngine:
             total_packets_inspected=total_packets,
             total_bytes_analyzed=total_bytes,
             raw_pii_leaks_found=total_leaks,
-            compliance_status="CERTIFIED_100_PERCENT_ZERO_RAW_PII_EXPOSURE" if certified else "FAILED_SECURITY_VIOLATIONS",
+            compliance_status="CERTIFIED_100_PERCENT_ZERO_RAW_PII_EXPOSURE"
+            if certified
+            else "FAILED_SECURITY_VIOLATIONS",
             certified_zero_leak=certified,
             summary_hash=summary_hash,
             packet_records=self.records,
@@ -156,4 +164,3 @@ if __name__ == "__main__":
     print(f"Summary Hash: {cert.summary_hash}")
     print(f"Packets Inspected: {cert.total_packets_inspected}")
     print("Certificate saved to: audit_certificate.json")
-

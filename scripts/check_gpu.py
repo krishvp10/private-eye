@@ -200,9 +200,7 @@ def main() -> int:
     print(
         f"Qwen2.5-VL-3B Fit:  {diag['model_fit']['qwen_3b_instruct']['status']} (~6.5GB required)"
     )
-    print(
-        f"Qwen2.5-VL-7B Fit:  {diag['model_fit']['qwen_7b_instruct']['status']} (~14GB required)"
-    )
+    print(f"Qwen2.5-VL-7B Fit:  {diag['model_fit']['qwen_7b_instruct']['status']} (~14GB required)")
     print("-----------------------------------------------------------------")
     print(f"Endpoint Status:    {diag['vllm_endpoint']['status']}")
     print(f"Endpoint Reason:    {diag['vllm_endpoint']['reason']}")

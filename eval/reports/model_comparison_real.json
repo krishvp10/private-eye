@@ -1,21 +1,51 @@
 {
-  "status": "SKIPPED",
+  "status": "COMPLETE",
+  "evidence_source": "live_real_vlm_runs",
   "environment": {
-    "platform": "Windows-11-10.0.26200-SP0"
+    "platform": "Windows-11-10.0.26200-SP0",
+    "gpu": {
+      "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "memory_used_mib": "6661",
+      "memory_total_mib": "8188",
+      "utilization_percent": "0"
+    }
   },
   "models": [
     {
-      "model": "Qwen/Qwen2.5-VL-3B-Instruct",
-      "status": "SKIPPED",
-      "reason": "PRIVATEEYE_VLM_MODE is not real",
-      "runs": []
+      "model": "qwen2.5vl:3b",
+      "workflow_runs": 5,
+      "workflow_success_count": 5,
+      "workflow_success_rate": 1.0,
+      "grounding_accuracy": 0.16666666666666666,
+      "schema_valid_rate": 1.0,
+      "p50_workflow_latency_ms": 7234.82,
+      "p95_workflow_latency_ms": 7277.18,
+      "canary_failures": 5,
+      "canary_failure_classes": [
+        "grounding",
+        "policy",
+        "grounding",
+        "policy",
+        "grounding"
+      ]
     },
     {
-      "model": "Qwen/Qwen2.5-VL-7B-Instruct",
-      "status": "SKIPPED",
-      "reason": "PRIVATEEYE_VLM_MODE is not real",
-      "runs": []
+      "model": "qwen2.5vl:7b",
+      "workflow_runs": 5,
+      "workflow_success_count": 0,
+      "workflow_success_rate": 0.0,
+      "grounding_accuracy": 0.3333333333333333,
+      "schema_valid_rate": 1.0,
+      "p50_workflow_latency_ms": 13370.35,
+      "p95_workflow_latency_ms": 13511.63,
+      "canary_failures": 4,
+      "canary_failure_classes": [
+        "grounding",
+        "grounding",
+        "policy",
+        "grounding"
+      ]
     }
   ],
-  "note": "No model ranking is made without measured real-model evidence."
+  "note": "Comparison is descriptive; no model is declared superior without equivalent resource and task coverage."
 }

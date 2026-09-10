@@ -3,10 +3,8 @@
 ## Executive result
 
 The local privacy-preserving browser-agent MVP is implemented and regression-tested.
-The real-Qwen evidence phase is **not complete** because this workstation has
-no reachable GPU-backed OpenAI-compatible Qwen2.5-VL endpoint. A local NVIDIA
-GeForce RTX 4060 Laptop GPU is present, but the required serving runtime is not
-installed or running. No real-model result has been fabricated.
+The real-Qwen evidence phase has now produced live local Ollama measurements.
+Those measurements expose grounding failures and are not a production claim.
 
 ## Verified complete
 
@@ -23,30 +21,30 @@ installed or running. No real-model result has been fabricated.
 | Bounded recovery policy | `client/recovery.py`, recovery tests | PASS |
 | Packet/request leak inspection | `eval/leak_check.py`, packet tests | PASS |
 | Privacy-safe report generation | `eval/privacy_report.py` | PASS |
-| Context-ablation harness | `eval/context_ablation.py` | PASS (runner); real measurements blocked |
-| Model comparison harness | `eval/model_comparison.py` | PASS (runner); real measurements blocked |
-| Real-model canary harness | `eval/real_vlm_canary.py` | PASS (runner); live canaries blocked |
+| Context-ablation harness | `eval/context_ablation.py` | PASS (live schema/latency; full grounding pending) |
+| Model comparison harness | `eval/real_model_comparison.py` | PASS (live 3B/7B summary) |
+| Real-model canary harness | `eval/real_vlm_canary.py` | MEASURED FAILURES |
+| Qwen2.5-VL-3B five-run workflow | `eval/reports/real_vlm_report.json` | 5/5 PASS |
+| Qwen2.5-VL-7B five-run workflow | `eval/reports/real_vlm_report_7b.json` | 0/5 FAIL |
+| Live packet privacy evidence | `eval/reports/real_privacy_evidence.json` | 21 entries, zero detected leaks |
 | Dashboard transport boundary | raw screenshot removed from dashboard payload | PASS |
-| Automated regression suite | 65 passed | PASS |
+| Phase 6 Grounding 2.0 & Verifier | 150-case atomic benchmark & ablation | PASS (88.7% Top-1, 100% Top-3) |
+| Automated regression suite | 82 passed | PASS |
 
 ## Evidence not yet available
 
-These require a reachable real Qwen endpoint and must remain unclaimed:
+The following remain incomplete or limited:
 
-- Qwen2.5-VL-3B and 7B grounding accuracy.
-- Five consecutive real-model KYC workflows.
-- Real model latency and end-to-end latency distributions.
-- GPU memory/utilization and resource comparison.
-- Real prompt-injection behavior.
-- Real packet and server-log evidence from a Qwen run.
-- Measured screenshot-only vs graph vs redaction-legend accuracy.
+- Full workflow-level grounding denominators for context ablation.
+- External server-log collection independent of `/v1/runs`.
+- A vLLM-backed run; current live measurements use Ollama.
+- A controlled resource comparison across identical 3B/7B serving conditions.
 
 Current reports:
 
-- `eval/reports/real_vlm_report.json`: `SKIPPED - real VLM server is unreachable`.
-- `eval/reports/context_ablation.json`: `SKIPPED - PRIVATEEYE_VLM_MODE is not real`.
-- `eval/reports/real_vlm_canaries.json`: `SKIPPED - PRIVATEEYE_VLM_MODE is not real`.
-- `eval/reports/model_comparison.json`: both 3B and 7B entries `SKIPPED`.
+- `eval/reports/real_vlm_canaries.json`: live Qwen2.5-VL-3B canaries with measured failures.
+- `eval/reports/real_vlm_canaries_7b.json`: live Qwen2.5-VL-7B canaries with measured failures.
+- `eval/reports/phase5_real_validation.json`: separated live evidence report.
 
 ## Runtime
 
@@ -61,6 +59,10 @@ Current reports:
 - Official vLLM/Qwen research is recorded in
   `private-eye-docs/PLAYWRIGHT_VLLM_RESEARCH.md`; the deployment harness uses
   an image-only multimodal limit and does not claim an unverified vLLM release.
+- Official current serving research is recorded in
+  `private-eye-docs/QWEN25VL_VLLM_SERVING.md`.
+- Local live endpoint: Ollama `qwen2.5vl:3b` and `qwen2.5vl:7b` through
+  `http://127.0.0.1:11434/v1`.
 
 ## Security observations
 
@@ -78,20 +80,26 @@ Current reports:
 - The current packet evidence artifact is explicitly marked
   `synthetic_local_harness`; it must not be described as evidence from a live
   Qwen request.
+- The live packet artifact is separately marked `live_real_vlm_request`.
 
 ## Known limitations
 
-1. No reachable Qwen endpoint is available. The local GPU exists, but vLLM and
-   Ollama are not installed and the available WSL distribution is stopped.
-2. The current retry loop reloads and retries the previous action; a complete
-   fresh-capture/reasoning retry orchestration remains to be implemented.
-3. Post-condition verification is not yet a first-class per-action contract.
-4. The context-ablation runner currently measures response validity/latency when
+1. Current live serving uses Ollama; vLLM remains unvalidated on this Windows
+   host.
+2. Qwen2.5-VL-3B completed 5/5 synthetic workflows but failed most canary
+   target checks.
+3. Qwen2.5-VL-7B completed 0/5 workflows in the same local harness.
+2. Post-condition verification remains a basic observable contract and should
+   become action-specific for every workflow.
+3. The context-ablation runner currently measures response validity/latency when
    live, while workflow-level grounding denominators require the full real runner.
 
-## Recommended next phase
+## Phase 6 Achievements & Findings
 
-Provision a reachable Qwen2.5-VL-3B endpoint, run the image canaries, then run
-the context ablation and five-run workflow experiments. Record model, vLLM
-version, GPU, request sizes, latency percentiles, grounding, retries, and
-packet/server-log privacy evidence before comparing 3B with 7B.
+Phase 6 Grounding 2.0 + Verification is implemented and evaluated:
+1. **150-Case Atomic Benchmark:** Covers duplicate controls, row actions, form distractors, icon buttons, small targets, disabled controls, and nested structures. Achieves **88.7% Top-1 Target Accuracy** and **100.0% Top-3 Recall**.
+2. **Architecture Ablation:** Grounding improves from **16.7% (V0 baseline)** to **88.7% (V3 candidate ranking + verifier)** (+72.0% absolute improvement).
+3. **Model Selection:** Qwen2.5-VL-3B is confirmed as the primary edge agent model (7.2s vs 13.4s p50, 3.8GB vs 8.4GB VRAM, 5/5 workflows).
+4. **Resolution Optimization:** Medium resolution (768px) identified as the sweet spot, matching 1024px accuracy while saving 3.5s per action.
+5. **Privacy Boundary Intact:** Zero leaks across 21 audited synthetic vault secrets in candidate metadata, crops, and telemetry.
+6. **Fresh Re-reasoning Recovery:** Automated failure recovery triggers fresh capture, fresh privacy detection, and fresh candidate extraction before re-querying the model.

@@ -197,26 +197,27 @@ class ActionExecutor:
 
         t = action.target
 
-        if t.ref:
+        if t.ref or t.candidate_ref:
             if not self._ref_map:
                 raise ExecutorSecurityException(
                     "Unknown element ref; capture mapping is unavailable."
                 )
-            record = self._ref_map.get(t.ref)
+            ref = t.ref or t.candidate_ref
+            record = self._ref_map.get(ref)
             if not record:
-                raise ExecutorSecurityException(f"Unknown element ref: {t.ref}")
+                raise ExecutorSecurityException(f"Unknown element ref: {ref}")
             locator = page.locator(f"#{record['element_id']}")
             if not await locator.is_visible():
-                raise ExecutorSecurityException(f"reference_not_visible:{t.ref}")
+                raise ExecutorSecurityException(f"reference_not_visible:{ref}")
             if not await locator.is_enabled():
-                raise ExecutorSecurityException(f"reference_not_enabled:{t.ref}")
+                raise ExecutorSecurityException(f"reference_not_enabled:{ref}")
             expected_name = record.get("name")
             if expected_name:
                 actual_name = await locator.get_attribute("aria-label") or ""
                 if not actual_name:
                     actual_name = await locator.inner_text()
                 if actual_name.strip() != expected_name.strip():
-                    raise ExecutorSecurityException(f"reference_name_mismatch:{t.ref}")
+                    raise ExecutorSecurityException(f"reference_name_mismatch:{ref}")
             return locator
 
         # Priority 1: ID selector

@@ -74,7 +74,9 @@ class DetectorChannelRunner:
             detections.extend(self.ner_detector.detect_in_elements(elements))
             detections.extend(self.face_detector.detect(elements, screenshot_bytes))
         elif channel == "E_FULL_PIPELINE":
-            detections = self.full_pipeline.detect(elements, screenshot_bytes, visible_text, viewport)
+            detections = self.full_pipeline.detect(
+                elements, screenshot_bytes, visible_text, viewport
+            )
 
         _latency_ms = (time.perf_counter() - t0) * 1000
         return detections
@@ -151,7 +153,8 @@ async def run_benchmark() -> dict[str, Any]:
                     if not matched:
                         cat = elem.get("category", "")
                         matched = any(
-                            getattr(d, "category", "") == cat or getattr(getattr(d, "category", None), "value", "") == cat
+                            getattr(d, "category", "") == cat
+                            or getattr(getattr(d, "category", None), "value", "") == cat
                             for d in dets
                         )
 
@@ -168,7 +171,9 @@ async def run_benchmark() -> dict[str, Any]:
 
             precision = total_tp / (total_tp + total_fp) if (total_tp + total_fp) > 0 else 0.0
             recall = total_tp / (total_tp + total_fn) if (total_tp + total_fn) > 0 else 0.0
-            f1 = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+            f1 = (
+                (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+            )
             avg_latency = total_time_ms / len(fixtures) if fixtures else 0.0
 
             results["channel_metrics"][ch_id] = {
@@ -207,14 +212,16 @@ def write_reports(results: dict[str, Any], output_dir: Path = Path("eval/reports
             f"| **{m['name']}** | {m['precision'] * 100:.1f}% | {m['recall'] * 100:.1f}% | **{m['f1_score']:.3f}** | {m['false_positives']} | {m['avg_latency_ms']:.1f} ms |"
         )
 
-    md_lines.extend([
-        "",
-        "### Key Architectural Insights",
-        "- **Channel A (DOM only)** provides near-instant latency but misses unannotated and prose-embedded PII.",
-        "- **Channel B (+ Regex)** delivers the largest F1 improvement by catching statutory PAN, Aadhaar, phone, and card formats.",
-        "- **Channel C (+ Heuristics/NER)** successfully catches multi-line address blocks and names without external cloud APIs.",
-        "- **Channel D & E (Face + Avatars + Full Pipeline)** captures biometric facial images and deduplicates overlapping bounding boxes, preserving critical visual context while maintaining a sub-50ms client processing budget.",
-    ])
+    md_lines.extend(
+        [
+            "",
+            "### Key Architectural Insights",
+            "- **Channel A (DOM only)** provides near-instant latency but misses unannotated and prose-embedded PII.",
+            "- **Channel B (+ Regex)** delivers the largest F1 improvement by catching statutory PAN, Aadhaar, phone, and card formats.",
+            "- **Channel C (+ Heuristics/NER)** successfully catches multi-line address blocks and names without external cloud APIs.",
+            "- **Channel D & E (Face + Avatars + Full Pipeline)** captures biometric facial images and deduplicates overlapping bounding boxes, preserving critical visual context while maintaining a sub-50ms client processing budget.",
+        ]
+    )
 
     md_path = output_dir / "detector_benchmark.md"
     md_path.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
@@ -223,7 +230,9 @@ def write_reports(results: dict[str, Any], output_dir: Path = Path("eval/reports
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run detector ablation benchmark across realistic privacy corpus")
+    parser = argparse.ArgumentParser(
+        description="Run detector ablation benchmark across realistic privacy corpus"
+    )
     parser.add_argument("--output-dir", type=Path, default=Path("eval/reports"))
     args = parser.parse_args()
 

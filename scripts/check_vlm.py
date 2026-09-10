@@ -10,6 +10,7 @@ Performs fail-closed validation of an OpenAI-compatible Vision-Language Model en
 
 import argparse
 import json
+import os
 import platform
 import sys
 from typing import Any
@@ -17,10 +18,9 @@ from typing import Any
 import httpx
 
 
-def check_endpoint(
-    base_url: str = "http://127.0.0.1:8000/v1", target_model: str | None = None
-) -> dict[str, Any]:
-    clean_url = base_url.rstrip("/")
+def check_endpoint(base_url: str | None = None, target_model: str | None = None) -> dict[str, Any]:
+    url_str: str = base_url or os.getenv("PRIVATEEYE_VLM_BASE_URL") or "http://127.0.0.1:8000/v1"
+    clean_url = url_str.rstrip("/")
     result: dict[str, Any] = {
         "status": "BLOCKED",
         "endpoint": clean_url,
@@ -77,9 +77,15 @@ def main() -> int:
         description="Check health of an OpenAI-compatible VLM endpoint"
     )
     parser.add_argument(
-        "--base-url", default="http://127.0.0.1:8000/v1", help="Base URL of OpenAI-compatible API"
+        "--base-url",
+        default=os.getenv("PRIVATEEYE_VLM_BASE_URL", "http://127.0.0.1:8000/v1"),
+        help="Base URL of OpenAI-compatible API",
     )
-    parser.add_argument("--model", default=None, help="Specific model ID to verify")
+    parser.add_argument(
+        "--model",
+        default=os.getenv("PRIVATEEYE_VLM_MODEL"),
+        help="Specific model ID to verify",
+    )
     args = parser.parse_args()
 
     res = check_endpoint(args.base_url, args.model)

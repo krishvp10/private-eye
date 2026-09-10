@@ -24,6 +24,12 @@ class ActionType(str, Enum):
     ASK_USER = "ask_user"
 
 
+class SelectionStatus(str, Enum):
+    SELECTED = "selected"
+    AMBIGUOUS = "ambiguous"
+    NO_VALID_CANDIDATE = "no_valid_candidate"
+
+
 class DetectionCategory(str, Enum):
     FACE = "face"
     PASSWORD = "password"
@@ -154,6 +160,19 @@ class ScreenGraph(BaseModel):
     viewport: dict = Field(default_factory=lambda: {"width": 1280, "height": 800})
 
 
+class SafeCandidate(BaseModel):
+    """Privacy-safe executable candidate generated locally from the ScreenGraph."""
+
+    ref: str
+    role: str
+    name: str = ""
+    sensitive: bool = False
+    visible: bool = True
+    enabled: bool = True
+    bbox: list[float] | None = None
+    rank_score: float = Field(default=0.0, ge=0.0, le=1.0)
+
+
 class ImageMeta(BaseModel):
     w: int = 1280
     h: int = 800
@@ -171,8 +190,13 @@ class ScreenContext(BaseModel):
     image_b64: str = Field(description="Sanitized base64 JPEG")
     image_meta: ImageMeta = Field(default_factory=ImageMeta)
     screen_graph: ScreenGraph
+    candidates: list[SafeCandidate] = Field(default_factory=list)
     redactions: list[Redaction] = Field(default_factory=list)
     task: str
+    previous_action: dict[str, Any] | None = None
+    previous_execution_success: bool | None = None
+    previous_post_condition_success: bool | None = None
+    previous_failure_class: str | None = None
 
 
 class ActionTarget(BaseModel):
@@ -180,6 +204,7 @@ class ActionTarget(BaseModel):
 
     kind: str = "a11y"
     ref: str | None = None
+    candidate_ref: str | None = None
     role: str | None = None
     name: str | None = None
     label: str | None = None
@@ -206,6 +231,10 @@ class AgentAction(BaseModel):
     )
     reason: str | None = None
     question: str | None = None
+    selection_status: SelectionStatus = SelectionStatus.SELECTED
+    confidence: float | None = Field(default=None, ge=0.0, le=1.0)
+    reason_code: str | None = None
+    alternatives_considered: list[str] = Field(default_factory=list)
 
     @model_validator(mode="before")
     @classmethod

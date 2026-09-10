@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "model": "qwen2.5vl:7b",
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "variants": {
+    "screenshot_only": {
+      "status": "PASS",
+      "schema_valid": true,
+      "grounding_accuracy": null,
+      "workflow_success": null,
+      "latency_ms": 2583.68,
+      "action": "ask_user"
+    },
+    "screenshot_graph": {
+      "status": "PASS",
+      "schema_valid": true,
+      "grounding_accuracy": null,
+      "workflow_success": null,
+      "latency_ms": 2689.87,
+      "action": "fill"
+    },
+    "screenshot_graph_redactions": {
+      "status": "PASS",
+      "schema_valid": true,
+      "grounding_accuracy": null,
+      "workflow_success": null,
+      "latency_ms": 3032.4,
+      "action": "ask_user"
+    }
+  },
+  "note": "This canary measures response validity and latency; full grounding/workflow denominators require the real action runner."
+}

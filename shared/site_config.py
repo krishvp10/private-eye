@@ -68,24 +68,28 @@ class SiteConfig(BaseModel):
         for r in self.routes:
             elements: list[dict[str, Any]] = []
             if r.has_face_avatar:
-                elements.append({
-                    "id": "field_face",
-                    "category": "face",
-                    "selector": "#field_face",
-                    "type": "svg/image",
-                    "sensitive": True,
-                    "description": "Applicant biometric avatar",
-                })
+                elements.append(
+                    {
+                        "id": "field_face",
+                        "category": "face",
+                        "selector": "#field_face",
+                        "type": "svg/image",
+                        "sensitive": True,
+                        "description": "Applicant biometric avatar",
+                    }
+                )
             for f in r.fields:
                 if f.sensitive:
-                    elements.append({
-                        "id": f.id,
-                        "category": f.category.value if f.category else "password",
-                        "selector": f"#{f.id}",
-                        "type": f.field_type,
-                        "sensitive": True,
-                        "ground_truth_pattern": f.ground_truth_pattern or f.default_value or "",
-                    })
+                    elements.append(
+                        {
+                            "id": f.id,
+                            "category": f.category.value if f.category else "password",
+                            "selector": f"#{f.id}",
+                            "type": f.field_type,
+                            "sensitive": True,
+                            "ground_truth_pattern": f.ground_truth_pattern or f.default_value or "",
+                        }
+                    )
             if elements:
                 pages[r.route] = {"elements": elements}
         return {"version": "2.0", "pages": pages}

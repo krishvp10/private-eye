@@ -56,6 +56,19 @@ class VLMAdapter:
                         url=context.url,
                         screen_graph_json=context.screen_graph.model_dump_json(),
                         redaction_summary=redaction_summary,
+                        candidates_json=json.dumps(
+                            [candidate.model_dump() for candidate in context.candidates],
+                            separators=(",", ":"),
+                        ),
+                        progress_json=json.dumps(
+                            {
+                                "previous_action": context.previous_action,
+                                "previous_execution_success": context.previous_execution_success,
+                                "previous_post_condition_success": context.previous_post_condition_success,
+                                "previous_failure_class": context.previous_failure_class,
+                            },
+                            separators=(",", ":"),
+                        ),
                     )},
                     {"type": "image_url", "image_url": {
                         "url": f"data:image/jpeg;base64,{context.image_b64}"

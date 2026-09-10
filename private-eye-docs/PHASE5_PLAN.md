@@ -2,11 +2,18 @@
 
 ## Current gate
 
-The repository is ready for live evidence, but the current workstation has no
-reachable OpenAI-compatible Qwen endpoint. It does have an NVIDIA GeForce RTX
-4060 Laptop GPU with 8188 MiB VRAM, but neither vLLM nor Ollama is installed
-and the available WSL distribution is stopped. Therefore all live Qwen
-measurements remain `SKIPPED` or `BLOCKED`.
+The local gate is now open through Ollama's OpenAI-compatible endpoint. The
+workstation has an NVIDIA GeForce RTX 4060 Laptop GPU with 8188 MiB VRAM and
+the following models were served locally:
+
+```text
+qwen2.5vl:3b
+qwen2.5vl:7b
+```
+
+The current live evidence is measured, not universally representative:
+3B completed 5/5 synthetic workflows, while 7B completed 0/5. Both models
+showed schema-valid actions with meaningful grounding failures.
 
 ## Required first milestone
 
@@ -18,8 +25,12 @@ GPU -> vLLM or Ollama -> Qwen2.5-VL-3B-Instruct
     -> scripts/check_vlm.py
 ```
 
-The endpoint must pass the health check and expose the configured model before
-any result is counted.
+The endpoint passed `scripts/check_vlm.py` and exposed the configured model
+before results were counted.
+
+The recovery path now performs a fresh sanitized capture and sends that context
+back to the model before retrying. Retries remain bounded and destructive or
+policy failures escalate locally.
 
 ## Experimental order
 
@@ -34,6 +45,18 @@ any result is counted.
    plus redaction metadata.
 9. Identical Qwen2.5-VL-3B and Qwen2.5-VL-7B comparison.
 10. Genuine packet and server-log inspection from those runs.
+
+## Measured artifacts
+
+- `eval/reports/real_vlm_canaries.json`
+- `eval/reports/real_vlm_canaries_7b.json`
+- `eval/reports/real_vlm_report.json`
+- `eval/reports/real_vlm_report_7b.json`
+- `eval/reports/context_ablation_real.json`
+- `eval/reports/context_ablation_7b.json`
+- `eval/reports/model_comparison_real.json`
+- `eval/reports/real_privacy_evidence.json`
+- `eval/reports/phase5_real_validation.json`
 
 ## Evidence rules
 

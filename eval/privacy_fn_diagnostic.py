@@ -75,7 +75,11 @@ async def run_diagnostic() -> dict[str, Any]:
         browser = await p.chromium.launch(headless=True)
         for fix_id, fix_meta in fixtures.items():
             html_path = (CORPUS_DIR / fix_meta["file"]).resolve()
-            viewport: ViewportSize = {"width": 375, "height": 812} if "mobile" in fix_id else {"width": 1280, "height": 800}
+            viewport: ViewportSize = (
+                {"width": 375, "height": 812}
+                if "mobile" in fix_id
+                else {"width": 1280, "height": 800}
+            )
             page = await browser.new_page(viewport=viewport)
             await page.goto(html_path.as_uri(), wait_until="load")
 
@@ -93,7 +97,9 @@ async def run_diagnostic() -> dict[str, Any]:
             ner_dets = ner_detector.detect_in_elements(captured.raw_elements)
             face_dets = face_cascade.detect(captured.raw_elements, captured.screenshot_bytes)
 
-            expected_elements = [el for el in fix_meta.get("elements", []) if el.get("expected_masked", True)]
+            expected_elements = [
+                el for el in fix_meta.get("elements", []) if el.get("expected_masked", True)
+            ]
 
             for expected in expected_elements:
                 total_expected += 1
@@ -111,21 +117,31 @@ async def run_diagnostic() -> dict[str, Any]:
                     det_cat = det.category.value.lower()
                     cat_match = (
                         det_cat == exp_cat
-                        or (exp_cat in {"aadhaar", "pan", "phone", "email", "address"} and det_cat in {"pii", exp_cat})
+                        or (
+                            exp_cat in {"aadhaar", "pan", "phone", "email", "address"}
+                            and det_cat in {"pii", exp_cat}
+                        )
                         or (exp_cat == "password" and det_cat in {"credential", "password"})
                     )
                     if not cat_match:
                         continue
 
                     # Check evidence_id match
-                    if exp_elem_id and (det.evidence_id == exp_elem_id or exp_elem_id in det.evidence_id):
+                    if exp_elem_id and (
+                        det.evidence_id == exp_elem_id or exp_elem_id in det.evidence_id
+                    ):
                         matched = True
                         best_match = det
                         break
 
                     # Check bounding box IoU if both have boxes
                     if exp_bbox and det.bounding_box:
-                        det_box = [det.bounding_box.x, det.bounding_box.y, det.bounding_box.width, det.bounding_box.height]
+                        det_box = [
+                            det.bounding_box.x,
+                            det.bounding_box.y,
+                            det.bounding_box.width,
+                            det.bounding_box.height,
+                        ]
                         iou = bbox_iou(exp_bbox, det_box)
                         if iou > best_iou:
                             best_iou = iou
@@ -136,18 +152,24 @@ async def run_diagnostic() -> dict[str, Any]:
 
                 if matched and best_match:
                     total_detected += 1
-                    detected_cases.append({
-                        "fixture": fix_id,
-                        "category": exp_cat,
-                        "element_id": exp_elem_id,
-                        "text": exp_text,
-                        "source": best_match.source.value,
-                    })
+                    detected_cases.append(
+                        {
+                            "fixture": fix_id,
+                            "category": exp_cat,
+                            "element_id": exp_elem_id,
+                            "text": exp_text,
+                            "source": best_match.source.value,
+                        }
+                    )
                 else:
                     # Diagnose exact root cause
                     root_cause = "unknown"
                     if exp_cat == "face":
-                        if "small" in exp_text.lower() or "avatar" in exp_text.lower() or "badge" in exp_text.lower():
+                        if (
+                            "small" in exp_text.lower()
+                            or "avatar" in exp_text.lower()
+                            or "badge" in exp_text.lower()
+                        ):
                             root_cause = "tiny_face_below_haar_min_size"
                         else:
                             root_cause = "face_visual_detection_miss"
@@ -172,27 +194,38 @@ async def run_diagnostic() -> dict[str, Any]:
                     dom_saw = any(exp_elem_id in d.evidence_id for d in dom_dets if exp_elem_id)
                     regex_saw = any(d.category.value.lower() == exp_cat for d in regex_dets)
                     ner_saw = any(d.category.value.lower() == exp_cat for d in ner_dets)
-                    face_saw = any(d.category.value.lower() == "face" for d in face_dets) if exp_cat == "face" else False
+                    face_saw = (
+                        any(d.category.value.lower() == "face" for d in face_dets)
+                        if exp_cat == "face"
+                        else False
+                    )
 
-                    missed_cases.append({
-                        "fixture": fix_id,
-                        "category": exp_cat,
-                        "element_id": exp_elem_id,
-                        "ground_truth_bbox": exp_bbox,
-                        "predicted_bbox_if_any": (
-                            [best_match.bounding_box.x, best_match.bounding_box.y, best_match.bounding_box.width, best_match.bounding_box.height]
-                            if (best_match and best_match.bounding_box)
-                            else None
-                        ),
-                        "text_snippet": exp_text,
-                        "root_cause": root_cause,
-                        "channel_attribution": {
-                            "dom_detected": dom_saw,
-                            "regex_detected": regex_saw,
-                            "ner_detected": ner_saw,
-                            "face_detected": face_saw,
-                        },
-                    })
+                    missed_cases.append(
+                        {
+                            "fixture": fix_id,
+                            "category": exp_cat,
+                            "element_id": exp_elem_id,
+                            "ground_truth_bbox": exp_bbox,
+                            "predicted_bbox_if_any": (
+                                [
+                                    best_match.bounding_box.x,
+                                    best_match.bounding_box.y,
+                                    best_match.bounding_box.width,
+                                    best_match.bounding_box.height,
+                                ]
+                                if (best_match and best_match.bounding_box)
+                                else None
+                            ),
+                            "text_snippet": exp_text,
+                            "root_cause": root_cause,
+                            "channel_attribution": {
+                                "dom_detected": dom_saw,
+                                "regex_detected": regex_saw,
+                                "ner_detected": ner_saw,
+                                "face_detected": face_saw,
+                            },
+                        }
+                    )
             await page.close()
         await browser.close()
 
@@ -219,7 +252,9 @@ async def run_diagnostic() -> dict[str, Any]:
             {
                 "root_cause": cause,
                 "miss_count": count,
-                "percentage_of_misses": round((count / len(missed_cases)) * 100, 1) if missed_cases else 0.0,
+                "percentage_of_misses": round((count / len(missed_cases)) * 100, 1)
+                if missed_cases
+                else 0.0,
             }
             for cause, count in sorted(cause_counts.items(), key=lambda x: x[1], reverse=True)
         ],
@@ -227,7 +262,9 @@ async def run_diagnostic() -> dict[str, Any]:
             {
                 "category": cat,
                 "miss_count": count,
-                "percentage_of_misses": round((count / len(missed_cases)) * 100, 1) if missed_cases else 0.0,
+                "percentage_of_misses": round((count / len(missed_cases)) * 100, 1)
+                if missed_cases
+                else 0.0,
             }
             for cat, count in sorted(category_counts.items(), key=lambda x: x[1], reverse=True)
         ],
@@ -275,29 +312,37 @@ def write_diagnostic_reports(diag: dict[str, Any], output_dir: Path = Path("eval
     for item in diag["breakdown_by_root_cause"]:
         rc = item["root_cause"]
         rem = remediation_map.get(rc, "Targeted detector refinement")
-        md_lines.append(f"| `{rc}` | {item['miss_count']} | {item['percentage_of_misses']}% | {rem} |")
+        md_lines.append(
+            f"| `{rc}` | {item['miss_count']} | {item['percentage_of_misses']}% | {rem} |"
+        )
 
-    md_lines.extend([
-        "",
-        "---",
-        "",
-        "## Breakdown by Sensitive Category",
-        "",
-        "| Category | Miss Count | Share of Misses |",
-        "| :--- | :---: | :---: |",
-    ])
+    md_lines.extend(
+        [
+            "",
+            "---",
+            "",
+            "## Breakdown by Sensitive Category",
+            "",
+            "| Category | Miss Count | Share of Misses |",
+            "| :--- | :---: | :---: |",
+        ]
+    )
     for item in diag["breakdown_by_category"]:
-        md_lines.append(f"| **{item['category'].upper()}** | {item['miss_count']} | {item['percentage_of_misses']}% |")
+        md_lines.append(
+            f"| **{item['category'].upper()}** | {item['miss_count']} | {item['percentage_of_misses']}% |"
+        )
 
-    md_lines.extend([
-        "",
-        "---",
-        "",
-        "## Detailed False-Negative Records",
-        "",
-        "| Fixture | Category | Element ID / Snippet | Diagnosed Root Cause | DOM | Regex | NER | Face |",
-        "| :--- | :--- | :--- | :--- | :---: | :---: | :---: | :---: |",
-    ])
+    md_lines.extend(
+        [
+            "",
+            "---",
+            "",
+            "## Detailed False-Negative Records",
+            "",
+            "| Fixture | Category | Element ID / Snippet | Diagnosed Root Cause | DOM | Regex | NER | Face |",
+            "| :--- | :--- | :--- | :--- | :---: | :---: | :---: | :---: |",
+        ]
+    )
 
     for m in diag["missed_cases"]:
         snippet = m["element_id"] or m["text_snippet"] or "N/A"
@@ -322,7 +367,9 @@ def write_diagnostic_reports(diag: dict[str, Any], output_dir: Path = Path("eval
 def main() -> None:
     diag = asyncio.run(run_diagnostic())
     write_diagnostic_reports(diag)
-    print(f"Diagnostic complete: {diag['summary']['total_false_negatives']} false negatives identified.")
+    print(
+        f"Diagnostic complete: {diag['summary']['total_false_negatives']} false negatives identified."
+    )
 
 
 if __name__ == "__main__":

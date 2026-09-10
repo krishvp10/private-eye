@@ -28,12 +28,12 @@ def compute_redaction_metrics(
     for bbox in ground_truth_bboxes:
         if len(bbox) == 4:
             x, y, bw, bh = [int(v) for v in bbox]
-            gt_mask[max(0, y):min(h, y + bh), max(0, x):min(w, x + bw)] = 1
+            gt_mask[max(0, y) : min(h, y + bh), max(0, x) : min(w, x + bw)] = 1
 
     # Draw Predicted Redactions
     for r in redactions:
         x, y, rw, rh = [int(v) for v in r.region]
-        pred_mask[max(0, y):min(h, y + rh), max(0, x):min(w, x + rw)] = 1
+        pred_mask[max(0, y) : min(h, y + rh), max(0, x) : min(w, x + rw)] = 1
 
     intersection = float(np.logical_and(gt_mask, pred_mask).sum())
     union = float(np.logical_or(gt_mask, pred_mask).sum())

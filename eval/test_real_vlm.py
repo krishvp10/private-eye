@@ -32,6 +32,10 @@ async def run(url: str, server_url: str, max_steps: int) -> dict:
                 "redactions": row["redactions"],
                 "network_ms": row["network_ms"],
                 "execution_ms": row["execution_ms"],
+                "execution_success": row.get("execution_success"),
+                "post_condition_success": row.get("post_condition_success"),
+                "target_ref": row.get("target_ref"),
+                "action_type": row.get("action_type"),
                 "total_ms": row["total_ms"],
             }
             for row in result.telemetry

@@ -22,17 +22,19 @@ def test_packet_audit_safe_payload():
     vault = LocalVault()
     engine = PacketAuditEngine(vault=vault)
 
-    safe_payload = json.dumps({
-        "run_id": "test-run-001",
-        "step": 1,
-        "action": {
-            "action": "fill",
-            "target": {"kind": "a11y", "element_id": "field_card_number"},
-            "value_ref": "user_profile.card_number"
-        },
-        "sanitized_graph": {"nodes": []},
-        "redactions": []
-    })
+    safe_payload = json.dumps(
+        {
+            "run_id": "test-run-001",
+            "step": 1,
+            "action": {
+                "action": "fill",
+                "target": {"kind": "a11y", "element_id": "field_card_number"},
+                "value_ref": "user_profile.card_number",
+            },
+            "sanitized_graph": {"nodes": []},
+            "redactions": [],
+        }
+    )
 
     record = engine.audit_payload(safe_payload)
     assert record.passed is True
@@ -46,10 +48,12 @@ def test_packet_audit_catches_leaks():
     engine = PacketAuditEngine(vault=vault)
 
     # Corrupt payload containing direct raw vault secret
-    leaked_payload = json.dumps({
-        "run_id": "test-run-leak",
-        "raw_secret": "4532 1148 9201 8842"  # Credit card raw secret from vault
-    })
+    leaked_payload = json.dumps(
+        {
+            "run_id": "test-run-leak",
+            "raw_secret": "4532 1148 9201 8842",  # Credit card raw secret from vault
+        }
+    )
 
     record = engine.audit_payload(leaked_payload)
     assert record.passed is False
@@ -62,7 +66,9 @@ def test_audit_certificate_generation():
     engine = PacketAuditEngine(vault=vault)
 
     safe_payload_1 = json.dumps({"step": 1, "status": "ok", "value_ref": "user_profile.name"})
-    safe_payload_2 = json.dumps({"step": 2, "status": "ok", "value_ref": "user_profile.card_number"})
+    safe_payload_2 = json.dumps(
+        {"step": 2, "status": "ok", "value_ref": "user_profile.card_number"}
+    )
 
     engine.audit_payload(safe_payload_1)
     engine.audit_payload(safe_payload_2)

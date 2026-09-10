@@ -17,19 +17,19 @@ from scripts.check_vlm import check_endpoint
 RESOLUTIONS = {
     "LOW": {
         "description": "Aggressive downscaling for minimal latency and compute budget",
-        "min_pixels": 128 * 28 * 28,   # ~100k pixels
-        "max_pixels": 256 * 28 * 28,   # ~200k pixels
+        "min_pixels": 128 * 28 * 28,  # ~100k pixels
+        "max_pixels": 256 * 28 * 28,  # ~200k pixels
         "target_dimension": "approx. 448 x 448",
     },
     "MEDIUM": {
         "description": "Balanced trade-off recommended for dense UI screenshots",
-        "min_pixels": 256 * 28 * 28,   # ~200k pixels
-        "max_pixels": 512 * 28 * 28,   # ~400k pixels
+        "min_pixels": 256 * 28 * 28,  # ~200k pixels
+        "max_pixels": 512 * 28 * 28,  # ~400k pixels
         "target_dimension": "approx. 640 x 640",
     },
     "HIGH": {
         "description": "High visual fidelity for tiny fonts and compact controls",
-        "min_pixels": 512 * 28 * 28,   # ~400k pixels
+        "min_pixels": 512 * 28 * 28,  # ~400k pixels
         "max_pixels": 1024 * 28 * 28,  # ~800k pixels
         "target_dimension": "approx. 896 x 896",
     },
@@ -90,9 +90,15 @@ def run_resolution_sweep(
                 "metrics": {
                     "grounding_accuracy": 1.0,
                     "workflow_success": True,
-                    "avg_model_latency_ms": 420.0 if tier == "LOW" else (680.0 if tier == "MEDIUM" else 1150.0),
-                    "total_latency_ms": 450.0 if tier == "LOW" else (715.0 if tier == "MEDIUM" else 1195.0),
-                    "vram_allocated_mb": 5800 if tier == "LOW" else (6400 if tier == "MEDIUM" else 7200),
+                    "avg_model_latency_ms": 420.0
+                    if tier == "LOW"
+                    else (680.0 if tier == "MEDIUM" else 1150.0),
+                    "total_latency_ms": 450.0
+                    if tier == "LOW"
+                    else (715.0 if tier == "MEDIUM" else 1195.0),
+                    "vram_allocated_mb": 5800
+                    if tier == "LOW"
+                    else (6400 if tier == "MEDIUM" else 7200),
                 },
             }
 
@@ -130,8 +136,16 @@ def write_resolution_sweep_reports(
 
     for tier, cfg in results["configurations"].items():
         m = cfg.get("metrics", {})
-        grounding = f"{m['grounding_accuracy'] * 100:.1f}%" if m.get("grounding_accuracy") is not None else "N/A"
-        latency = f"{m['avg_model_latency_ms']:.0f} ms" if m.get("avg_model_latency_ms") is not None else "N/A"
+        grounding = (
+            f"{m['grounding_accuracy'] * 100:.1f}%"
+            if m.get("grounding_accuracy") is not None
+            else "N/A"
+        )
+        latency = (
+            f"{m['avg_model_latency_ms']:.0f} ms"
+            if m.get("avg_model_latency_ms") is not None
+            else "N/A"
+        )
         vram = f"{m['vram_allocated_mb']} MB" if m.get("vram_allocated_mb") is not None else "N/A"
         status = f"**{cfg['status']}**"
 
@@ -139,27 +153,29 @@ def write_resolution_sweep_reports(
             f"| **{tier}** | {cfg['min_pixels']:,} - {cfg['max_pixels']:,} | {cfg['target_dimension']} | {grounding} | {latency} | {vram} | {status} |"
         )
 
-    md_lines.extend([
-        "",
-        "---",
-        "",
-        "## Recommended Configuration",
-        "",
-        f"**Selected Tier**: `{results['selected_configuration']}`",
-        "",
-        results["selection_rationale"],
-        "",
-        "### Operational Instructions for vLLM",
-        "To launch the vLLM server with the optimal MEDIUM image resolution budget on the local RTX 4060 GPU:",
-        "",
-        "```bash",
-        "vllm serve Qwen/Qwen2.5-VL-3B-Instruct \\",
-        "  --limit-mm-per-prompt '{\"image\": 2, \"video\": 0}' \\",
-        "  --mm-processor-kwargs '{\"min_pixels\": 200704, \"max_pixels\": 401408}' \\",
-        "  --max-model-len 4096 \\",
-        "  --gpu-memory-utilization 0.90",
-        "```",
-    ])
+    md_lines.extend(
+        [
+            "",
+            "---",
+            "",
+            "## Recommended Configuration",
+            "",
+            f"**Selected Tier**: `{results['selected_configuration']}`",
+            "",
+            results["selection_rationale"],
+            "",
+            "### Operational Instructions for vLLM",
+            "To launch the vLLM server with the optimal MEDIUM image resolution budget on the local RTX 4060 GPU:",
+            "",
+            "```bash",
+            "vllm serve Qwen/Qwen2.5-VL-3B-Instruct \\",
+            '  --limit-mm-per-prompt \'{"image": 2, "video": 0}\' \\',
+            '  --mm-processor-kwargs \'{"min_pixels": 200704, "max_pixels": 401408}\' \\',
+            "  --max-model-len 4096 \\",
+            "  --gpu-memory-utilization 0.90",
+            "```",
+        ]
+    )
 
     with open(md_path, "w", encoding="utf-8") as f:
         f.write("\n".join(md_lines) + "\n")

@@ -97,11 +97,15 @@ def compile_phase4_report() -> dict[str, Any]:
 
     # Load detector benchmark if available
     det_bench_path = REPORTS_DIR / "detector_benchmark.json"
-    det_bench = json.loads(det_bench_path.read_text(encoding="utf-8")) if det_bench_path.exists() else {}
+    det_bench = (
+        json.loads(det_bench_path.read_text(encoding="utf-8")) if det_bench_path.exists() else {}
+    )
 
     # Load packet privacy evidence if available
     privacy_ev_path = REPORTS_DIR / "real_privacy_evidence.json"
-    privacy_ev = json.loads(privacy_ev_path.read_text(encoding="utf-8")) if privacy_ev_path.exists() else {}
+    privacy_ev = (
+        json.loads(privacy_ev_path.read_text(encoding="utf-8")) if privacy_ev_path.exists() else {}
+    )
 
     # Load canary report if available
     canary_path = REPORTS_DIR / "real_vlm_canaries.json"
@@ -109,11 +113,15 @@ def compile_phase4_report() -> dict[str, Any]:
 
     # Load context ablation if available
     ablation_path = REPORTS_DIR / "context_ablation.json"
-    ablation_rep = json.loads(ablation_path.read_text(encoding="utf-8")) if ablation_path.exists() else {}
+    ablation_rep = (
+        json.loads(ablation_path.read_text(encoding="utf-8")) if ablation_path.exists() else {}
+    )
 
     # Load model comparison if available
     model_comp_path = REPORTS_DIR / "model_comparison.json"
-    model_comp_rep = json.loads(model_comp_path.read_text(encoding="utf-8")) if model_comp_path.exists() else {}
+    model_comp_rep = (
+        json.loads(model_comp_path.read_text(encoding="utf-8")) if model_comp_path.exists() else {}
+    )
 
     report = {
         "title": "PrivateEye Phase 4 Master Validation Report",
@@ -147,10 +155,18 @@ def compile_phase4_report() -> dict[str, Any]:
             "tier_2_realistic_synthetic_corpus": {
                 "status": "PASS",
                 "fixtures_evaluated": det_bench.get("total_fixtures", 10),
-                "channel_e_f1_score": det_bench.get("channel_metrics", {}).get("E_FULL_PIPELINE", {}).get("f1_score", 0.949),
-                "channel_e_recall": det_bench.get("channel_metrics", {}).get("E_FULL_PIPELINE", {}).get("recall", 0.903),
-                "decoy_false_positives": det_bench.get("channel_metrics", {}).get("E_FULL_PIPELINE", {}).get("false_positives", 0),
-                "avg_channel_latency_ms": det_bench.get("channel_metrics", {}).get("E_FULL_PIPELINE", {}).get("avg_latency_ms", 0.2),
+                "channel_e_f1_score": det_bench.get("channel_metrics", {})
+                .get("E_FULL_PIPELINE", {})
+                .get("f1_score", 0.949),
+                "channel_e_recall": det_bench.get("channel_metrics", {})
+                .get("E_FULL_PIPELINE", {})
+                .get("recall", 0.903),
+                "decoy_false_positives": det_bench.get("channel_metrics", {})
+                .get("E_FULL_PIPELINE", {})
+                .get("false_positives", 0),
+                "avg_channel_latency_ms": det_bench.get("channel_metrics", {})
+                .get("E_FULL_PIPELINE", {})
+                .get("avg_latency_ms", 0.2),
             },
             "tier_3_real_vlm_evidence": {
                 "packet_privacy_proof": {
@@ -160,9 +176,7 @@ def compile_phase4_report() -> dict[str, Any]:
                         and privacy_ev.get("zero_leak_verified")
                         else "SKIPPED"
                     ),
-                    "evidence_source": privacy_ev.get(
-                        "evidence_source", "unknown"
-                    ),
+                    "evidence_source": privacy_ev.get("evidence_source", "unknown"),
                     "secrets_audited_count": privacy_ev.get("secrets_tested_count", 21),
                     "zero_raw_pii_on_wire": (
                         privacy_ev.get("live_real_vlm_traffic_verified", False)
@@ -175,7 +189,9 @@ def compile_phase4_report() -> dict[str, Any]:
                 },
                 "live_qwen_endpoint_execution": {
                     "status": canary_rep.get("status", "SKIPPED"),
-                    "reason": canary_rep.get("reason", "PRIVATEEYE_VLM_MODE is not real or endpoint is offline"),
+                    "reason": canary_rep.get(
+                        "reason", "PRIVATEEYE_VLM_MODE is not real or endpoint is offline"
+                    ),
                     "canaries": canary_rep.get("canaries", []),
                     "context_ablation": ablation_rep.get("variants", {}),
                     "model_comparison": model_comp_rep.get("models", []),
@@ -262,7 +278,9 @@ def write_all_reports(report: dict[str, Any], taxonomy: dict[str, Any]) -> None:
     for lim in report["limitations"]:
         val_md.append(f"- {lim}")
 
-    (REPORTS_DIR / "phase4_real_validation.md").write_text("\n".join(val_md) + "\n", encoding="utf-8")
+    (REPORTS_DIR / "phase4_real_validation.md").write_text(
+        "\n".join(val_md) + "\n", encoding="utf-8"
+    )
     print(f"Saved: {val_json}")
     print(f"Saved: {REPORTS_DIR / 'phase4_real_validation.md'}")
     print(f"Saved: {tax_json}")

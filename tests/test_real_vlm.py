@@ -39,6 +39,7 @@ def test_real_request_contains_only_sanitized_multimodal_context(monkeypatch):
     serialized = json.dumps(request)
     assert "SANITIZED_IMAGE" in serialized
     assert "e1" in serialized
+    assert "candidates" in serialized
     assert "SANITIZED_IMAGE" in serialized
     assert "Rahul Sharma" not in serialized
     assert "ABCDE1234F" not in serialized
@@ -48,13 +49,23 @@ def test_real_request_contains_only_sanitized_multimodal_context(monkeypatch):
 
 
 def test_real_response_parses_ref_target_and_value_ref():
-    action = VLMAdapter.parse_response({
-        "choices": [{"message": {"content": json.dumps({
-            "action": "fill",
-            "target": {"ref": "e2"},
-            "value_ref": "user_profile.pan",
-        })}}],
-    })
+    action = VLMAdapter.parse_response(
+        {
+            "choices": [
+                {
+                    "message": {
+                        "content": json.dumps(
+                            {
+                                "action": "fill",
+                                "target": {"ref": "e2"},
+                                "value_ref": "user_profile.pan",
+                            }
+                        )
+                    }
+                }
+            ],
+        }
+    )
     assert action.action == ActionType.FILL
     assert action.target is not None and action.target.ref == "e2"
     assert action.value_ref == "user_profile.pan"
@@ -62,18 +73,30 @@ def test_real_response_parses_ref_target_and_value_ref():
 
 def test_real_response_rejects_unknown_value_namespace():
     with pytest.raises(ValueError):
-        VLMAdapter.parse_response({
-            "choices": [{"message": {"content": json.dumps({
-                "action": "fill",
-                "target": {"ref": "e2"},
-                "value_ref": "admin.password",
-            })}}],
-        })
+        VLMAdapter.parse_response(
+            {
+                "choices": [
+                    {
+                        "message": {
+                            "content": json.dumps(
+                                {
+                                    "action": "fill",
+                                    "target": {"ref": "e2"},
+                                    "value_ref": "admin.password",
+                                }
+                            )
+                        }
+                    }
+                ],
+            }
+        )
 
 
 @pytest.mark.parametrize("content", ["", "not json", '{"action":"eval"}'])
 def test_real_response_fails_closed(content):
     with pytest.raises(ValueError):
-        VLMAdapter.parse_response({
-            "choices": [{"message": {"content": content}}],
-        })
+        VLMAdapter.parse_response(
+            {
+                "choices": [{"message": {"content": content}}],
+            }
+        )

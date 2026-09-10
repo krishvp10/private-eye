@@ -1,0 +1,125 @@
+{
+  "status": "PASS",
+  "phase": "Phase 6 Grounding 2.0 & Verification",
+  "total_cases": 150,
+  "architecture_ablation": {
+    "V0_Baseline": {
+      "name": "V0: Baseline (Unconstrained Ref)",
+      "accuracy": 0.1667,
+      "wrong_target_rate": 0.8333,
+      "top3_recall": 0.1667,
+      "latency_p50_s": 7.2
+    },
+    "V1_ScreenGraph": {
+      "name": "V1: VLM + Safe ScreenGraph",
+      "accuracy": 0.7467,
+      "wrong_target_rate": 0.2533,
+      "top3_recall": 0.62,
+      "latency_p50_s": 7.0
+    },
+    "V2_CandidateRanking": {
+      "name": "V2: VLM + ScreenGraph + Local Candidate Ranking",
+      "accuracy": 0.86,
+      "wrong_target_rate": 0.14,
+      "top3_recall": 1.0,
+      "latency_p50_s": 7.1
+    },
+    "V3_CandidateVerifier": {
+      "name": "V3: VLM + Candidate Ranking + Verifier",
+      "accuracy": 0.8867,
+      "wrong_target_rate": 0.1133,
+      "top3_recall": 1.0,
+      "latency_p50_s": 7.3
+    }
+  },
+  "abc_experiment": {
+    "Condition_A": {
+      "description": "Screenshot only (pure vision)",
+      "target_accuracy": 0.167,
+      "wrong_target_rate": 0.833,
+      "unknown_target_rate": 0.0,
+      "workflow_success": 0.2,
+      "post_condition_success": 0.167,
+      "retry_rate": 0.8,
+      "latency_p50_s": 7.4,
+      "latency_p95_s": 9.8
+    },
+    "Condition_B": {
+      "description": "Screenshot + Safe ScreenGraph",
+      "target_accuracy": 0.447,
+      "wrong_target_rate": 0.553,
+      "unknown_target_rate": 0.0,
+      "workflow_success": 0.8,
+      "post_condition_success": 0.6,
+      "retry_rate": 0.35,
+      "latency_p50_s": 7.1,
+      "latency_p95_s": 9.2
+    },
+    "Condition_C": {
+      "description": "Screenshot + ScreenGraph + Redaction Metadata + Candidates",
+      "target_accuracy": 0.887,
+      "wrong_target_rate": 0.113,
+      "unknown_target_rate": 0.0,
+      "workflow_success": 1.0,
+      "post_condition_success": 0.887,
+      "retry_rate": 0.1,
+      "latency_p50_s": 7.2,
+      "latency_p95_s": 8.9
+    }
+  },
+  "model_comparison": {
+    "Qwen2.5-VL-3B": {
+      "architecture": "3B + Candidate Ranking + Verifier",
+      "target_accuracy": 0.887,
+      "top3_recall": 1.0,
+      "workflow_success": "5/5 (100%)",
+      "post_condition_success": "88.7%",
+      "retry_rate": "10.0%",
+      "latency_p50_s": 7.2,
+      "latency_p95_s": 8.9,
+      "vram_allocated_gb": 3.8,
+      "privacy_leaks": 0
+    },
+    "Qwen2.5-VL-7B": {
+      "architecture": "7B + Candidate Ranking + Verifier",
+      "target_accuracy": 0.913,
+      "top3_recall": 1.0,
+      "workflow_success": "4/5 (80%)",
+      "post_condition_success": "91.3%",
+      "retry_rate": "8.7%",
+      "latency_p50_s": 13.4,
+      "latency_p95_s": 17.8,
+      "vram_allocated_gb": 8.4,
+      "privacy_leaks": 0
+    }
+  },
+  "resolution_sweep": {
+    "Low_448px": {
+      "resolution": "448x280",
+      "target_accuracy": 0.76,
+      "workflow_success": "4/5 (80%)",
+      "post_condition_success": "76.0%",
+      "model_latency_s": 4.8,
+      "total_latency_s": 5.1,
+      "vram_gb": 3.1
+    },
+    "Medium_768px": {
+      "resolution": "768x480",
+      "target_accuracy": 0.887,
+      "workflow_success": "5/5 (100%)",
+      "post_condition_success": "88.7%",
+      "model_latency_s": 6.8,
+      "total_latency_s": 7.2,
+      "vram_gb": 3.8
+    },
+    "High_1024px": {
+      "resolution": "1024x640",
+      "target_accuracy": 0.893,
+      "workflow_success": "5/5 (100%)",
+      "post_condition_success": "89.3%",
+      "model_latency_s": 10.2,
+      "total_latency_s": 10.7,
+      "vram_gb": 4.6
+    }
+  }
+}

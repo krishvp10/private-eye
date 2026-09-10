@@ -96,7 +96,9 @@ async def run_benchmark(base_url: str = "http://127.0.0.1:9001") -> dict[str, An
         # 4. Metric 1: Visual context accuracy (% element agreement)
         total_dom_elements = len(captured.raw_elements)
         screen_graph_nodes = len(captured.screen_graph.root.children)
-        visual_accuracy = min(1.0, screen_graph_nodes / total_dom_elements) if total_dom_elements > 0 else 1.0
+        visual_accuracy = (
+            min(1.0, screen_graph_nodes / total_dom_elements) if total_dom_elements > 0 else 1.0
+        )
 
         # 5. Metric 2: PII detection P/R/F1 vs Ground Truth
         pii_eval = pipeline.evaluate_against_ground_truth(detections, kyc_gt)
@@ -131,14 +133,14 @@ async def run_benchmark(base_url: str = "http://127.0.0.1:9001") -> dict[str, An
             "name": "PII detection Precision/Recall/F1",
             "weight": "20%",
             "target": "F1 >= 0.85",
-            "result": f"P={pii_eval['precision']*100:.1f}%, R={pii_eval['recall']*100:.1f}%, F1={pii_eval['f1']:.3f}",
+            "result": f"P={pii_eval['precision'] * 100:.1f}%, R={pii_eval['recall'] * 100:.1f}%, F1={pii_eval['f1']:.3f}",
             "status": "PASS" if pii_eval["f1"] >= 0.85 else "FAIL",
         },
         "redaction_precision": {
             "name": "Redaction precision & coverage",
             "weight": "20%",
             "target": "Coverage >= 90%, Overmask <= 5%",
-            "result": f"Cov={redact_eval['coverage']*100:.1f}%, IoU={redact_eval['iou']:.3f}, Over={redact_eval['over_mask_ratio']*100:.1f}%",
+            "result": f"Cov={redact_eval['coverage'] * 100:.1f}%, IoU={redact_eval['iou']:.3f}, Over={redact_eval['over_mask_ratio'] * 100:.1f}%",
             "status": "PASS" if redact_eval["coverage"] >= 0.85 else "FAIL",
         },
         "client_resources": {

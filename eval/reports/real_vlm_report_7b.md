@@ -1,0 +1,9 @@
+# PrivateEye real-VLM experiment
+
+**Status:** FAIL
+
+**Model:** qwen2.5vl:7b
+
+**Runs:** 5
+
+This report contains metadata only; raw prompts, screenshots, and secrets are intentionally excluded.

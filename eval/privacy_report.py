@@ -64,8 +64,12 @@ def generate_verification_report(
             "vault_entities_isolated": len(vault_secrets),
         },
         "privacy_guarantees": {
-            "packet_leak_status": "ZERO_LEAK_CONFIRMED" if packet_leaks == 0 else f"VIOLATIONS_FOUND ({packet_leaks})",
-            "server_log_leak_status": "CLEAN" if server_log_leaks == 0 else f"LEAKS_DETECTED ({server_log_leaks})",
+            "packet_leak_status": "ZERO_LEAK_CONFIRMED"
+            if packet_leaks == 0
+            else f"VIOLATIONS_FOUND ({packet_leaks})",
+            "server_log_leak_status": "CLEAN"
+            if server_log_leaks == 0
+            else f"LEAKS_DETECTED ({server_log_leaks})",
             "raw_secrets_transmitted": False,
             "raw_screenshots_transmitted": False,
             "cookies_transmitted": False,
@@ -107,7 +111,7 @@ def render_html_report(data: dict[str, Any]) -> str:
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>{data['title']} — {data['verification_id']}</title>
+  <title>{data["title"]} — {data["verification_id"]}</title>
   <style>
     @page {{
       size: A4;
@@ -248,8 +252,8 @@ def render_html_report(data: dict[str, Any]) -> str:
     <div class="header">
       <div class="brand">
         <h1>PrivateEye Privacy Verification Report</h1>
-        <p>Verification ID: {data['verification_id']}</p>
-        <p>Timestamp: {data['timestamp_utc']}</p>
+        <p>Verification ID: {data["verification_id"]}</p>
+        <p>Timestamp: {data["timestamp_utc"]}</p>
       </div>
       <div class="status-badge {status_class}">
         {status_text}
@@ -259,33 +263,33 @@ def render_html_report(data: dict[str, Any]) -> str:
     <div class="grid">
       <div class="panel">
         <div class="panel-title">Execution Context</div>
-        <div class="prop-row"><span class="prop-label">Run ID:</span><span class="prop-val">{data['run_id']}</span></div>
-        <div class="prop-row"><span class="prop-label">Workflow:</span><span class="prop-val">{data['workflow'].upper()}</span></div>
-        <div class="prop-row"><span class="prop-label">Model Reasoning:</span><span class="prop-val">{data['model_mode'].upper()}</span></div>
-        <div class="prop-row"><span class="prop-label">Steps Executed:</span><span class="prop-val">{data['execution_summary']['total_steps']}</span></div>
-        <div class="prop-row"><span class="prop-label">Redactions Applied:</span><span class="prop-val">{data['execution_summary']['total_redactions']}</span></div>
+        <div class="prop-row"><span class="prop-label">Run ID:</span><span class="prop-val">{data["run_id"]}</span></div>
+        <div class="prop-row"><span class="prop-label">Workflow:</span><span class="prop-val">{data["workflow"].upper()}</span></div>
+        <div class="prop-row"><span class="prop-label">Model Reasoning:</span><span class="prop-val">{data["model_mode"].upper()}</span></div>
+        <div class="prop-row"><span class="prop-label">Steps Executed:</span><span class="prop-val">{data["execution_summary"]["total_steps"]}</span></div>
+        <div class="prop-row"><span class="prop-label">Redactions Applied:</span><span class="prop-val">{data["execution_summary"]["total_redactions"]}</span></div>
       </div>
 
       <div class="panel">
         <div class="panel-title">Outbound Privacy Verifications</div>
-        <div class="prop-row"><span class="prop-label">Packet Wire Leaks:</span><span class="prop-val">{data['privacy_guarantees']['packet_leak_status']}</span></div>
-        <div class="prop-row"><span class="prop-label">Server Log Leaks:</span><span class="prop-val">{data['privacy_guarantees']['server_log_leak_status']}</span></div>
-        <div class="prop-row"><span class="prop-label">Raw Secret Exposed:</span><span class="prop-val">{"NO" if not data['privacy_guarantees']['raw_secrets_transmitted'] else "YES"}</span></div>
-        <div class="prop-row"><span class="prop-label">Raw Screenshot Wire:</span><span class="prop-val">{"NO" if not data['privacy_guarantees']['raw_screenshots_transmitted'] else "YES"}</span></div>
+        <div class="prop-row"><span class="prop-label">Packet Wire Leaks:</span><span class="prop-val">{data["privacy_guarantees"]["packet_leak_status"]}</span></div>
+        <div class="prop-row"><span class="prop-label">Server Log Leaks:</span><span class="prop-val">{data["privacy_guarantees"]["server_log_leak_status"]}</span></div>
+        <div class="prop-row"><span class="prop-label">Raw Secret Exposed:</span><span class="prop-val">{"NO" if not data["privacy_guarantees"]["raw_secrets_transmitted"] else "YES"}</span></div>
+        <div class="prop-row"><span class="prop-label">Raw Screenshot Wire:</span><span class="prop-val">{"NO" if not data["privacy_guarantees"]["raw_screenshots_transmitted"] else "YES"}</span></div>
         <div class="prop-row"><span class="prop-label">Local Vault Resolution:</span><span class="prop-val">ENFORCED</span></div>
       </div>
     </div>
 
     <div class="panel">
-      <div class="panel-title">Monitored PII / Sensitive Categories ({len(data['categories_tested'])})</div>
+      <div class="panel-title">Monitored PII / Sensitive Categories ({len(data["categories_tested"])})</div>
       <div>{categories_html}</div>
     </div>
 
     <div class="integrity-box">
       <div class="label">Cryptographic Integrity Hash (SHA-256)</div>
-      <div>{data['cryptographic_integrity']['report_hash']}</div>
+      <div>{data["cryptographic_integrity"]["report_hash"]}</div>
       <div style="margin-top: 0.5rem; color: #38bdf8; font-size: 0.75rem;">
-        Standard: {data['cryptographic_integrity']['audit_standard']}
+        Standard: {data["cryptographic_integrity"]["audit_standard"]}
       </div>
     </div>
 

@@ -1,0 +1,3848 @@
+{
+  "status": "PASS",
+  "benchmark": "atomic_grounding_150_v2",
+  "total_cases": 150,
+  "metrics": {
+    "target_accuracy": 0.8867,
+    "candidate_recall_at_1": 0.8867,
+    "candidate_recall_at_3": 1.0,
+    "candidate_recall_at_5": 1.0,
+    "unknown_target_rate": 0.0,
+    "wrong_target_rate": 0.1133,
+    "action_type_accuracy": 1.0,
+    "post_condition_success": 0.8867,
+    "total_latency_ms": 13.22,
+    "latency_p50_ms": 0.09
+  },
+  "breakdown_by_category": {
+    "duplicate_buttons": {
+      "total": 20,
+      "top1_acc": 0.55,
+      "top3_acc": 1.0
+    },
+    "table_row_actions": {
+      "total": 15,
+      "top1_acc": 0.667,
+      "top3_acc": 1.0
+    },
+    "form_field_distractors": {
+      "total": 15,
+      "top1_acc": 1.0,
+      "top3_acc": 1.0
+    },
+    "icon_only_controls": {
+      "total": 15,
+      "top1_acc": 1.0,
+      "top3_acc": 1.0
+    },
+    "small_controls": {
+      "total": 15,
+      "top1_acc": 1.0,
+      "top3_acc": 1.0
+    },
+    "disabled_vs_enabled": {
+      "total": 12,
+      "top1_acc": 1.0,
+      "top3_acc": 1.0
+    },
+    "nested_components": {
+      "total": 14,
+      "top1_acc": 0.857,
+      "top3_acc": 1.0
+    },
+    "multilingual_labels": {
+      "total": 12,
+      "top1_acc": 0.917,
+      "top3_acc": 1.0
+    },
+    "combobox_selectors": {
+      "total": 12,
+      "top1_acc": 1.0,
+      "top3_acc": 1.0
+    },
+    "sensitive_pii_fields": {
+      "total": 10,
+      "top1_acc": 1.0,
+      "top3_acc": 1.0
+    },
+    "mobile_responsive": {
+      "total": 10,
+      "top1_acc": 1.0,
+      "top3_acc": 1.0
+    }
+  },
+  "breakdown_by_difficulty": {
+    "medium": {
+      "total": 69,
+      "top1_acc": 0.87,
+      "top3_acc": 1.0
+    },
+    "hard": {
+      "total": 66,
+      "top1_acc": 0.879,
+      "top3_acc": 1.0
+    },
+    "easy": {
+      "total": 15,
+      "top1_acc": 1.0,
+      "top3_acc": 1.0
+    }
+  },
+  "privacy_guarantee": [
+    "Candidate metadata contains zero raw secret values.",
+    "Sensitive fields are masked as '[REDACTED FIELD]'.",
+    "Values resolved locally via LocalVault."
+  ],
+  "results": [
+    {
+      "case_id": "atomic-001",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click the secondary Continue button at bottom",
+      "action_type": "click",
+      "expected_ref": "e_cont_bot_bot",
+      "chosen_ref": "e_cont_bot_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5383,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-002",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Continue at top header",
+      "action_type": "click",
+      "expected_ref": "e_cont_bot_top",
+      "chosen_ref": "e_close",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.6733,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-003",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Save draft at top",
+      "action_type": "click",
+      "expected_ref": "e_save_top_top",
+      "chosen_ref": "e_close",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5667,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-004",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Save at bottom footer",
+      "action_type": "click",
+      "expected_ref": "e_save_top_bot",
+      "chosen_ref": "e_save_top_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.524,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-005",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click the final Submit at bottom",
+      "action_type": "click",
+      "expected_ref": "e_sub_bot_bot",
+      "chosen_ref": "e_sub_bot_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5625,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-006",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Submit at top header",
+      "action_type": "click",
+      "expected_ref": "e_sub_bot_top",
+      "chosen_ref": "e_close",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.6231,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-007",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Cancel at header top",
+      "action_type": "click",
+      "expected_ref": "e_can_top_top",
+      "chosen_ref": "e_close",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.6231,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-008",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Cancel at bottom footer",
+      "action_type": "click",
+      "expected_ref": "e_can_top_bot",
+      "chosen_ref": "e_can_top_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5897,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-009",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Next at bottom",
+      "action_type": "click",
+      "expected_ref": "e_next_bot_bot",
+      "chosen_ref": "e_next_bot_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.6111,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-010",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Next at top header",
+      "action_type": "click",
+      "expected_ref": "e_next_bot_top",
+      "chosen_ref": "e_close",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5545,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-011",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Apply at bottom",
+      "action_type": "click",
+      "expected_ref": "e_app_bot_bot",
+      "chosen_ref": "e_app_bot_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.65,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-012",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Apply at top header",
+      "action_type": "click",
+      "expected_ref": "e_app_bot_top",
+      "chosen_ref": "e_close",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5917,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-013",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Download at top",
+      "action_type": "click",
+      "expected_ref": "e_dl_top_top",
+      "chosen_ref": "e_close",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.787,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-014",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Download at bottom footer",
+      "action_type": "click",
+      "expected_ref": "e_dl_top_bot",
+      "chosen_ref": "e_dl_top_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.6394,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-015",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Back at top",
+      "action_type": "click",
+      "expected_ref": "e_back_top_top",
+      "chosen_ref": "e_back_top_top",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.6733,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-016",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Back at bottom footer",
+      "action_type": "click",
+      "expected_ref": "e_back_top_bot",
+      "chosen_ref": "e_back_top_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.524,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-017",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Confirm at bottom",
+      "action_type": "click",
+      "expected_ref": "e_conf_bot_bot",
+      "chosen_ref": "e_conf_bot_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.7083,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-018",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Confirm at top header",
+      "action_type": "click",
+      "expected_ref": "e_conf_bot_top",
+      "chosen_ref": "e_close",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.65,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-019",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Proceed at bottom",
+      "action_type": "click",
+      "expected_ref": "e_proc_bot_bot",
+      "chosen_ref": "e_proc_bot_bot",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.7083,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_bottom",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-020",
+      "category": "duplicate_buttons",
+      "difficulty": "medium",
+      "task": "Click Proceed at top header",
+      "action_type": "click",
+      "expected_ref": "e_proc_bot_top",
+      "chosen_ref": "e_close",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.65,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-021",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Edit beside the first row",
+      "action_type": "click",
+      "expected_ref": "e_edit_1",
+      "chosen_ref": "e_edit_1",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.4931,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_first",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-022",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Edit beside the second row",
+      "action_type": "click",
+      "expected_ref": "e_edit_2",
+      "chosen_ref": "e_edit_2",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.4867,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_second",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-023",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Edit beside the third row",
+      "action_type": "click",
+      "expected_ref": "e_edit_3",
+      "chosen_ref": "e_edit_1",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.4931,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "ambiguous_candidates_unresolved",
+        "confidence": 0.4931
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-024",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Delete beside the first row",
+      "action_type": "click",
+      "expected_ref": "e_delete_1",
+      "chosen_ref": "e_delete_1",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5545,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_first",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-025",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Delete beside the second row",
+      "action_type": "click",
+      "expected_ref": "e_delete_2",
+      "chosen_ref": "e_delete_2",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5471,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_second",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-026",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Delete beside the third row",
+      "action_type": "click",
+      "expected_ref": "e_delete_3",
+      "chosen_ref": "e_delete_1",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5545,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "ambiguous_candidates_unresolved",
+        "confidence": 0.5545
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-027",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Remove beside the first row",
+      "action_type": "click",
+      "expected_ref": "e_remove_1",
+      "chosen_ref": "e_remove_1",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5545,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_first",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-028",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Remove beside the second row",
+      "action_type": "click",
+      "expected_ref": "e_remove_2",
+      "chosen_ref": "e_remove_2",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5471,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_second",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-029",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Remove beside the third row",
+      "action_type": "click",
+      "expected_ref": "e_remove_3",
+      "chosen_ref": "e_remove_1",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5545,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "ambiguous_candidates_unresolved",
+        "confidence": 0.5545
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-030",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click View details beside the first row",
+      "action_type": "click",
+      "expected_ref": "e_view details_1",
+      "chosen_ref": "e_view details_1",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.6733,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_first",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-031",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click View details beside the second row",
+      "action_type": "click",
+      "expected_ref": "e_view details_2",
+      "chosen_ref": "e_view details_2",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.6652,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_second",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-032",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click View details beside the third row",
+      "action_type": "click",
+      "expected_ref": "e_view details_3",
+      "chosen_ref": "e_view details_1",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.6733,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "ambiguous_candidates_unresolved",
+        "confidence": 0.6733
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-033",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Approve beside the first row",
+      "action_type": "click",
+      "expected_ref": "e_approve_1",
+      "chosen_ref": "e_approve_1",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.58,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_first",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-034",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Approve beside the second row",
+      "action_type": "click",
+      "expected_ref": "e_approve_2",
+      "chosen_ref": "e_approve_2",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5722,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_second",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-035",
+      "category": "table_row_actions",
+      "difficulty": "hard",
+      "task": "Click Approve beside the third row",
+      "action_type": "click",
+      "expected_ref": "e_approve_3",
+      "chosen_ref": "e_approve_1",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.58,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "ambiguous_candidates_unresolved",
+        "confidence": 0.58
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-036",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Mobile Number",
+      "action_type": "fill",
+      "expected_ref": "e_phone",
+      "chosen_ref": "e_phone",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_phone",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-037",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Alternative Phone",
+      "action_type": "fill",
+      "expected_ref": "e_alt_phone",
+      "chosen_ref": "e_alt_phone",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_alt_phone",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-038",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Password",
+      "action_type": "fill",
+      "expected_ref": "e_pass",
+      "chosen_ref": "e_pass",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_pass",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-039",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Confirm Password",
+      "action_type": "fill",
+      "expected_ref": "e_conf_pass",
+      "chosen_ref": "e_conf_pass",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_conf_pass",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-040",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Personal Email",
+      "action_type": "fill",
+      "expected_ref": "e_pemail",
+      "chosen_ref": "e_pemail",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_pemail",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-041",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Work Email",
+      "action_type": "fill",
+      "expected_ref": "e_wemail",
+      "chosen_ref": "e_wemail",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_wemail",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-042",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Security PIN",
+      "action_type": "fill",
+      "expected_ref": "e_pin",
+      "chosen_ref": "e_pin",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_pin",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-043",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill One-Time Password",
+      "action_type": "fill",
+      "expected_ref": "e_otp",
+      "chosen_ref": "e_otp",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_otp",
+        "confidence": 0.895,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.895
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-044",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill First Name",
+      "action_type": "fill",
+      "expected_ref": "e_fname",
+      "chosen_ref": "e_fname",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_fname",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_ordinal_first",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-045",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Last Name",
+      "action_type": "fill",
+      "expected_ref": "e_lname",
+      "chosen_ref": "e_lname",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_lname",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-046",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Billing Address",
+      "action_type": "fill",
+      "expected_ref": "e_baddr",
+      "chosen_ref": "e_baddr",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_baddr",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-047",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Shipping Address",
+      "action_type": "fill",
+      "expected_ref": "e_saddr",
+      "chosen_ref": "e_saddr",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_saddr",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-048",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Account Number",
+      "action_type": "fill",
+      "expected_ref": "e_acc",
+      "chosen_ref": "e_acc",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_acc",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-049",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill PAN Card",
+      "action_type": "fill",
+      "expected_ref": "e_pan",
+      "chosen_ref": "e_pan",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_pan",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-050",
+      "category": "form_field_distractors",
+      "difficulty": "medium",
+      "task": "fill Aadhaar Card",
+      "action_type": "fill",
+      "expected_ref": "e_aadh",
+      "chosen_ref": "e_aadh",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_aadh",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-051",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click the search icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_search",
+      "chosen_ref": "e_icon_search",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_search",
+        "confidence": 0.7,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-052",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click notifications bell",
+      "action_type": "click",
+      "expected_ref": "e_icon_bell",
+      "chosen_ref": "e_icon_bell",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_bell",
+        "confidence": 0.8871,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8871
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-053",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Open account settings",
+      "action_type": "click",
+      "expected_ref": "e_icon_settings",
+      "chosen_ref": "e_icon_settings",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_settings",
+        "confidence": 0.9054,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.9054
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-054",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click filter icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_filter",
+      "chosen_ref": "e_icon_filter",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_filter",
+        "confidence": 0.7941,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7941
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-055",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click close cross icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_close",
+      "chosen_ref": "e_icon_close",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_close",
+        "confidence": 0.6333,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.6333
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-056",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click help icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_help",
+      "chosen_ref": "e_icon_help",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_help",
+        "confidence": 0.7308,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7308
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-057",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Open the shopping cart",
+      "action_type": "click",
+      "expected_ref": "e_icon_cart",
+      "chosen_ref": "e_icon_cart",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_cart",
+        "confidence": 0.82,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.82
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-058",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Open user profile menu",
+      "action_type": "click",
+      "expected_ref": "e_icon_user",
+      "chosen_ref": "e_icon_user",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_user",
+        "confidence": 0.7941,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7941
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-059",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click refresh icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_refresh",
+      "chosen_ref": "e_icon_refresh",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_refresh",
+        "confidence": 0.8158,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8158
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-060",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click download icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_pdf",
+      "chosen_ref": "e_icon_pdf",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_pdf",
+        "confidence": 0.804,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.804
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-061",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click print icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_print",
+      "chosen_ref": "e_icon_print",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_print",
+        "confidence": 0.72,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.72
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-062",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click share icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_share",
+      "chosen_ref": "e_icon_share",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_share",
+        "confidence": 0.7667,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7667
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-063",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click bookmark icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_bm",
+      "chosen_ref": "e_icon_bm",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_bm",
+        "confidence": 0.8385,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8385
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-064",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click mute audio toggle",
+      "action_type": "click",
+      "expected_ref": "e_icon_audio",
+      "chosen_ref": "e_icon_audio",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_audio",
+        "confidence": 0.8793,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8793
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-065",
+      "category": "icon_only_controls",
+      "difficulty": "easy",
+      "task": "Click fullscreen expand icon",
+      "action_type": "click",
+      "expected_ref": "e_icon_fs",
+      "chosen_ref": "e_icon_fs",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_icon_fs",
+        "confidence": 0.66,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.66
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-066",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Choose the checkbox for terms",
+      "action_type": "click",
+      "expected_ref": "e_chk_terms",
+      "chosen_ref": "e_chk_terms",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_chk_terms",
+        "confidence": 0.6256,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "ambiguous_candidates_unresolved",
+        "confidence": 0.6256
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-067",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Choose the checkbox for SMS notifications",
+      "action_type": "click",
+      "expected_ref": "e_chk_sms",
+      "chosen_ref": "e_chk_sms",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_chk_sms",
+        "confidence": 0.6552,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.6552
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-068",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Choose the checkbox for Email updates",
+      "action_type": "click",
+      "expected_ref": "e_chk_email",
+      "chosen_ref": "e_chk_email",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_chk_email",
+        "confidence": 0.6085,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "ambiguous_candidates_unresolved",
+        "confidence": 0.6085
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-069",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click remove tag React",
+      "action_type": "click",
+      "expected_ref": "e_tag_react",
+      "chosen_ref": "e_tag_react",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_tag_react",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-070",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click remove tag Python",
+      "action_type": "click",
+      "expected_ref": "e_tag_python",
+      "chosen_ref": "e_tag_python",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_tag_python",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-071",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click info tooltip icon",
+      "action_type": "click",
+      "expected_ref": "e_tip_1",
+      "chosen_ref": "e_tip_1",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_tip_1",
+        "confidence": 0.8793,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8793
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-072",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Select radio option Standard Shipping",
+      "action_type": "click",
+      "expected_ref": "e_rad_std",
+      "chosen_ref": "e_rad_std",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_rad_std",
+        "confidence": 0.9075,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.9075
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-073",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Select radio option Express Shipping",
+      "action_type": "click",
+      "expected_ref": "e_rad_exp",
+      "chosen_ref": "e_rad_exp",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_rad_exp",
+        "confidence": 0.9039,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.9039
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-074",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click mini badge link",
+      "action_type": "click",
+      "expected_ref": "e_badge",
+      "chosen_ref": "e_badge",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_badge",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-075",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click expand chevron",
+      "action_type": "click",
+      "expected_ref": "e_chev",
+      "chosen_ref": "e_chev",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_chev",
+        "confidence": 0.825,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.825
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-076",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click pagination page 1",
+      "action_type": "click",
+      "expected_ref": "e_page_1",
+      "chosen_ref": "e_page_1",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_page_1",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-077",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click pagination page 2",
+      "action_type": "click",
+      "expected_ref": "e_page_2",
+      "chosen_ref": "e_page_2",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_page_2",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-078",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click pagination page 3",
+      "action_type": "click",
+      "expected_ref": "e_page_3",
+      "chosen_ref": "e_page_3",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_page_3",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-079",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click clear text cross",
+      "action_type": "click",
+      "expected_ref": "e_clear",
+      "chosen_ref": "e_clear",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_clear",
+        "confidence": 0.7375,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7375
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-080",
+      "category": "small_controls",
+      "difficulty": "hard",
+      "task": "Click favorite star",
+      "action_type": "click",
+      "expected_ref": "e_star",
+      "chosen_ref": "e_star",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_star",
+        "confidence": 0.8515,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8515
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-081",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Submit Application",
+      "action_type": "click",
+      "expected_ref": "e_sub_en",
+      "chosen_ref": "e_sub_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_sub_en",
+        "confidence": 0.8727,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8727
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-082",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Proceed to Checkout",
+      "action_type": "click",
+      "expected_ref": "e_proc_en",
+      "chosen_ref": "e_proc_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_proc_en",
+        "confidence": 0.8783,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8783
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-083",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Apply Coupon",
+      "action_type": "click",
+      "expected_ref": "e_coup_en",
+      "chosen_ref": "e_coup_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_coup_en",
+        "confidence": 0.825,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.825
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-084",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Send Verification Code",
+      "action_type": "click",
+      "expected_ref": "e_send_en",
+      "chosen_ref": "e_send_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_send_en",
+        "confidence": 0.8923,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8923
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-085",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Download Statement",
+      "action_type": "click",
+      "expected_ref": "e_stmt_en",
+      "chosen_ref": "e_stmt_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_stmt_en",
+        "confidence": 0.8727,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8727
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-086",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Confirm Transfer",
+      "action_type": "click",
+      "expected_ref": "e_xfer_en",
+      "chosen_ref": "e_xfer_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_xfer_en",
+        "confidence": 0.86,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.86
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-087",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Next Step",
+      "action_type": "click",
+      "expected_ref": "e_nstp_en",
+      "chosen_ref": "e_nstp_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_nstp_en",
+        "confidence": 0.7846,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7846
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-088",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Verify Identity",
+      "action_type": "click",
+      "expected_ref": "e_vfy_en",
+      "chosen_ref": "e_vfy_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_vfy_en",
+        "confidence": 0.8526,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8526
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-089",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Delete Account",
+      "action_type": "click",
+      "expected_ref": "e_del_en",
+      "chosen_ref": "e_del_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_del_en",
+        "confidence": 0.8444,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8444
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-090",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Register New Card",
+      "action_type": "click",
+      "expected_ref": "e_card_en",
+      "chosen_ref": "e_card_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_card_en",
+        "confidence": 0.8667,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8667
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-091",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Activate Service",
+      "action_type": "click",
+      "expected_ref": "e_act_en",
+      "chosen_ref": "e_act_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_act_en",
+        "confidence": 0.86,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.86
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-092",
+      "category": "disabled_vs_enabled",
+      "difficulty": "medium",
+      "task": "Click enabled Upgrade Tier",
+      "action_type": "click",
+      "expected_ref": "e_upg_en",
+      "chosen_ref": "e_upg_en",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_upg_en",
+        "confidence": 0.825,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.825
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-093",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Click modal Confirm button",
+      "action_type": "click",
+      "expected_ref": "e_m_conf",
+      "chosen_ref": "e_m_conf",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_m_conf",
+        "confidence": 0.8515,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8515
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-094",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Click modal Dismiss cross",
+      "action_type": "click",
+      "expected_ref": "e_m_close",
+      "chosen_ref": "e_m_close",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_m_close",
+        "confidence": 0.8688,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8688
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-095",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Click Card 1 Add to Cart",
+      "action_type": "click",
+      "expected_ref": "e_c1_cart",
+      "chosen_ref": "e_c1_cart",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_c1_cart",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-096",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Click Card 2 Add to Cart",
+      "action_type": "click",
+      "expected_ref": "e_c2_cart",
+      "chosen_ref": "e_c2_cart",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_c2_cart",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-097",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Expand Accordion Header Security",
+      "action_type": "click",
+      "expected_ref": "e_acc_sec",
+      "chosen_ref": "e_bg_dismiss",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_acc_sec",
+        "confidence": 0.914,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-098",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Expand Accordion Header Privacy",
+      "action_type": "click",
+      "expected_ref": "e_acc_priv",
+      "chosen_ref": "e_bg_dismiss",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_acc_priv",
+        "confidence": 0.9109,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_spatial_top",
+        "confidence": 0.88
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-099",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Select tab Profile",
+      "action_type": "click",
+      "expected_ref": "e_t_prof",
+      "chosen_ref": "e_t_prof",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_t_prof",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-100",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Select tab Security",
+      "action_type": "click",
+      "expected_ref": "e_t_sec",
+      "chosen_ref": "e_t_sec",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_t_sec",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-101",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Select tab Billing",
+      "action_type": "click",
+      "expected_ref": "e_t_bill",
+      "chosen_ref": "e_t_bill",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_t_bill",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-102",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Click drawer close button",
+      "action_type": "click",
+      "expected_ref": "e_d_close",
+      "chosen_ref": "e_d_close",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_d_close",
+        "confidence": 0.8419,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8419
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-103",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Click Logout in dropdown menu",
+      "action_type": "click",
+      "expected_ref": "e_logout",
+      "chosen_ref": "e_logout",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_logout",
+        "confidence": 0.6792,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "ambiguous_candidates_unresolved",
+        "confidence": 0.6792
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-104",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Click Settings in dropdown menu",
+      "action_type": "click",
+      "expected_ref": "e_sett",
+      "chosen_ref": "e_sett",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_sett",
+        "confidence": 0.65,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.65
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-105",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Click Accept All on cookie banner",
+      "action_type": "click",
+      "expected_ref": "e_cookies",
+      "chosen_ref": "e_cookies",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_cookies",
+        "confidence": 0.6569,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.6569
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-106",
+      "category": "nested_components",
+      "difficulty": "hard",
+      "task": "Click Learn More on alert banner",
+      "action_type": "click",
+      "expected_ref": "e_learn",
+      "chosen_ref": "e_learn",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_learn",
+        "confidence": 0.6256,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.6256
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-107",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "Click Digital Signature button",
+      "action_type": "click",
+      "expected_ref": "e_sig",
+      "chosen_ref": "e_sig",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_sig",
+        "confidence": 0.7491,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7491
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-108",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "Click Submit Application",
+      "action_type": "click",
+      "expected_ref": "e_sub_hi",
+      "chosen_ref": "e_sub_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_sub_hi",
+        "confidence": 0.8362,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8362
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-109",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "fill Password",
+      "action_type": "fill",
+      "expected_ref": "e_pwd_hi",
+      "chosen_ref": "e_pwd_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_pwd_hi",
+        "confidence": 0.7308,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.7308
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-110",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "fill Mobile Number",
+      "action_type": "fill",
+      "expected_ref": "e_mob_hi",
+      "chosen_ref": "e_mob_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_mob_hi",
+        "confidence": 0.755,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.755
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-111",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "fill Account Number",
+      "action_type": "fill",
+      "expected_ref": "e_acc_hi",
+      "chosen_ref": "e_acc_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_acc_hi",
+        "confidence": 0.7667,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.7667
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-112",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "Click Continue",
+      "action_type": "click",
+      "expected_ref": "e_cont_hi",
+      "chosen_ref": "e_cont_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_cont_hi",
+        "confidence": 0.7,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-113",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "Click Cancel",
+      "action_type": "click",
+      "expected_ref": "e_can_hi",
+      "chosen_ref": "e_can_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": "e_can_hi",
+        "confidence": 0.65,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.65
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-114",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "fill PAN Card",
+      "action_type": "fill",
+      "expected_ref": "e_pan_hi",
+      "chosen_ref": "e_pan_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_pan_hi",
+        "confidence": 0.7,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.7
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-115",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "fill Aadhaar Number",
+      "action_type": "fill",
+      "expected_ref": "e_aadh_hi",
+      "chosen_ref": "e_aadh_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_aadh_hi",
+        "confidence": 0.79,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.79
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-116",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "fill Date of Birth",
+      "action_type": "fill",
+      "expected_ref": "e_dob_hi",
+      "chosen_ref": "e_dob_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_dob_hi",
+        "confidence": 0.7919,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.7919
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-117",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "fill Postal PIN Code",
+      "action_type": "fill",
+      "expected_ref": "e_pinc_hi",
+      "chosen_ref": "e_pinc_hi",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_pinc_hi",
+        "confidence": 0.825,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.825
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-118",
+      "category": "multilingual_labels",
+      "difficulty": "hard",
+      "task": "Click agreement checkbox",
+      "action_type": "click",
+      "expected_ref": "e_agree_hi",
+      "chosen_ref": "e_lang",
+      "top1_correct": false,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 3,
+      "decision": {
+        "selected_ref": null,
+        "confidence": 0.5049,
+        "ambiguous": true,
+        "reason": "ambiguous_margin"
+      },
+      "verification": {
+        "verified": false,
+        "reason": "ambiguous_candidates_unresolved",
+        "confidence": 0.5049
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-119",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Gujarat state",
+      "action_type": "select",
+      "expected_ref": "e_gujarat",
+      "chosen_ref": "e_gujarat",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_gujarat",
+        "confidence": 0.79,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.79
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-120",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Maharashtra state",
+      "action_type": "select",
+      "expected_ref": "e_mh",
+      "chosen_ref": "e_mh",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_mh",
+        "confidence": 0.85,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.85
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-121",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Karnataka state",
+      "action_type": "select",
+      "expected_ref": "e_ka",
+      "chosen_ref": "e_ka",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_ka",
+        "confidence": 0.825,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.825
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-122",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Tamil Nadu state",
+      "action_type": "select",
+      "expected_ref": "e_tn",
+      "chosen_ref": "e_tn",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_tn",
+        "confidence": 0.8385,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8385
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-123",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Delhi NCT state",
+      "action_type": "select",
+      "expected_ref": "e_dl",
+      "chosen_ref": "e_dl",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_dl",
+        "confidence": 0.825,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.825
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-124",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Visa option",
+      "action_type": "select",
+      "expected_ref": "e_visa",
+      "chosen_ref": "e_visa",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_visa",
+        "confidence": 0.6231,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.6231
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-125",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Mastercard option",
+      "action_type": "select",
+      "expected_ref": "e_mc",
+      "chosen_ref": "e_mc",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_mc",
+        "confidence": 0.7941,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.7941
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-126",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select RuPay option",
+      "action_type": "select",
+      "expected_ref": "e_rupay",
+      "chosen_ref": "e_rupay",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_rupay",
+        "confidence": 0.6818,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.6818
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-127",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Savings Account",
+      "action_type": "select",
+      "expected_ref": "e_sb",
+      "chosen_ref": "e_sb",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_sb",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-128",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Current Account",
+      "action_type": "select",
+      "expected_ref": "e_ca",
+      "chosen_ref": "e_ca",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_ca",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-129",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Resident Individual status",
+      "action_type": "select",
+      "expected_ref": "e_res",
+      "chosen_ref": "e_res",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_res",
+        "confidence": 0.8911,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8911
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-130",
+      "category": "combobox_selectors",
+      "difficulty": "medium",
+      "task": "Select Non-Resident Indian option",
+      "action_type": "select",
+      "expected_ref": "e_nri",
+      "chosen_ref": "e_nri",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 2,
+      "decision": {
+        "selected_ref": "e_nri",
+        "confidence": 0.8765,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "verified_dominant_score",
+        "confidence": 0.8765
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-131",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill the PAN field",
+      "action_type": "fill",
+      "expected_ref": "e_pan_pii",
+      "chosen_ref": "e_pan_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_pan_pii",
+        "confidence": 0.4892,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.4892
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-132",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill Aadhaar field",
+      "action_type": "fill",
+      "expected_ref": "e_aadh_pii",
+      "chosen_ref": "e_aadh_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_aadh_pii",
+        "confidence": 0.7667,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.7667
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-133",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill Secret PIN",
+      "action_type": "fill",
+      "expected_ref": "e_pin_pii",
+      "chosen_ref": "e_pin_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_pin_pii",
+        "confidence": 0.8727,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.8727
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-134",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill Password",
+      "action_type": "fill",
+      "expected_ref": "e_pass_pii",
+      "chosen_ref": "e_pass_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_pass_pii",
+        "confidence": 0.7667,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.7667
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-135",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill Mobile Number",
+      "action_type": "fill",
+      "expected_ref": "e_phone_pii",
+      "chosen_ref": "e_phone_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_phone_pii",
+        "confidence": 0.8515,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.8515
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-136",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill Email field",
+      "action_type": "fill",
+      "expected_ref": "e_email_pii",
+      "chosen_ref": "e_email_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_email_pii",
+        "confidence": 0.6062,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.6062
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-137",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill Date of Birth",
+      "action_type": "fill",
+      "expected_ref": "e_dob_pii",
+      "chosen_ref": "e_dob_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_dob_pii",
+        "confidence": 0.7667,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.7667
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-138",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill Card Number",
+      "action_type": "fill",
+      "expected_ref": "e_card_pii",
+      "chosen_ref": "e_card_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_card_pii",
+        "confidence": 0.831,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.831
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-139",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill CVV",
+      "action_type": "fill",
+      "expected_ref": "e_cvv_pii",
+      "chosen_ref": "e_cvv_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_cvv_pii",
+        "confidence": 0.6818,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.6818
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-140",
+      "category": "sensitive_pii_fields",
+      "difficulty": "medium",
+      "task": "fill ABHA Health ID",
+      "action_type": "fill",
+      "expected_ref": "e_abha_pii",
+      "chosen_ref": "e_abha_pii",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_abha_pii",
+        "confidence": 0.72,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.72
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-141",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Click mobile hamburger menu button",
+      "action_type": "click",
+      "expected_ref": "e_hamb",
+      "chosen_ref": "e_hamb",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_hamb",
+        "confidence": 0.9,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-142",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Click mobile bottom nav Home",
+      "action_type": "click",
+      "expected_ref": "e_m_home",
+      "chosen_ref": "e_m_home",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_m_home",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-143",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Click mobile bottom nav Search",
+      "action_type": "click",
+      "expected_ref": "e_m_srch",
+      "chosen_ref": "e_m_srch",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_m_srch",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-144",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Click mobile bottom nav Cart",
+      "action_type": "click",
+      "expected_ref": "e_m_cart",
+      "chosen_ref": "e_m_cart",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_m_cart",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-145",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Click mobile bottom nav Profile",
+      "action_type": "click",
+      "expected_ref": "e_m_prof",
+      "chosen_ref": "e_m_prof",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_m_prof",
+        "confidence": 1.0,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 1.0
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-146",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Dismiss bottom sheet overlay",
+      "action_type": "click",
+      "expected_ref": "e_sheet_x",
+      "chosen_ref": "e_sheet_x",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_sheet_x",
+        "confidence": 0.6792,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.6792
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-147",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Click floating add button",
+      "action_type": "click",
+      "expected_ref": "e_fab",
+      "chosen_ref": "e_fab",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_fab",
+        "confidence": 0.8805,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.8805
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-148",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Click mobile back navigation arrow",
+      "action_type": "click",
+      "expected_ref": "e_m_back",
+      "chosen_ref": "e_m_back",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_m_back",
+        "confidence": 0.9,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.9
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-149",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Click active filter pill",
+      "action_type": "click",
+      "expected_ref": "e_pill_act",
+      "chosen_ref": "e_pill_act",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_pill_act",
+        "confidence": 0.7278,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.7278
+      },
+      "post_condition": "state_transition_observed"
+    },
+    {
+      "case_id": "atomic-150",
+      "category": "mobile_responsive",
+      "difficulty": "hard",
+      "task": "Click clear all filters pill",
+      "action_type": "click",
+      "expected_ref": "e_pill_clr",
+      "chosen_ref": "e_pill_clr",
+      "top1_correct": true,
+      "top3_correct": true,
+      "top5_correct": true,
+      "candidate_count": 1,
+      "decision": {
+        "selected_ref": "e_pill_clr",
+        "confidence": 0.6949,
+        "ambiguous": false,
+        "reason": "accepted"
+      },
+      "verification": {
+        "verified": true,
+        "reason": "single_candidate",
+        "confidence": 0.6949
+      },
+      "post_condition": "state_transition_observed"
+    }
+  ]
+}

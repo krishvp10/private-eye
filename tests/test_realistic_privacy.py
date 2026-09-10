@@ -60,8 +60,7 @@ async def test_decoy_numbers_fixture_not_overmasked():
 
         # Real PAN must be detected
         pan_detected = any(
-            "pan" in str(d.evidence_id).lower() or d.category.value == "pan"
-            for d in detections
+            "pan" in str(d.evidence_id).lower() or d.category.value == "pan" for d in detections
         )
         assert pan_detected is True
 

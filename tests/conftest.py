@@ -4,6 +4,7 @@ Shared pytest configuration for PrivateEye test suite.
 Provides a thread-safe, race-free port allocation utility by keeping the
 socket open until the server is ready to bind (SO_REUSEADDR approach).
 """
+
 import socket
 
 

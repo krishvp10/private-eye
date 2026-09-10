@@ -1,0 +1,24 @@
+{
+  "status": "FAIL",
+  "evidence_source": "live_ollama_qwen_request",
+  "model": "qwen2.5vl:3b",
+  "endpoint": "http://127.0.0.1:11434/v1",
+  "workflow_url": "http://127.0.0.1:9001/login",
+  "max_steps": 12,
+  "workflow_success": false,
+  "final_url": "http://127.0.0.1:9001/login",
+  "steps": 12,
+  "target_ref_observed": "e10",
+  "action_type_observed": "click",
+  "execution_success_all_observed": true,
+  "post_condition_success_all_observed": true,
+  "workflow_latency_ms": 100116.37,
+  "failure": "The model repeatedly selected the same click target and never advanced from /login.",
+  "interpretation": "Candidate metadata reached the live model and remained locally executable, but this smoke run did not demonstrate correct task grounding.",
+  "privacy_note": "The run used the existing outbound leak interceptor; no raw vault value is included in this artifact.",
+  "limitations": [
+    "Single smoke run, not a benchmark.",
+    "The current telemetry does not yet record the expected target identity for this live workflow.",
+    "No conclusion about Qwen model quality should be drawn from this single run."
+  ]
+}

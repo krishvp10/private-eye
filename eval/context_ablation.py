@@ -32,8 +32,10 @@ def write_report(output: Path, report: dict[str, Any]) -> None:
         "",
         f"**Status:** {report['status']}",
         "",
-        "This report distinguishes real-model results from skipped runs. "
-        "No raw screenshots, prompts, or secrets are stored.",
+        (
+            "This report distinguishes real-model results from skipped runs. "
+            "No raw screenshots, prompts, or secrets are stored."
+        ),
         "",
         "| Variant | Status | Grounding accuracy | Workflow success | Latency |",
         "|---|---|---:|---:|---:|",
