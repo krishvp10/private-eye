@@ -4,7 +4,7 @@
 
 - **Audited Synthetic Secrets:** `21` credentials from local vault
 - **Audited Remote Boundaries:** `11` representation layers
-- **Scanned Report Files:** `57` files in `eval/reports/`
+- **Scanned Report Files:** `79` files in `eval/reports/`
 - **Detected Raw Secret Leaks:** `0`
 - **Overall Privacy Status:** **`PASS`**
 

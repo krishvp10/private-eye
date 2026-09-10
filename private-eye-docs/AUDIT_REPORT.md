@@ -2,9 +2,14 @@
 
 ## Executive Result
 
-PrivateEye has completed Phase 7 (Generalization, Reliability & Security Validation). The architecture is frozen, mathematically and empirically auditable, and verified across four separate evaluation splits.
+PrivateEye has completed **Phase 8 (Trust, Real-Web Robustness & Demo Hardening)**. The architecture is frozen, mathematically and empirically auditable, and verified across all five evaluation tiers:
+1. **Tier 1 — Local Deterministic:** 150 frozen cases (88.7% accuracy)
+2. **Tier 2 — Controlled Multimodal:** 200 held-out cases (98.0% target accuracy, 0.0% wrong execution)
+3. **Tier 3 — Adversarial Red-Team:** 75 adversarial cases (100.0% safe abstention, 100.0% injection defense)
+4. **Tier 4 — Adapted External Diagnostics:** 50 diagnostic cases (labeled `PRIVATEEYE ADAPTED DIAGNOSTIC`)
+5. **Tier 5 — Real-World Multi-Domain Web:** 125 realistic web tasks across 25 sites (98.4% target accuracy, 98.4% post-condition, 98.4% task advancement)
 
-All headline metrics have complete denominators, separating deterministic local candidate generation and ranking from remote model selection. 3B is designated as the preferred deployment model for edge workloads based on Pareto analysis (latency, memory, workflow reliability).
+All headline metrics have complete denominators, separating deterministic local candidate generation from remote model selection. Qwen2.5-VL-3B @ 768px with selective verification is officially frozen as the primary edge deployment configuration.
 
 ---
 
@@ -12,27 +17,27 @@ All headline metrics have complete denominators, separating deterministic local 
 
 | Area | Evidence / Report | Status | Key Metric |
 |---|---|---|---|
-| **Phase 7 Metric Provenance Audit** | `eval/reports/phase7_metric_audit.md` | **PASS** | Complete denominators for all headline metrics |
-| **Development Benchmark (Frozen)** | `eval/data/development_set.json` | **FROZEN** | SHA256: `228dcfec...`, 150 cases, 88.7% accuracy |
-| **Held-Out Generalization Set** | `eval/reports/heldout_grounding_benchmark.md` | **PASS** | 200 cases, **98.0% accuracy**, **0.0% wrong-target rate** |
-| **Red-Team Adversarial Set** | `eval/reports/redteam_grounding_benchmark.md` | **PASS** | 75 cases, **100.0% safe abstention**, 1.33% wrong-action |
-| **Prompt Injection Defense** | `eval/redteam_benchmark.py` | **PASS** | **100.0% blocked** (7/7 injection attempts) |
-| **Structured Output Robustness** | `tests/test_structured_output_robustness.py` | **PASS** | Strict schema validation, fail-closed rejection |
-| **Confidence Calibration** | `eval/reports/confidence_calibration.md` | **PASS** | Empirical thresholds ($\tau_{high}=0.88, \tau_{med}=0.65$) |
-| **Selective Verification (Mode C)** | `eval/reports/confidence_calibration.md` | **PASS** | **98.5% accuracy**, **0.04 verifier calls/action** |
-| **Adaptive Image Resolution** | `eval/reports/phase7_adaptive_resolution.md` | **PASS** | 768px default, 1024px on small/ambiguous (<30px) |
-| **Failure Recovery Benchmark** | `eval/reports/phase7_recovery_benchmark.md` | **PASS** | R0: 0% vs R1: **100.0%** vs R2: **100.0%** |
-| **Privacy Invariant Audit** | `eval/reports/phase7_privacy_invariant.md` | **PASS** | 11 boundaries, 57 reports, **0 raw secret leaks** |
-| **Controlled 3B vs 7B Comparison** | `eval/reports/phase7_model_comparison.md` | **PASS** | 3B designated preferred deployment model |
-| **External Diagnostic Check** | `eval/reports/phase7_external_diagnostic.md` | **PASS** | 50 ScreenSpot & Mind2Web diagnostic cases (100.0%) |
-| **Automated Test Suite** | Local pytest suite | **PASS** | 93 tests passing cleanly |
+| **Phase 8 Metric Provenance Audit** | `eval/reports/phase8_metric_audit.md` | **PASS** | Complete denominators; diagnostic relabeling enforced |
+| **Real-World Web Benchmark (Tier 5)**| `eval/reports/phase8_realweb_benchmark.md`| **PASS** | 25 sites, 125 tasks: **98.4% target accuracy**, **98.4% task progress** |
+| **5-Level Hierarchical Tracking** | `eval/reports/phase8_realweb_benchmark.md`| **PASS** | L1: 100%, L2: 98.4%, L3: 98.4%, L4: 98.4%, L5: 98.4% |
+| **Long-Horizon Reliability** | `eval/reports/phase8_long_horizon.md` | **PASS** | 270 steps, **0.0% repeated target loops**, 90.0% task success |
+| **State & Memory Ablation** | `eval/reports/phase8_state_memory_ablation.md`| **PASS** | S0 (20% success, 86.7% loops) vs S3 (**90% success, 0% loops**) |
+| **Local Safety Policy Engine** | `client/policy_engine.py` | **PASS** | LOW, MEDIUM, HIGH action tiers; human confirmation gate |
+| **Explainable Human Abstention** | `eval/reports/phase8_abstention_quality.md`| **PASS** | **100.0% safe abstention**, **0.73% false execution** |
+| **Security Threat Model (15 Threats)**| `private-eye-docs/THREAT_MODEL.md` | **PASS** | T01–T15 evaluated with defense mechanisms & residual risks |
+| **Expanded Prompt Injection (15 Vectors)**| `eval/reports/phase8_prompt_injection.md`| **PASS** | **100.0% defense rate (15/15 blocked)** |
+| **Full Pipeline Latency Profile** | `eval/reports/phase8_performance_profile.md`| **PASS** | Local overhead **<55 ms p50 (<1%)**; VLM dominates 99.3% |
+| **Flagship Live Privacy Demo** | `eval/reports/phase8_live_privacy_demo.md` | **PASS** | E2E KYC/Checkout: abstention, recovery & **0 secret leaks** |
+| **Privacy Invariant Audit** | `eval/reports/phase8_live_privacy_demo.md` | **PASS** | 11 boundaries audited, 21 synthetic secrets, **0 leaks** |
+| **Primary Edge Model Freeze** | `client/adaptive_resolution.py` | **FROZEN** | Qwen2.5-VL-3B @ 768px, selective verifier, temp=0 |
+| **Automated Test Suite** | Local pytest suite | **PASS** | 100 tests passing cleanly (93 core + 7 policy engine) |
 
 ---
 
 ## Controlled Model Deployment Stance
 
 > **Official Deployment Recommendation:**  
-> **Qwen2.5-VL-3B is the preferred deployment model for PrivateEye.**
+> **Qwen2.5-VL-3B @ 768px is the frozen edge deployment configuration for PrivateEye.**
 >
 > **Rationale:**
 > - **Edge GPU Fit:** 3.8 GB VRAM comfortably fits consumer 8 GB GPUs (RTX 3070/4060, Apple M1/M2/M3), whereas 7B requires 8.4 GB and exceeds the 8 GB edge budget.
@@ -44,7 +49,7 @@ All headline metrics have complete denominators, separating deterministic local 
 
 ## Universal Privacy Invariants
 
-The privacy posture has evolved from single-request checks to universal invariants:
+The privacy posture is verified across 11 universal boundaries:
 1. **Raw Screenshot:** Local client only; never crosses network.
 2. **Redacted Screenshot:** PII regions covered by visual redaction masks before export.
 3. **Safe ScreenGraph:** Text nodes scrubbed of raw secrets; names masked.
@@ -53,3 +58,6 @@ The privacy posture has evolved from single-request checks to universal invarian
 6. **Planner & Verifier Prompts:** Contain generic user task and candidate lists; zero vault values.
 7. **Model Response:** Selects candidate reference; local executor resolves `value_ref` locally.
 8. **Independent Interception:** Outbound HTTP interceptor scans all network payloads against 21 vault secrets.
+9. **Telemetry Records:** Strip sensitive identifiers and values.
+10. **Generated Artifacts:** Automated scanning confirms reports are secret-free.
+11. **Local Vault Boundary:** Master secrets stored on local storage; never indexed by remote model.

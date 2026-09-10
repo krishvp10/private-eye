@@ -1,12 +1,26 @@
 # PrivateEye Demo & Benchmark Runbook
 
-## One-command launch
+## Flagship Live Privacy & Safety Demo (Phase 8 Final)
+
+To run the flagship end-to-end verification demonstrating client-side PII masking, `value_ref` resolution, explainable human-in-the-loop abstention, failure recovery, and an 11-boundary privacy invariant audit:
+
+```powershell
+python eval/live_privacy_demo.py
+```
+
+Outputs:
+- `eval/reports/phase8_live_privacy_demo.json`
+- `eval/reports/phase8_live_privacy_demo.md`
+
+---
+
+## Interactive Local Portal & Supervisor Launch
 
 ```powershell
 python demo.py
 ```
 
-Select a configured fixture with:
+Select a configured domain with:
 
 ```powershell
 python demo.py --domain kyc
@@ -15,14 +29,13 @@ python demo.py --domain patient
 python demo.py --domain sample_fixture
 ```
 
-Use `--no-browser` for CI or a headless smoke check.
+Use `--no-browser` for headless CI smoke checks.
 
 ---
 
-## Configuration
+## Configuration & Environment Overrides
 
-The supervisor reads safe local defaults from `shared/config.py`. Override
-without source edits:
+Safe defaults are read from `shared/config.py`. Override via environment variables without source edits:
 
 ```powershell
 $env:PRIVATEEYE_HOST="127.0.0.1"
@@ -31,101 +44,86 @@ $env:PRIVATEEYE_SERVER_PORT="8000"
 $env:PRIVATEEYE_DASHBOARD_PORT="8080"
 ```
 
-The VLM boundary remains explicit:
+To configure the multimodal reasoning backend:
 
 ```powershell
 $env:PRIVATEEYE_VLM_MODE="mock"
-# or PRIVATEEYE_VLM_MODE=real when a reachable endpoint exists
+# or PRIVATEEYE_VLM_MODE="real" when an Ollama / vLLM endpoint is running
 ```
 
 ---
 
-## Phase 7 Evaluation & Security Benchmarks
+## Phase 8 Evaluation & Benchmark Suite
 
-To reproduce all Phase 7 generalization, reliability, calibration, and privacy evaluations:
+To reproduce all Phase 8 evaluations across real-world web benchmarks, long-horizon workflows, safety policies, threat modeling, and performance profiling:
 
-### 1. Metric Provenance Audit & Development Set Freeze
+### 1. Metric Provenance Audit & Adapted Diagnostic Relabeling (Phase 8.1 & 8.16)
 ```powershell
-python eval/freeze_and_audit.py
+python eval/freeze_and_audit_phase8.py
 ```
-- Freezes `eval/data/development_set.json` (SHA256: `228dcfecd20a56f531f3eb45f915cf54e430b5741b08d5e11ac940757dbf8cd0`).
-- Generates `eval/reports/phase7_metric_audit.json` and `.md`.
+- Audits all headline claims against complete denominators.
+- Formally downgrades external diagnostic evaluations to `PRIVATEEYE ADAPTED DIAGNOSTIC`.
+- Output: `eval/reports/phase8_metric_audit.json` and `.md`.
 
-### 2. Held-Out Generalization Benchmark (200 cases)
+### 2. Real-World Multi-Domain Web Benchmark (Tier 5, 125 tasks)
 ```powershell
-python eval/heldout_benchmark.py
+python eval/realweb_benchmark.py
 ```
-- Evaluates 200 unseen cases across 7 fresh domains and responsive layouts.
-- Output: `eval/reports/heldout_grounding_benchmark.json` and `.md`.
+- Evaluates 125 realistic web tasks across 25 distinct commercial web interfaces.
+- Tracks 5 hierarchical success levels (L1 action, L2 target, L3 execution, L4 post-condition, L5 task progress).
+- Output: `eval/reports/phase8_realweb_benchmark.json` and `.md`.
 
-### 3. Red-Team Adversarial Grounding Benchmark (75 cases)
+### 3. Long-Horizon Reliability Benchmark (270 steps)
 ```powershell
-python eval/redteam_benchmark.py
+python eval/long_horizon_benchmark.py
 ```
-- Evaluates 75 adversarial scenarios: identical unadorned labels, hidden decoys, prompt injection.
-- Evaluates selective autonomy and safe abstention (`AMBIGUOUS`, `NO_VALID_CANDIDATE`).
-- Output: `eval/reports/redteam_grounding_benchmark.json` and `.md`.
+- Evaluates Short (3–5 steps), Medium (6–10 steps), and Long (11–20+ steps) workflows.
+- Measures step accuracy, task completion, and loop rates.
+- Output: `eval/reports/phase8_long_horizon.json` and `.md`.
 
-### 4. Confidence Calibration & Selective Verification
+### 4. State & Memory Ablation Benchmark
 ```powershell
-python eval/confidence_calibration.py
+python eval/state_memory_ablation.py
 ```
-- Measures accuracy across 6 confidence buckets (`0.50-0.59` through `0.95-1.00`).
-- Compares Mode A (Direct), Mode B (Always Verifier), and Mode C (Selective Verifier).
-- Output: `eval/reports/confidence_calibration.json` and `.md`.
+- Compares S0 (Memoryless) vs S1 (No Action History) vs S2 (No Progress State) vs S3 (Full Progress-Aware).
+- Output: `eval/reports/phase8_state_memory_ablation.json` and `.md`.
 
-### 5. Adaptive Resolution Benchmark
+### 5. Explainable Human Abstention Quality Benchmark
 ```powershell
-python eval/resolution_adaptive_benchmark.py
+python eval/abstention_quality_benchmark.py
 ```
-- Compares Fixed 448px vs 768px vs 1024px vs Adaptive Resolution.
-- Output: `eval/reports/phase7_adaptive_resolution.json` and `.md`.
+- Evaluates 137 test cases (100 clear, 25 ambiguous, 12 disabled).
+- Generates "Why did I refuse?" UX explanations with 0 secret leaks.
+- Output: `eval/reports/phase8_abstention_quality.json` and `.md`.
 
-### 6. Failure Recovery Benchmark & Error Taxonomy
+### 6. Expanded Prompt Injection Security Benchmark (15 Vectors)
 ```powershell
-python eval/recovery_benchmark.py
+python eval/prompt_injection_expanded.py
 ```
-- Compares R0 (Blind Retry: 0%) vs R1 (Fresh Reasoning: 100%) vs R2 (+ Verifier: 100%).
-- Categorizes failures according to the 19-class error taxonomy.
-- Output: `eval/reports/phase7_recovery_benchmark.json` and `.md`.
+- Tests 15 diverse webpage prompt injection vectors (hidden text, system prompt spoofing, malicious labels).
+- Output: `eval/reports/phase8_prompt_injection.json` and `.md`.
 
-### 7. Universal Privacy Invariant Audit
+### 7. Full Pipeline Latency Profiler (Phase 8.14)
 ```powershell
-python eval/privacy_invariant_audit.py
+python eval/performance_profile.py
 ```
-- Deep audit of all 11 remote-bound boundaries and 57 report files against 21 vault secrets.
-- Output: `eval/reports/phase7_privacy_invariant.json` and `.md`.
-
-### 8. Controlled Model Comparison (3B vs 7B)
-```powershell
-python eval/model_comparison_benchmark.py
-```
-- Evaluates Qwen2.5-VL-3B vs 7B across 275 evaluation cases under identical conditions.
-- Documents the Pareto trade-off and deployment decision.
-- Output: `eval/reports/phase7_model_comparison.json` and `.md`.
-
-### 9. External Diagnostic Check
-```powershell
-python eval/external_diagnostic.py
-```
-- Evaluates 50 ScreenSpot-Pro and Mind2Web diagnostic cases.
-- Output: `eval/reports/phase7_external_diagnostic.json` and `.md`.
+- Measures sub-millisecond latencies across 10 distinct pipeline stages (capture, detection, redaction, ranking, planner, verifier, policy, execution, post-condition).
+- Calculates p50 and p95 and identifies the dominant latency source.
+- Output: `eval/reports/phase8_performance_profile.json` and `.md`.
 
 ---
 
-## What to Inspect in the Interactive Demo
+## What to Inspect in the Flagship Demo
 
-1. Open the dashboard shown by the supervisor (`http://127.0.0.1:8080`).
-2. Click **Run Agent**.
-3. Use the timeline chips or Previous/Next controls to replay a step.
-4. Compare local raw imagery with the sanitized wire image.
-5. Inspect detections, redactions, action target, validation, execution, and latency metadata.
-6. Open the generated privacy report under `eval/reports/`.
-
-Raw screenshots are retained only in local dashboard memory. They are never transmitted to the reasoning server. Reports contain zero raw secrets.
+1. **Local PII Redaction:** Form inputs containing PAN, passwords, and credit cards are visually masked before screenshot serialization.
+2. **Sanitized Remote Wire Context:** Outbound network payloads audited by `OutboundLeakInterceptor` show zero raw secrets.
+3. **Local Vault Value Resolution:** Playwright injects secrets from the client-side vault via `value_ref` directly into DOM fields.
+4. **Explainable Refusal UX:** Faced with twin identical buttons, the agent safely abstains and prompts the user for clarification.
+5. **Fresh-Reasoning Recovery:** Transient stale reference errors trigger recovery with fresh DOM snapshots.
+6. **11-Boundary Invariant Audit:** Confirms zero leaked secrets across all application boundaries and reports.
 
 ---
 
 ## Shutdown
 
-Press Ctrl+C in the supervisor terminal. It terminates the supervised process tree cleanly.
+Press `Ctrl+C` in the running terminal. The supervisor terminates all background subprocesses cleanly.

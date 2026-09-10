@@ -216,6 +216,14 @@ class ActionExecutor:
                 actual_name = await locator.get_attribute("aria-label") or ""
                 if not actual_name:
                     actual_name = await locator.inner_text()
+                if not actual_name:
+                    elem_id = record.get("element_id") or ""
+                    if elem_id:
+                        lbl = page.locator(f"label[for='{elem_id}']")
+                        if await lbl.count() > 0:
+                            actual_name = (await lbl.first.inner_text()).split("\n")[0].strip()
+                if not actual_name:
+                    actual_name = await locator.get_attribute("name") or ""
                 if actual_name.strip() != expected_name.strip():
                     raise ExecutorSecurityException(f"reference_name_mismatch:{ref}")
             return locator

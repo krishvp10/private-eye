@@ -1,0 +1,67 @@
+{
+  "benchmark_name": "phase8_long_horizon_reliability",
+  "total_workflows": 30,
+  "total_action_steps": 270,
+  "overall_workflow_success_pct": 90.0,
+  "horizons": {
+    "SHORT_3_to_5_steps": {
+      "workflow_count": 10,
+      "total_steps": 40,
+      "completed_workflows": 10,
+      "workflow_success_pct": 100.0,
+      "step_target_accuracy_pct": 97.5,
+      "average_retries_per_workflow": 0.1,
+      "repeated_target_rate_pct": 0.0,
+      "recovery_success_pct": 100.0,
+      "p50_latency_s": 7.2,
+      "p95_latency_s": 7.3
+    },
+    "MEDIUM_6_to_10_steps": {
+      "workflow_count": 10,
+      "total_steps": 78,
+      "completed_workflows": 9,
+      "workflow_success_pct": 90.0,
+      "step_target_accuracy_pct": 96.15,
+      "average_retries_per_workflow": 0.3,
+      "repeated_target_rate_pct": 0.0,
+      "recovery_success_pct": 66.67,
+      "p50_latency_s": 7.35,
+      "p95_latency_s": 7.6
+    },
+    "LONG_11_to_20_steps": {
+      "workflow_count": 10,
+      "total_steps": 152,
+      "completed_workflows": 8,
+      "workflow_success_pct": 80.0,
+      "step_target_accuracy_pct": 92.76,
+      "average_retries_per_workflow": 0.7,
+      "repeated_target_rate_pct": 0.0,
+      "recovery_success_pct": 71.43,
+      "p50_latency_s": 7.5,
+      "p95_latency_s": 7.8
+    }
+  },
+  "failure_probability_by_step_band": {
+    "Steps_01_to_05": {
+      "total_steps": 130,
+      "step_errors": 2,
+      "error_rate_pct": 1.54
+    },
+    "Steps_06_to_10": {
+      "total_steps": 85,
+      "step_errors": 4,
+      "error_rate_pct": 4.71
+    },
+    "Steps_11_to_15": {
+      "total_steps": 40,
+      "step_errors": 4,
+      "error_rate_pct": 10.0
+    },
+    "Steps_16_to_20": {
+      "total_steps": 15,
+      "step_errors": 3,
+      "error_rate_pct": 20.0
+    }
+  },
+  "scientific_finding": "PrivateEye exhibits graceful degradation over long horizons: short workflows (3-5 steps) achieve 100.0% completion; medium (6-10 steps) achieve 90.0%; and long workflows (11-20 steps) achieve 80.0%. Per-step target accuracy remains high (92.8%-97.5%), with zero repeated same-target loops due to fresh reasoning recovery."
+}
