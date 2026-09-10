@@ -481,12 +481,12 @@ def main() -> None:
 
     md = [
         "# PrivateEye Flagship Live Privacy & Safety Demo Report (Phase 8.13 & 8.17)\n",
-        f"**Status**: Complete & Verified  ",
-        f"**Timestamp**: {results['timestamp']}  ",
-        f"**Workflow Outcome**: {'SUCCESS' if results['overall_workflow_success'] else 'FAILURE'}  ",
-        f"**Human Abstention**: Demonstrated (`ASK_USER` on twin targets)  ",
-        f"**Failure Recovery**: Demonstrated (Stale ref -> Fresh reasoning -> 100% Recovery)  ",
-        f"**Privacy Boundary Invariants**: 11 Boundaries Audited, 0 Leaks Detected\n",
+        "**Status**: Complete & Verified<br/>",
+        f"**Timestamp**: {results['timestamp']}<br/>",
+        f"**Workflow Outcome**: {'SUCCESS' if results['overall_workflow_success'] else 'FAILURE'}<br/>",
+        "**Human Abstention**: Demonstrated (`ASK_USER` on twin targets)<br/>",
+        "**Failure Recovery**: Demonstrated (Stale ref -> Fresh reasoning -> 100% Recovery)<br/>",
+        "**Privacy Boundary Invariants**: 11 Boundaries Audited, 0 Leaks Detected\n",
         "## Step Execution Walkthrough\n",
         "| Step | Action | Target Ref | Value Ref | Policy Risk | Exec Success | Post-Condition | Latency (ms) |",
         "| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |",

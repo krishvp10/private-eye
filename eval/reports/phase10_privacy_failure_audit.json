@@ -1,8 +1,8 @@
 {
   "manifest": {
-    "manifest_id": "manifest_1789067648_phase10_privacy_",
-    "timestamp_utc": "2026-09-10T19:14:08.347909+00:00",
-    "commit_sha": "2fa84072f1468348268f7539567bbd969dab08f1",
+    "manifest_id": "manifest_1789068580_phase10_privacy_",
+    "timestamp_utc": "2026-09-10T19:29:40.529406+00:00",
+    "commit_sha": "b79bd07ca72430ac15e41b56f31616fd15014b24",
     "model": "qwen2.5-vl:3b",
     "ollama_version": "ollama-local/qwen2.5-vl:3b",
     "resolution": 768,
@@ -29,7 +29,7 @@
     "passed_tests": 8,
     "synthetic_vault_secrets_scanned": 21,
     "representation_boundaries_audited": 11,
-    "disk_report_files_scanned": 99,
+    "disk_report_files_scanned": 106,
     "total_detected_raw_secret_leaks": 0,
     "release_candidate_privacy_verdict": "CERTIFIED_SAFE"
   },

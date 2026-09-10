@@ -1,8 +1,8 @@
 {
   "manifest": {
-    "manifest_id": "manifest_1789067579_phase10_compound",
-    "timestamp_utc": "2026-09-10T19:12:59.165880+00:00",
-    "commit_sha": "2fa84072f1468348268f7539567bbd969dab08f1",
+    "manifest_id": "manifest_1789068588_phase10_compound",
+    "timestamp_utc": "2026-09-10T19:29:48.710428+00:00",
+    "commit_sha": "b79bd07ca72430ac15e41b56f31616fd15014b24",
     "model": "qwen2.5-vl:3b",
     "ollama_version": "ollama-local/qwen2.5-vl:3b",
     "resolution": 768,
@@ -298,8 +298,8 @@
       "details": {
         "is_engaged": true,
         "stop_event": {
-          "event_id": "kill_1789067579314",
-          "triggered_at_utc": "2026-09-10T19:12:59.314865+00:00",
+          "event_id": "kill_1789068588868",
+          "triggered_at_utc": "2026-09-10T19:29:48.869014+00:00",
           "reason": "User clicked physical STOP button on dashboard during execution",
           "triggered_by": "operator_console",
           "interrupted_step": 3,

@@ -1,9 +1,9 @@
 {
   "suite_name": "PrivateEye Phase 9 Runtime Fault-Injection Benchmark",
   "manifest": {
-    "manifest_id": "manifest_1789066576_phase9_fault_inj",
-    "timestamp_utc": "2026-09-10T18:56:16.073161+00:00",
-    "commit_sha": "92cc92a00512e227b1ad1d67566dacec01feb875",
+    "manifest_id": "manifest_1789068585_phase9_fault_inj",
+    "timestamp_utc": "2026-09-10T19:29:45.434621+00:00",
+    "commit_sha": "b79bd07ca72430ac15e41b56f31616fd15014b24",
     "model": "qwen2.5-vl:3b",
     "ollama_version": "ollama-local/qwen2.5-vl:3b",
     "resolution": 768,

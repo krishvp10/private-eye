@@ -3,7 +3,7 @@
 **Audit Scope:** 8 Injected Component Failure Modes
 **Vault Corpus:** 21 Synthetic Credentials & PII Fields
 **Representation Layers:** 11 Remote & Local Boundaries (B01–B11)
-**Disk Report Files Scanned:** 99
+**Disk Report Files Scanned:** 106
 **Detected Raw Secret Leaks:** **0**
 **Privacy-Under-Failure Verdict:** **PASS (CERTIFIED SAFE)**
 

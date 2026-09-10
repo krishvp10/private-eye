@@ -20,9 +20,9 @@
 
 ## 1. Headline Result & Core Innovation
 
-> ### **"89.0% live task success across 100 repeated workflow runs (911 steps), backed by 96.7% live Qwen E2E success on 30 steps and 98.4% hybrid evaluation across 125 tasks."**
-> *Privacy Audit: 0 detected secret leaks across 11 tested boundaries and 21 synthetic secrets under 8 active failure conditions.*
-> *Runtime Control: Emergency kill switch halts execution in 0.043 ms with zero subsequent actions dispatched.*
+> ### **"89.0% live task success across 100 repeated workflow runs (89/100) with 98.79% step accuracy (900/911), backed by 96.7% live Qwen E2E success on 30 steps and 98.4% hybrid evaluation across 125 tasks."**
+> *Privacy Audit: 0 detected secret leaks across 11 tested boundaries and 21 synthetic credentials under 8 active failure conditions.*
+> *Runtime Control: Measured local dispatch-path kill-switch latency was 0.043 ms in the controlled test with zero subsequent actions dispatched.*
 
 Modern vision-based browser agents require transmitting raw screenshots, DOM hierarchies, and user credentials directly to cloud-hosted Vision-Language Models (VLMs). In sensitive workflows—such as **KYC onboarding, banking, healthcare, and government portals**—this exposes personally identifiable information (PII), government ID numbers, authentication secrets, and biometric facial data to model providers and intermediate network logs.
 

@@ -1,21 +1,21 @@
 # PrivateEye Flagship Live Privacy & Safety Demo Report (Phase 8.13 & 8.17)
 
-**Status**: Complete & Verified  
-**Timestamp**: 2026-09-10T18:58:19Z  
-**Workflow Outcome**: SUCCESS  
-**Human Abstention**: Demonstrated (`ASK_USER` on twin targets)  
-**Failure Recovery**: Demonstrated (Stale ref -> Fresh reasoning -> 100% Recovery)  
+**Status**: Complete & Verified<br/>
+**Timestamp**: 2026-09-10T19:31:48Z<br/>
+**Workflow Outcome**: SUCCESS<br/>
+**Human Abstention**: Demonstrated (`ASK_USER` on twin targets)<br/>
+**Failure Recovery**: Demonstrated (Stale ref -> Fresh reasoning -> 100% Recovery)<br/>
 **Privacy Boundary Invariants**: 11 Boundaries Audited, 0 Leaks Detected
 
 ## Step Execution Walkthrough
 
 | Step | Action | Target Ref | Value Ref | Policy Risk | Exec Success | Post-Condition | Latency (ms) |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1 | `FILL` | `e8` | `user_profile.pan` | high | **PASS** | **PASS** | 490.94 |
-| 2 | `FILL` | `e11` | `user_profile.password` | high | **PASS** | **PASS** | 59.61 |
-| 3 | `ASK_USER` | `ambiguous` | `N/A` | HIGH | **PASS** | **PASS** | 42.61 |
+| 1 | `FILL` | `e8` | `user_profile.pan` | high | **PASS** | **PASS** | 1259.48 |
+| 2 | `FILL` | `e11` | `user_profile.password` | high | **PASS** | **PASS** | 79.01 |
+| 3 | `ASK_USER` | `ambiguous` | `N/A` | HIGH | **PASS** | **PASS** | 52.14 |
 | 3b | `CLICK` | `e18` | `N/A` | N/A | **PASS** | **PASS** | N/A |
-| 4 | `CLICK` | `e21` | `N/A` | N/A | **PASS** | **PASS** | 173.21 |
+| 4 | `CLICK` | `e21` | `N/A` | N/A | **PASS** | **PASS** | 227.29 |
 
 ## Explainable Human-in-the-Loop Abstention Detail
 - **Context**: Two identically styled `Confirm Submission` buttons were rendered side-by-side.

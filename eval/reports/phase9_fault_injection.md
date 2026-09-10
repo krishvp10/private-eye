@@ -5,7 +5,7 @@
 **Passed Scenarios:** 20/20 (100.0%)
 **Fail-Closed Safe Invariant Enforcement:** 100.0%
 **Silent Mock Fallbacks:** 0 (Strictly Banned)
-**Run Manifest ID:** `manifest_1789066576_phase9_fault_inj`
+**Run Manifest ID:** `manifest_1789068585_phase9_fault_inj`
 
 ## Core Security Invariant Verified
 > **"When the system cannot prove that an action is safe and grounded, it does not execute it."**

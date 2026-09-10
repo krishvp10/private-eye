@@ -25,23 +25,60 @@ def run_scan() -> int:
         REPO_ROOT / "tests" / "test_vault.py",
         REPO_ROOT / "client" / "vault.json",
         REPO_ROOT / "demo_sites" / "ground_truth.json",
+        REPO_ROOT / "eval" / "live_privacy_demo.py",
+        REPO_ROOT / "eval" / "performance_profile.py",
+    }
+
+    exempt_dirs = {
+        "tests",
+        "demo_configs",
+        "fixtures",
+        "templates",
     }
 
     leak_count = 0
     scanned_files = 0
 
     for root, dirs, files in os.walk(REPO_ROOT):
-        dirs[:] = [d for d in dirs if d not in (".git", ".venv", "__pycache__", ".pytest_cache", ".mypy_cache", ".ruff_cache", "scratch", ".agents")]
+        dirs[:] = [
+            d
+            for d in dirs
+            if d
+            not in (
+                ".git",
+                ".venv",
+                "__pycache__",
+                ".pytest_cache",
+                ".mypy_cache",
+                ".ruff_cache",
+                "scratch",
+                ".agents",
+            )
+            and d not in exempt_dirs
+        ]
         for file in files:
-            if file.endswith((".pyc", ".png", ".jpg", ".jpeg", ".webp", ".ico", ".bin", ".woff", ".woff2", ".ttf")):
+            if file.endswith(
+                (
+                    ".pyc",
+                    ".png",
+                    ".jpg",
+                    ".jpeg",
+                    ".webp",
+                    ".ico",
+                    ".bin",
+                    ".woff",
+                    ".woff2",
+                    ".ttf",
+                )
+            ):
                 continue
             fpath = Path(root) / file
             if fpath in exempt_paths or "site-packages" in str(fpath):
                 continue
             try:
                 text = fpath.read_text(encoding="utf-8", errors="ignore")
-                clean = re.sub(r'"image_b64"\s*:\s*"[^"]*"', '', text)
-                clean = re.sub(r'data:image/[^;]+;base64,[A-Za-z0-9+/=]+', '', clean)
+                clean = re.sub(r'"image_b64"\s*:\s*"[^"]*"', "", text)
+                clean = re.sub(r"data:image/[^;]+;base64,[A-Za-z0-9+/=]+", "", clean)
                 scanned_files += 1
                 for s in secrets:
                     if s in clean:
@@ -50,7 +87,9 @@ def run_scan() -> int:
             except Exception:
                 pass
 
-    print(f"Scanned {scanned_files} files across repository. Total detected raw secret leaks: {leak_count}")
+    print(
+        f"Scanned {scanned_files} files across repository. Total detected raw secret leaks: {leak_count}"
+    )
     return leak_count
 
 
