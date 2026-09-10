@@ -63,5 +63,8 @@ def test_kill_process_tree_cleanly():
     assert proc.poll() is None
 
     kill_process_tree(proc)
-    # Process should be terminated
+    try:
+        proc.wait(timeout=3.0)
+    except subprocess.TimeoutExpired:
+        pass
     assert proc.poll() is not None

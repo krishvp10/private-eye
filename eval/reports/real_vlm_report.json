@@ -1,10 +1,57 @@
 {
-  "status": "SKIPPED",
-  "reason": "PRIVATEEYE_VLM_MODE is not real",
-  "mode": "mock",
-  "model": "unknown",
+  "status": "PASS",
+  "mode": "real",
+  "model": "qwen2.5vl:3b",
   "environment": {
     "platform": "Windows-11-10.0.26200-SP0"
   },
-  "runs": []
+  "runs": [
+    {
+      "success": true,
+      "final_url": "http://127.0.0.1:9001/success",
+      "steps": 4,
+      "workflow_latency_ms": 12961.49,
+      "actions": [
+        {
+          "step": 1,
+          "url": "http://127.0.0.1:9001/kyc",
+          "detections": 2,
+          "redactions": 2,
+          "network_ms": 2716.86,
+          "execution_ms": 150.38,
+          "total_ms": 2983.78
+        },
+        {
+          "step": 2,
+          "url": "http://127.0.0.1:9001/kyc",
+          "detections": 9,
+          "redactions": 9,
+          "network_ms": 2672.05,
+          "execution_ms": 44.55,
+          "total_ms": 2981.67
+        },
+        {
+          "step": 3,
+          "url": "http://127.0.0.1:9001/success",
+          "detections": 9,
+          "redactions": 9,
+          "network_ms": 2381.19,
+          "execution_ms": 73.69,
+          "total_ms": 2622.0
+        },
+        {
+          "step": 4,
+          "url": "http://127.0.0.1:9001/success",
+          "detections": 0,
+          "redactions": 0,
+          "network_ms": 2338.08,
+          "execution_ms": 0.01,
+          "total_ms": 2556.06
+        }
+      ],
+      "errors": [],
+      "run_index": 1,
+      "elapsed_ms": 12961.53
+    }
+  ]
 }

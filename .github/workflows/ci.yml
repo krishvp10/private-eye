@@ -39,7 +39,7 @@ jobs:
             client/capture.py shared/protocol.py eval/context_ablation.py \
             eval/model_comparison.py eval/real_vlm_canary.py scripts/check_vlm.py
       - name: Full test suite
-        run: pytest -q
+        run: pytest -v --tb=short
       - name: Privacy tests
         run: pytest -q tests/test_privacy.py tests/test_privacy_report.py tests/test_packet_audit.py
       - name: Security tests

@@ -55,6 +55,7 @@ Set the endpoint explicitly:
 $env:PRIVATEEYE_VLM_MODE = "real"
 $env:PRIVATEEYE_VLM_BASE_URL = "http://127.0.0.1:8000/v1"
 $env:PRIVATEEYE_VLM_MODEL = "Qwen/Qwen2.5-VL-3B-Instruct"
+$env:PRIVATEEYE_VLM_TIMEOUT = "120"
 ```
 
 Validate and run the staged experiments:

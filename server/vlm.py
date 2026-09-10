@@ -19,7 +19,7 @@ class VLMAdapter:
         model_name: str | None = None,
         use_mock: bool | None = None,
         api_key: str | None = None,
-        timeout: float = 30.0,
+        timeout: float | None = None,
     ) -> None:
         mode = os.getenv("PRIVATEEYE_VLM_MODE", "mock").lower()
         self.mode = "mock" if use_mock is True else ("real" if use_mock is False else mode)
@@ -34,7 +34,11 @@ class VLMAdapter:
             "PRIVATEEYE_VLM_MODEL", os.getenv("PE_VLM_MODEL", "Qwen/Qwen2.5-VL-7B-Instruct")
         )
         self.api_key = api_key if api_key is not None else os.getenv("PRIVATEEYE_VLM_API_KEY", "")
-        self.timeout = timeout
+        self.timeout = (
+            timeout
+            if timeout is not None
+            else float(os.getenv("PRIVATEEYE_VLM_TIMEOUT", "120"))
+        )
         self.mock_fallback = MockVLM()
 
     def build_request(self, context: ScreenContext) -> dict[str, Any]:

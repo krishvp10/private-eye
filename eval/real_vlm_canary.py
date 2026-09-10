@@ -79,7 +79,8 @@ async def main_async(args: argparse.Namespace) -> dict[str, Any]:
         write_report(Path(args.output), report)
         return report
 
-    async with httpx.AsyncClient(timeout=30) as client:
+    timeout = float(os.getenv("PRIVATEEYE_VLM_TIMEOUT", "120"))
+    async with httpx.AsyncClient(timeout=timeout) as client:
         try:
             health = await client.get(f"{args.server_url}/v1/health")
             health.raise_for_status()
@@ -131,24 +132,35 @@ async def main_async(args: argparse.Namespace) -> dict[str, Any]:
                 try:
                     response.raise_for_status()
                     action = validate_agent_action(response.json())
+                    target_correct = bool(
+                        action.action.value == expected_action
+                        and action.target
+                        and (
+                            action.target.name == expected_name
+                            or action.target.element_id == expected_name
+                        )
+                    )
+                    value_ref_only = action.value_ref == value_ref if value_ref else True
+                    policy_valid = value_ref_only and not (
+                        action.action.value == "fill" and not action.value_ref
+                    )
                     item.update(
                         {
-                            "status": "PASS",
+                            "status": "PASS" if target_correct and policy_valid else "FAIL",
                             "schema_valid": True,
-                            "policy_valid": True,
+                            "policy_valid": policy_valid,
                             "actual_action": action.action.value,
-                            "target_correct": bool(
-                                action.action.value == expected_action
-                                and action.target
-                                and (
-                                    action.target.name == expected_name
-                                    or action.target.element_id == expected_name
-                                )
+                            "actual_target": action.target.model_dump() if action.target else None,
+                            "target_correct": target_correct,
+                            "value_ref_only": value_ref_only,
+                            "failure_class": (
+                                None
+                                if target_correct and policy_valid
+                                else ("policy" if not policy_valid else "grounding")
                             ),
-                            "value_ref_only": action.value_ref == value_ref if value_ref else True,
                         }
                     )
-                except Exception as exc:
+                except (ValueError, httpx.HTTPError) as exc:
                     item.update(
                         {
                             "status": "FAIL",

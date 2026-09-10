@@ -56,10 +56,10 @@ def kill_process_tree(proc: subprocess.Popen) -> None:
         else:
             proc.terminate()
             proc.wait(timeout=2.0)
-    except (OSError, subprocess.TimeoutExpired):
         try:
             proc.kill()
-        except OSError:
+            proc.wait(timeout=2.0)
+        except (OSError, subprocess.TimeoutExpired):
             return
 
 

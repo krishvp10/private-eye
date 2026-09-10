@@ -1,7 +1,9 @@
 # PrivateEye real-VLM experiment
 
-**Status:** SKIPPED
+**Status:** PASS
 
-**Reason:** PRIVATEEYE_VLM_MODE is not real
+**Model:** qwen2.5vl:3b
 
-No live Qwen2.5-VL result is claimed. Configure a reachable real endpoint and set `PRIVATEEYE_VLM_MODE=real` to run the experiment.
+**Runs:** 1
+
+This report contains metadata only; raw prompts, screenshots, and secrets are intentionally excluded.

@@ -89,7 +89,8 @@ async def main_async(args: argparse.Namespace) -> dict[str, Any]:
         write_report(output, report)
         return report
 
-    async with httpx.AsyncClient(timeout=30) as client:
+    timeout = float(os.getenv("PRIVATEEYE_VLM_TIMEOUT", "120"))
+    async with httpx.AsyncClient(timeout=timeout) as client:
         from playwright.async_api import async_playwright
 
         async with async_playwright() as playwright:
