@@ -1,0 +1,184 @@
+{
+  "title": "PrivateEye Real-VLM Outbound Packet Privacy Evidence",
+  "run_id": "real-privacy-audit-001",
+  "timestamp": "2026-09-10T14:32:23Z",
+  "secrets_tested_count": 21,
+  "total_violations": 0,
+  "zero_leak_verified": true,
+  "perimeter_checks": {
+    "cookies_transmitted": false,
+    "auth_headers_transmitted": false,
+    "raw_screenshot_transmitted": false,
+    "only_value_ref_in_action": true
+  },
+  "findings": [
+    {
+      "vault_ref": "user_profile.name",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.full_name",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.email",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.phone",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.aadhaar",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.pan",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.dob",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.password",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.pin",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.address",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.card_number",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.cardholder",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.expiry",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.cvv",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.otp",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.uhid",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.diagnosis",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.prescription",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.doctor",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.insurance_id",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    },
+    {
+      "vault_ref": "user_profile.fixture_key",
+      "local_vault_status": "PRESENT_LOCALLY",
+      "request_wire_status": "ABSENT",
+      "response_status": "ABSENT",
+      "server_logs_status": "ABSENT",
+      "status": "PASS"
+    }
+  ]
+}

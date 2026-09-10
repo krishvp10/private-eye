@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Corpus 07 — Decoy Numeric Strings (Non-Sensitive)</title>
+  <style>
+    body { font-family: sans-serif; background: #f8fafc; padding: 2rem; color: #0f172a; }
+    .card { max-width: 600px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; border: 1px solid #cbd5e1; }
+    .row { margin-bottom: 1rem; }
+    label { display: block; font-size: 0.8rem; font-weight: 600; color: #64748b; margin-bottom: 0.25rem; }
+    input { width: 100%; padding: 0.5rem; border: 1px solid #94a3b8; border-radius: 4px; box-sizing: border-box; }
+    button { background: #3b82f6; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Public Warehouse Logistics (Decoy Identifiers)</h2>
+    <div class="row">
+      <label for="decoy_tracking">Consignment Tracking Number (Non-PII 12-digit)</label>
+      <input type="text" id="decoy_tracking" value="990142881920">
+    </div>
+    <div class="row">
+      <label for="decoy_order">Public Order Reference ID</label>
+      <input type="text" id="decoy_order" value="ORD-2026-994812">
+    </div>
+    <div class="row">
+      <label for="decoy_serial">Appliance Hardware Serial Code</label>
+      <input type="text" id="decoy_serial" value="SN-B849-1029-4411">
+    </div>
+    <div class="row">
+      <label for="real_secret_pan">Actual Income Tax PAN (True PII)</label>
+      <input type="text" id="real_secret_pan" value="ZZZPV9999Z">
+    </div>
+    <button id="decoy_btn_track">Track Shipment</button>
+  </div>
+</body>
+</html>

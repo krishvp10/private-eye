@@ -26,9 +26,10 @@ class VLMAdapter:
         if self.mode not in {"mock", "real"}:
             raise ValueError("PRIVATEEYE_VLM_MODE must be 'mock' or 'real'")
         self.use_mock = self.mode == "mock"
-        self.endpoint_url = (endpoint_url or os.getenv(
+        raw_endpoint = endpoint_url or os.getenv(
             "PRIVATEEYE_VLM_BASE_URL", os.getenv("PE_VLLM_URL", "http://localhost:8000/v1")
-        )).rstrip("/")
+        ) or "http://localhost:8000/v1"
+        self.endpoint_url = raw_endpoint.rstrip("/")
         self.model_name = model_name or os.getenv(
             "PRIVATEEYE_VLM_MODEL", os.getenv("PE_VLM_MODEL", "Qwen/Qwen2.5-VL-7B-Instruct")
         )

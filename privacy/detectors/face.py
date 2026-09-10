@@ -23,8 +23,8 @@ class FaceDetector:
     def __init__(self) -> None:
         # Load standard Haar cascade if available in OpenCV
         try:
-            cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
-            self.face_cascade = cv2.CascadeClassifier(cascade_path)
+            cascade_path = cv2.data.haarcascades + "haarcascade_frontalface_default.xml"  # type: ignore[attr-defined]
+            self.face_cascade = cv2.CascadeClassifier(cascade_path)  # type: ignore[attr-defined]
         except Exception:
             self.face_cascade = None
 

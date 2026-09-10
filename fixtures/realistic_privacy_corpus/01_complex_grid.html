@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Corpus 01 — Complex Multi-Column Grid Layout</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f1f5f9; padding: 2rem; color: #1e293b; }
+    .grid-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .card { background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 1.25rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .card-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.75rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem; color: #0284c7; }
+    .form-group { margin-bottom: 0.85rem; }
+    label { display: block; font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 0.25rem; }
+    input { width: 100%; padding: 0.45rem; border: 1px solid #94a3b8; border-radius: 4px; box-sizing: border-box; }
+    .btn { background: #0284c7; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-weight: 600; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="card">
+      <div class="card-title">Personal Information</div>
+      <div class="form-group">
+        <label for="grid_name">Legal Full Name</label>
+        <input type="text" id="grid_name" value="Suresh Kumar Verma">
+      </div>
+      <div class="form-group">
+        <label for="grid_dob">Date of Birth</label>
+        <input type="text" id="grid_dob" value="1984-11-23">
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Statutory Identifiers</div>
+      <div class="form-group">
+        <label for="grid_aadhaar">Aadhaar UID</label>
+        <input type="text" id="grid_aadhaar" value="6721 8934 1052">
+      </div>
+      <div class="form-group">
+        <label for="grid_pan">Income Tax PAN</label>
+        <input type="text" id="grid_pan" value="BKRPV4819M">
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Security & Action</div>
+      <div class="form-group">
+        <label for="grid_pin">Portal Security PIN</label>
+        <input type="password" id="grid_pin" value="992841">
+      </div>
+      <button class="btn" id="grid_submit">Save Grid Records</button>
+    </div>
+  </div>
+</body>
+</html>

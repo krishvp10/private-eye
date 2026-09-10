@@ -1,7 +1,7 @@
 {
   "status": "SKIPPED",
-  "reason": "real VLM server is unreachable",
-  "mode": "real",
+  "reason": "PRIVATEEYE_VLM_MODE is not real",
+  "mode": "mock",
   "model": "unknown",
   "environment": {
     "platform": "Windows-11-10.0.26200-SP0"

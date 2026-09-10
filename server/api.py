@@ -122,4 +122,12 @@ async def get_run_audit() -> list[dict[str, Any]]:
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("server.api:app", host="127.0.0.1", port=8000, log_level="info")
+
+    from shared.config import config
+
+    uvicorn.run(
+        "server.api:app",
+        host=config.SERVER_HOST,
+        port=config.PORT_SERVER,
+        log_level="info",
+    )

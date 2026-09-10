@@ -10,7 +10,7 @@ import logging
 import os
 import time
 from collections.abc import Awaitable, Callable
-from typing import Any
+from typing import Any, cast
 
 from playwright.async_api import Locator, Page
 
@@ -226,7 +226,7 @@ class ActionExecutor:
 
         # Priority 2: Accessible Name / Role
         if t.role and t.name:
-            return page.get_by_role(t.role, name=t.name)
+            return page.get_by_role(cast(Any, t.role), name=t.name)
 
         # Priority 3: Label
         if t.label:

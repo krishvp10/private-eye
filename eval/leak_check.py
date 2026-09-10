@@ -58,7 +58,7 @@ class OutboundLeakInterceptor:
             "headers": str(headers),
             "body": body.decode("utf-8", errors="replace"),
         }
-        violations = []
+        violations: list[str] = []
         for name, value in components.items():
             found = self.inspect_payload(value)
             violations.extend(f"{name}: {violation}" for violation in found)

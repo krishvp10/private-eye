@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Corpus 05 — Long Complex Residential Addresses</title>
+  <style>
+    body { font-family: sans-serif; background: #f8fafc; padding: 2rem; }
+    .container { max-width: 650px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .form-row { margin-bottom: 1.25rem; }
+    label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.4rem; color: #334155; }
+    textarea { width: 100%; height: 90px; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+    input { width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+    .btn { background: #475569; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Postal Address & Physical Dispatch</h2>
+    <div class="form-row">
+      <label for="addr_full">Permanent Residential Address</label>
+      <textarea id="addr_full">Flat 402, Sai Balaji Residency, 4th Main Road, Behind Canara Bank, Malleshwaram West, Bengaluru, Karnataka, 560055</textarea>
+    </div>
+    <div class="form-row">
+      <label for="addr_card">Associated Billing Card Number</label>
+      <input type="text" id="addr_card" value="5120 4892 1104 7721">
+    </div>
+    <button class="btn" id="addr_btn_save">Save Postal Records</button>
+  </div>
+</body>
+</html>

@@ -136,7 +136,8 @@ async def capture_page(page: Page, quality: int = 70) -> CapturedContext:
     Guarantees no passwords, tokens, or raw sensitive input values are placed in the ScreenGraph.
     """
     url = page.url
-    viewport = page.viewport_size or {"width": 1280, "height": 800}
+    vsize = page.viewport_size or {"width": 1280, "height": 800}
+    viewport: dict[str, int] = {"width": int(vsize["width"]), "height": int(vsize["height"])}
 
     # 1. Capture viewport screenshot (JPEG compressed)
     screenshot_bytes = await page.screenshot(

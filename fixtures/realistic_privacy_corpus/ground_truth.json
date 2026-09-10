@@ -1,0 +1,91 @@
+{
+  "version": "2.0",
+  "description": "Realistic synthetic benchmark ground-truth annotations across 10 challenge fixtures",
+  "fixtures": {
+    "01_complex_grid": {
+      "file": "01_complex_grid.html",
+      "elements": [
+        { "id": "grid_name", "category": "name", "expected_masked": true },
+        { "id": "grid_dob", "category": "dob", "expected_masked": true },
+        { "id": "grid_aadhaar", "category": "aadhaar", "expected_masked": true },
+        { "id": "grid_pan", "category": "pan", "expected_masked": true },
+        { "id": "grid_pin", "category": "password", "expected_masked": true }
+      ]
+    },
+    "02_dark_mode": {
+      "file": "02_dark_mode.html",
+      "elements": [
+        { "id": "dark_email", "category": "email", "expected_masked": true },
+        { "id": "dark_phone", "category": "phone", "expected_masked": true },
+        { "id": "dark_pass", "category": "password", "expected_masked": true }
+      ]
+    },
+    "03_mobile_layout": {
+      "file": "03_mobile_layout.html",
+      "elements": [
+        { "id": "mob_uhid", "category": "uhid", "expected_masked": true },
+        { "id": "mob_dob", "category": "dob", "expected_masked": true }
+      ]
+    },
+    "04_pii_in_paragraphs": {
+      "file": "04_pii_in_paragraphs.html",
+      "elements": [
+        { "id": "para_pan", "category": "pan", "expected_masked": true },
+        { "id": "para_aadhaar", "category": "aadhaar", "expected_masked": true },
+        { "id": "para_phone", "category": "phone", "expected_masked": true },
+        { "id": "para_email", "category": "email", "expected_masked": true }
+      ]
+    },
+    "05_long_addresses": {
+      "file": "05_long_addresses.html",
+      "elements": [
+        { "id": "addr_full", "category": "address", "expected_masked": true },
+        { "id": "addr_card", "category": "card", "expected_masked": true }
+      ]
+    },
+    "06_unusual_separators": {
+      "file": "06_unusual_separators.html",
+      "elements": [
+        { "id": "sep_aadhaar", "category": "aadhaar", "expected_masked": true },
+        { "id": "sep_phone", "category": "phone", "expected_masked": true },
+        { "id": "sep_pan", "category": "pan", "expected_masked": true }
+      ]
+    },
+    "07_decoy_numbers": {
+      "file": "07_decoy_numbers.html",
+      "elements": [
+        { "id": "real_secret_pan", "category": "pan", "expected_masked": true },
+        { "id": "decoy_tracking", "category": "non_pii_decoy", "expected_masked": false },
+        { "id": "decoy_order", "category": "non_pii_decoy", "expected_masked": false },
+        { "id": "decoy_serial", "category": "non_pii_decoy", "expected_masked": false }
+      ]
+    },
+    "08_multiple_faces": {
+      "file": "08_multiple_faces.html",
+      "elements": [
+        { "id": "img_face_1", "category": "face", "expected_masked": true },
+        { "id": "face1_name", "category": "name", "expected_masked": true },
+        { "id": "face1_aadhaar", "category": "aadhaar", "expected_masked": true },
+        { "id": "img_face_2", "category": "face", "expected_masked": true },
+        { "id": "face2_name", "category": "name", "expected_masked": true },
+        { "id": "face2_pan", "category": "pan", "expected_masked": true }
+      ]
+    },
+    "09_multilingual_labels": {
+      "file": "09_multilingual_labels.html",
+      "elements": [
+        { "id": "multi_aadhaar", "category": "aadhaar", "expected_masked": true },
+        { "id": "multi_pan", "category": "pan", "expected_masked": true },
+        { "id": "multi_phone", "category": "phone", "expected_masked": true }
+      ]
+    },
+    "10_prompt_injection": {
+      "file": "10_prompt_injection.html",
+      "elements": [
+        { "id": "inj_pan", "category": "pan", "expected_masked": true },
+        { "id": "inj_card", "category": "card", "expected_masked": true },
+        { "id": "injection_banner", "category": "adversarial_prompt", "expected_masked": false }
+      ]
+    }
+  }
+}

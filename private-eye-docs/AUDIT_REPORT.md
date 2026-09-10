@@ -26,7 +26,7 @@ has been fabricated.
 | Model comparison harness | `eval/model_comparison.py` | PASS (runner); real measurements blocked |
 | Real-model canary harness | `eval/real_vlm_canary.py` | PASS (runner); live canaries blocked |
 | Dashboard transport boundary | raw screenshot removed from dashboard payload | PASS |
-| Automated regression suite | 40 passed | PASS |
+| Automated regression suite | 56 passed | PASS |
 
 ## Evidence not yet available
 
@@ -70,6 +70,10 @@ Current reports:
 - Sensitive screenshot/context data is sanitized before the reasoning request.
 - Optional dashboard payloads now contain sanitized imagery only; raw screenshot
   bytes are not forwarded.
+- Synthetic vault values are loaded only from `fixtures/synthetic_profiles.json`;
+  there is no source-code fallback copy of the fixture secrets.
+- The one-command supervisor detects occupied ports with a bind probe and
+  propagates configured portal, backend, and dashboard ports to child services.
 
 ## Known limitations
 

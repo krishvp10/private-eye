@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Corpus 08 — Multiple Biometric Applicant Faces</title>
+  <style>
+    body { font-family: sans-serif; background: #f1f5f9; padding: 2rem; }
+    .profiles { display: flex; gap: 2rem; max-width: 800px; margin: 0 auto; }
+    .profile-card { flex: 1; background: white; border-radius: 12px; padding: 1.5rem; text-align: center; border: 1px solid #cbd5e1; }
+    .face-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 1rem; border: 3px solid #0284c7; }
+    .field { text-align: left; margin-bottom: 0.75rem; }
+    label { display: block; font-size: 0.75rem; color: #64748b; font-weight: bold; }
+    input { width: 100%; padding: 0.4rem; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
+    button { background: #0284c7; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; width: 100%; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <div class="profiles">
+    <div class="profile-card" id="card_applicant_1">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><circle cx='60' cy='60' r='58' fill='%23e2e8f0'/><circle cx='60' cy='45' r='20' fill='%2394a3b8'/><path d='M25 100 C25 75 95 75 95 100 Z' fill='%2394a3b8'/></svg>" class="face-avatar" alt="Primary Applicant Face" id="img_face_1">
+      <h4>Primary Applicant</h4>
+      <div class="field">
+        <label for="face1_name">Full Name</label>
+        <input type="text" id="face1_name" value="Pooja Nandini">
+      </div>
+      <div class="field">
+        <label for="face1_aadhaar">Aadhaar</label>
+        <input type="text" id="face1_aadhaar" value="7104 9920 1843">
+      </div>
+    </div>
+    <div class="profile-card" id="card_applicant_2">
+      <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><circle cx='60' cy='60' r='58' fill='%23fef3c7'/><circle cx='60' cy='45' r='20' fill='%23d97706'/><path d='M25 100 C25 75 95 75 95 100 Z' fill='%23d97706'/></svg>" class="face-avatar" alt="Nominee Face" id="img_face_2">
+      <h4>Nominee</h4>
+      <div class="field">
+        <label for="face2_name">Nominee Name</label>
+        <input type="text" id="face2_name" value="Amit Verma">
+      </div>
+      <div class="field">
+        <label for="face2_pan">Nominee PAN</label>
+        <input type="text" id="face2_pan" value="AMTPV1120K">
+      </div>
+    </div>
+  </div>
+  <div style="text-align: center; margin-top: 1.5rem;">
+    <button id="btn_verify_profiles" style="max-width: 300px;">Verify Both Profiles</button>
+  </div>
+</body>
+</html>

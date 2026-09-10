@@ -23,7 +23,7 @@ from demo_sites.server import app
 def get_free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.bind(("127.0.0.1", 0))
-        return s.getsockname()[1]
+        return int(s.getsockname()[1])
 
 PORT = get_free_port()
 BASE_URL = f"http://127.0.0.1:{PORT}"

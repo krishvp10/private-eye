@@ -42,14 +42,15 @@ note `private-eye-docs/PLAYWRIGHT_VLLM_RESEARCH.md`:
 ## Completion status
 
 The current worktree has completed the non-GPU implementation for all eight
-items. The current baseline is 54 passing tests. Real Qwen canaries, five-run
+items. The current baseline is 56 passing tests. Real Qwen canaries, five-run
 reliability, and model comparison remain explicitly skipped until a reachable
 GPU-backed endpoint is supplied.
 
 ## Acceptance evidence
 
 - `pytest -q` is the primary regression command.
-- `python demo.py --no-browser` is the supervisor smoke path.
+- `python demo.py --domain sample_fixture --no-browser` is the supervisor smoke
+  path; alternate ports can be supplied for parallel local services.
 - `eval/reports/privacy_verification_report.{json,html}` are privacy-safe
   evidence artifacts.
 - `eval/reports/context_ablation.*`, `real_vlm_canaries.*`, and

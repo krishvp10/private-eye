@@ -1,0 +1,42 @@
+{
+  "title": "PrivateEye Real-VLM Failure Taxonomy",
+  "description": "Standardized failure classification hierarchy recording the root cause of execution deviations",
+  "classes": {
+    "perception": {
+      "code": "FAIL_PERCEPTION",
+      "description": "DOM or visual extractor failed to detect an element or rendered coordinate bounding box accurately."
+    },
+    "grounding": {
+      "code": "FAIL_GROUNDING",
+      "description": "Model proposed a target that does not match the semantic node in the captured ScreenGraph."
+    },
+    "planning": {
+      "code": "FAIL_PLANNING",
+      "description": "Model proposed an illogical or non-advancing action sequence for the active workflow task."
+    },
+    "schema": {
+      "code": "FAIL_SCHEMA",
+      "description": "Model returned malformed JSON or violated AgentAction Pydantic protocol constraints."
+    },
+    "policy": {
+      "code": "FAIL_POLICY",
+      "description": "Model attempted an unwhitelisted action, emitted raw secret tokens, or attempted prompt injection."
+    },
+    "execution": {
+      "code": "FAIL_EXECUTION",
+      "description": "Playwright failed to interact with the target locator (e.g. element covered, detached, or disabled)."
+    },
+    "network": {
+      "code": "FAIL_NETWORK",
+      "description": "HTTP timeout, connection drop, or socket abort during client-server VLM communication."
+    },
+    "model": {
+      "code": "FAIL_MODEL",
+      "description": "Model internal runtime error, context length overflow, or hallucinated terminal state."
+    },
+    "privacy": {
+      "code": "FAIL_PRIVACY",
+      "description": "Outbound leak interceptor detected sensitive PII or unredacted vault token crossing the wire."
+    }
+  }
+}

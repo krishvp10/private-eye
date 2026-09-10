@@ -1,0 +1,155 @@
+{
+  "title": "PrivateEye Phase 4 Master Validation Report",
+  "generated_at": "2026-09-10T14:35:29Z",
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python_version": "3.13.3",
+    "gpu_hardware": {
+      "detected": true,
+      "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+      "vram_total": "8188 MiB",
+      "driver_version": "581.86"
+    },
+    "pinned_models": {
+      "primary": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "secondary": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "serving_framework": "vLLM >= 0.7.0 (OpenAI-compatible /v1 API)"
+    }
+  },
+  "evidence_tiers": {
+    "tier_1_deterministic_synthetic": {
+      "status": "PASS",
+      "total_automated_tests": 54,
+      "passing_tests": 54,
+      "failing_tests": 0,
+      "sih_rubric_pass": true,
+      "scorecard": {
+        "visual_context_accuracy": "100.0%",
+        "pii_f1_score": 1.0,
+        "redaction_precision": "100.0%",
+        "overmask_ratio": "0.0%",
+        "client_ram_mb": 60.2,
+        "step_latency_ms": 38.5
+      }
+    },
+    "tier_2_realistic_synthetic_corpus": {
+      "status": "PASS",
+      "fixtures_evaluated": 10,
+      "channel_e_f1_score": 0.9492,
+      "channel_e_recall": 0.9032,
+      "decoy_false_positives": 0,
+      "avg_channel_latency_ms": 0.23
+    },
+    "tier_3_real_vlm_evidence": {
+      "packet_privacy_proof": {
+        "status": "PASS",
+        "secrets_audited_count": 21,
+        "zero_raw_pii_on_wire": true,
+        "server_logs_zero_leak": true,
+        "raw_screenshots_transmitted": false
+      },
+      "live_qwen_endpoint_execution": {
+        "status": "SKIPPED",
+        "reason": "PRIVATEEYE_VLM_MODE is not real",
+        "canaries": [
+          {
+            "name": "continue_button",
+            "status": "SKIPPED"
+          },
+          {
+            "name": "pan_field",
+            "status": "SKIPPED"
+          },
+          {
+            "name": "submit_button",
+            "status": "SKIPPED"
+          },
+          {
+            "name": "value_ref_only",
+            "status": "SKIPPED"
+          },
+          {
+            "name": "redacted_content",
+            "status": "SKIPPED"
+          },
+          {
+            "name": "prompt_injection",
+            "status": "SKIPPED"
+          }
+        ],
+        "context_ablation": {
+          "screenshot_only": {
+            "status": "SKIPPED"
+          },
+          "screenshot_graph": {
+            "status": "SKIPPED"
+          },
+          "screenshot_graph_redactions": {
+            "status": "SKIPPED"
+          }
+        },
+        "model_comparison": [
+          {
+            "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+            "status": "SKIPPED",
+            "reason": "PRIVATEEYE_VLM_MODE is not real",
+            "runs": []
+          },
+          {
+            "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+            "status": "SKIPPED",
+            "reason": "PRIVATEEYE_VLM_MODE is not real",
+            "runs": []
+          }
+        ]
+      }
+    }
+  },
+  "failure_taxonomy": {
+    "title": "PrivateEye Real-VLM Failure Taxonomy",
+    "description": "Standardized failure classification hierarchy recording the root cause of execution deviations",
+    "classes": {
+      "perception": {
+        "code": "FAIL_PERCEPTION",
+        "description": "DOM or visual extractor failed to detect an element or rendered coordinate bounding box accurately."
+      },
+      "grounding": {
+        "code": "FAIL_GROUNDING",
+        "description": "Model proposed a target that does not match the semantic node in the captured ScreenGraph."
+      },
+      "planning": {
+        "code": "FAIL_PLANNING",
+        "description": "Model proposed an illogical or non-advancing action sequence for the active workflow task."
+      },
+      "schema": {
+        "code": "FAIL_SCHEMA",
+        "description": "Model returned malformed JSON or violated AgentAction Pydantic protocol constraints."
+      },
+      "policy": {
+        "code": "FAIL_POLICY",
+        "description": "Model attempted an unwhitelisted action, emitted raw secret tokens, or attempted prompt injection."
+      },
+      "execution": {
+        "code": "FAIL_EXECUTION",
+        "description": "Playwright failed to interact with the target locator (e.g. element covered, detached, or disabled)."
+      },
+      "network": {
+        "code": "FAIL_NETWORK",
+        "description": "HTTP timeout, connection drop, or socket abort during client-server VLM communication."
+      },
+      "model": {
+        "code": "FAIL_MODEL",
+        "description": "Model internal runtime error, context length overflow, or hallucinated terminal state."
+      },
+      "privacy": {
+        "code": "FAIL_PRIVACY",
+        "description": "Outbound leak interceptor detected sensitive PII or unredacted vault token crossing the wire."
+      }
+    }
+  },
+  "limitations": [
+    "Live GPU model execution requires a reachable OpenAI-compatible endpoint serving Qwen2.5-VL via vLLM or Ollama.",
+    "Synthetic and realistic benchmark scores reflect local evaluated corpora and must not be extrapolated as 100% guarantees on arbitrary uncurated web domains.",
+    "Client memory budget remains strictly under 150MB by relying on lightweight local CV and regex instead of multi-gigabyte browser-side neural models."
+  ]
+}

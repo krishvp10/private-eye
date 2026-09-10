@@ -34,8 +34,11 @@ class ServiceStartupError(Exception):
 def check_port_free(host: str, port: int) -> bool:
     """Check if a network port is available for binding."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.settimeout(0.3)
-        return s.connect_ex((host, port)) != 0
+        try:
+            s.bind((host, port))
+        except OSError:
+            return False
+        return True
 
 
 def kill_process_tree(proc: subprocess.Popen) -> None:
@@ -53,11 +56,11 @@ def kill_process_tree(proc: subprocess.Popen) -> None:
         else:
             proc.terminate()
             proc.wait(timeout=2.0)
-    except Exception:
+    except (OSError, subprocess.TimeoutExpired):
         try:
             proc.kill()
-        except Exception:
-            pass
+        except OSError:
+            return
 
 
 class DemoSupervisor:
@@ -91,7 +94,7 @@ class DemoSupervisor:
         conflicts = []
         for name, p in ports.items():
             if not check_port_free(self.host, p):
-                conflicts.append(f"  • {name} port {p} on {self.host} is already in use.")
+                conflicts.append(f"  - {name} port {p} on {self.host} is already in use.")
 
         if conflicts:
             raise PortConflictError(
@@ -132,7 +135,7 @@ class DemoSupervisor:
                         if res.status_code != 200:
                             all_healthy = False
                             break
-                    except Exception:
+                    except httpx.HTTPError:
                         all_healthy = False
                         break
                 if all_healthy:
@@ -145,12 +148,15 @@ class DemoSupervisor:
         """Start all services, verify readiness, and display the cockpit banner."""
         print("\n" + "=" * 62)
         print("  PRIVATEEYE: PRIVACY-PRESERVING BROWSER AGENT SUPERVISOR")
-        print("  Smart India Hackathon • Dept. of Space / ISRO (Problem 26171)")
+        print("  Smart India Hackathon - Dept. of Space / ISRO (Problem 26171)")
         print("=" * 62 + "\n")
 
         print("[1/4] Checking network port availability...")
         self.check_ports()
-        print("      ✓ Ports free: 9001 (Portal), 8000 (Backend), 8080 (Dashboard)")
+        print(
+            f"      OK Ports free: {self.port_portal} (Portal), "
+            f"{self.port_server} (Backend), {self.port_dashboard} (Dashboard)"
+        )
 
         print("[2/4] Spawning supervised services...")
         self.start_service(
@@ -180,10 +186,10 @@ class DemoSupervisor:
         banner = f"""+------------------------------------------------------------+
 |  PrivateEye Live Cockpit Ready                             |
 |------------------------------------------------------------|
-|  • Visual Cockpit:   {dashboard_url:<37} |
-|  • Portal Endpoint:  http://{self.host}:{self.port_portal:<29} |
-|  • VLM Server API:   http://{self.host}:{self.port_server:<29} |
-|  • Active Domain:    {self.domain.upper():<37} |
+|  - Visual Cockpit:   {dashboard_url:<37} |
+|  - Portal Endpoint:  http://{self.host}:{self.port_portal:<29} |
+|  - VLM Server API:   http://{self.host}:{self.port_server:<29} |
+|  - Active Domain:    {self.domain.upper():<37} |
 +------------------------------------------------------------+
 |  Press Ctrl+C to terminate all services cleanly.           |
 +------------------------------------------------------------+"""
@@ -199,9 +205,9 @@ class DemoSupervisor:
             return
         self._is_shutting_down = True
         print("\nInitiating graceful shutdown of all PrivateEye services...")
-        for name, proc in self.processes.items():
+        for proc in self.processes.values():
             kill_process_tree(proc)
-        print("✓ All child processes stopped cleanly. Good luck with the evaluation!\n")
+        print("OK All child processes stopped cleanly.\n")
 
     def run_until_interrupted(self) -> None:
         """Keep the supervisor alive until SIGINT (Ctrl+C) is received."""
