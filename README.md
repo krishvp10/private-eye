@@ -169,7 +169,7 @@ private-eye/
 ### 1. Installation
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/private-eye.git
+git clone https://github.com/krishvp10/private-eye.git
 cd private-eye
 
 # Create and activate virtual environment
