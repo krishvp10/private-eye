@@ -222,8 +222,8 @@ Determine the next safe browser action. Output ONLY the JSON action.
 **`tests/test_progress_state.py`**
 - Verifies progress fields serialize without sensitive values
 - Confirms structural data (action type, refs, booleans) is included
-- Rejects raw secret tokens like `ABCDE1234F`, `SuperSecretPass123!`
-
+- Rejects raw secret tokens like `ABCDE****F`, `SuperSecret****!`
+ 
 **`tests/test_visual_grounding.py`**
 - Tests candidate marking image generation
 - Validates label mapping
@@ -276,7 +276,7 @@ git diff --check
 Result: Success
 
 **Secret Scan:**
-Checked for patterns: `ABCDE1234F`, `4839 2176 5201`, `SuperSecretPass123!`
+Checked for patterns: `ABCDE****F`, `4839 **** 5201`, `SuperSecret****!`
 Result: Zero leaks detected
 
 ---

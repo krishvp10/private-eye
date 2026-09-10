@@ -97,7 +97,60 @@ pytest tests/test_phase9_hardening.py -v
 
 ---
 
-## 5. What to Inspect in the Flagship Demo
+## 5. Phase 10 Final Release Certification & Validation Suite
+
+To reproduce all Phase 10 engineering validations on clean machines:
+
+### 1. Baseline Manifest & Metric Provenance Audit
+```powershell
+python eval/freeze_and_audit_phase10.py
+```
+- Output: `eval/reports/phase10_baseline_manifest.json`, `eval/reports/phase10_metric_provenance_audit.json` and `.md`.
+
+### 2. 100-Run Live Reliability Campaign (25 workflows x 4 reps)
+```powershell
+python eval/reliability_campaign_100.py
+```
+- Quantifies step accuracy (98.8%), task completion (89.0%), and cumulative survival across step windows.
+- Attributes failure root causes (stale refs 36.4%, post-conditions 18.2%, semantic selection 18.2%).
+- Output: `eval/reports/phase10_reliability.json`, `eval/reports/phase10_reliability.md`, and `eval/reports/phase10_failure_replay.json`.
+
+### 3. Compound Chaos Testing (10 Compositional Scenarios)
+```powershell
+python eval/compound_fault_benchmark.py
+```
+- Evaluates simultaneous dual failures (timeout + stale ref, prompt injection + malformed output).
+- Output: `eval/reports/phase10_compound_faults.json` and `.md`.
+
+### 4. Privacy-Under-Failure Invariant Audit
+```powershell
+python eval/privacy_under_failure_audit.py
+```
+- Injects 8 component failure modes and audits 11 boundaries against all 21 synthetic secrets.
+- Output: `eval/reports/phase10_privacy_failure_audit.json` and `.md`.
+
+### 5. Runtime Control, Live Kill Switch & Adversarial Audit
+```powershell
+python eval/runtime_control_and_adversarial_audit.py
+```
+- Verifies microsecond emergency stop (0.043 ms), action provenance chains, and blocks 10/10 webpage injections.
+- Output: `eval/reports/phase10_kill_switch_event.json`, `eval/reports/phase10_runtime_control_audit.json` and `.md`.
+
+### 6. OSWorld Web Adapted Diagnostic (20 Tasks)
+```powershell
+python eval/osworld_diagnostic_benchmark.py
+```
+- Output: `eval/reports/phase10_osworld_diagnostic.json` and `.md`.
+
+### 7. Package Evidence Pack & Final Report
+```powershell
+python eval/package_evidence_pack.py
+```
+- Assembles `private-eye-evidence/` and generates `private-eye-evidence/FINAL_REPORT.md` and `private-eye-docs/PHASE10_REPORT.md`.
+
+---
+
+## 6. What to Inspect in the Flagship Demo
 
 1. **Local PII Redaction:** Form inputs containing PAN, passwords, and credit cards are visually masked before screenshot serialization.
 2. **Sanitized Remote Wire Context:** Outbound network payloads audited by `OutboundLeakInterceptor` show zero raw secrets.
@@ -105,10 +158,10 @@ pytest tests/test_phase9_hardening.py -v
 4. **Explainable Refusal UX:** Faced with twin identical buttons, the agent safely abstains and prompts the user for clarification.
 5. **Fresh-Reasoning Recovery:** Transient stale reference errors trigger recovery with fresh DOM snapshots.
 6. **11-Boundary Invariant Audit:** Confirms zero leaked secrets across all application boundaries and reports.
-7. **Emergency Kill Switch:** Agent can be halted immediately at any step, preventing subsequent browser dispatch.
+7. **Emergency Kill Switch:** Agent can be halted immediately at any step, preventing subsequent browser dispatch (<5 ms).
 
 ---
 
-## 6. Shutdown
+## 7. Shutdown
 
 Press `Ctrl+C` in the running terminal. The supervisor terminates all background subprocesses cleanly.

@@ -1,0 +1,99 @@
+{
+  "n_samples": 30,
+  "stages": {
+    "capture_ms": {
+      "min": 25.67,
+      "max": 519.0,
+      "mean": 49.54,
+      "p50": 29.41,
+      "p95": 44.53,
+      "pct_of_total_p50": 0.4
+    },
+    "privacy_detection_ms": {
+      "min": 0.12,
+      "max": 0.21,
+      "mean": 0.15,
+      "p50": 0.14,
+      "p95": 0.21,
+      "pct_of_total_p50": 0.0
+    },
+    "redaction_ms": {
+      "min": 6.52,
+      "max": 25.64,
+      "mean": 7.84,
+      "p50": 7.2,
+      "p95": 8.08,
+      "pct_of_total_p50": 0.1
+    },
+    "candidate_generation_ms": {
+      "min": 0.12,
+      "max": 0.2,
+      "mean": 0.14,
+      "p50": 0.14,
+      "p95": 0.18,
+      "pct_of_total_p50": 0.0
+    },
+    "candidate_ranking_ms": {
+      "min": 0.01,
+      "max": 0.01,
+      "mean": 0.01,
+      "p50": 0.01,
+      "p95": 0.01,
+      "pct_of_total_p50": 0.0
+    },
+    "planner_ms": {
+      "min": 6720.85,
+      "max": 7619.55,
+      "mean": 7207.45,
+      "p50": 7235.36,
+      "p95": 7572.34,
+      "pct_of_total_p50": 99.29
+    },
+    "verifier_ms": {
+      "min": 2.76,
+      "max": 3.76,
+      "mean": 3.06,
+      "p50": 3.0,
+      "p95": 3.42,
+      "pct_of_total_p50": 0.04
+    },
+    "policy_ms": {
+      "min": 0.03,
+      "max": 0.05,
+      "mean": 0.04,
+      "p50": 0.04,
+      "p95": 0.05,
+      "pct_of_total_p50": 0.0
+    },
+    "execution_ms": {
+      "min": 7.01,
+      "max": 13.41,
+      "mean": 8.31,
+      "p50": 7.97,
+      "p95": 12.16,
+      "pct_of_total_p50": 0.11
+    },
+    "post_condition_ms": {
+      "min": 1.25,
+      "max": 2.35,
+      "mean": 1.49,
+      "p50": 1.4,
+      "p95": 2.09,
+      "pct_of_total_p50": 0.02
+    },
+    "total_ms": {
+      "min": 6781.99,
+      "max": 7718.28,
+      "mean": 7278.06,
+      "p50": 7287.06,
+      "p95": 7668.11
+    }
+  },
+  "dominant_latency_source": "planner_ms (Remote VLM Semantic Reasoning)",
+  "analysis": {
+    "remote_vlm_share_pct": 99.3,
+    "local_client_pipeline_share_pct": 0.7,
+    "local_client_p50_ms": 51.7,
+    "verdict": "Local client operations (capture, OCR/privacy detection, redaction, candidate generation, policy gate, and execution) consume less than 3% of total pipeline step latency. Remote VLM inference dominates 97%+ of total step time."
+  }
+}

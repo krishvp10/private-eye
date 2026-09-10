@@ -1,0 +1,31 @@
+{
+  "manifest_id": "manifest_1789067402_phase10_final_ba",
+  "timestamp_utc": "2026-09-10T19:10:02.369535+00:00",
+  "commit_sha": "2fa84072f1468348268f7539567bbd969dab08f1",
+  "model": "qwen2.5-vl:3b",
+  "ollama_version": "ollama-local/qwen2.5-vl:3b",
+  "resolution": 768,
+  "temperature": 0.0,
+  "candidate_k": 5,
+  "verifier_mode": "selective",
+  "confidence_threshold_high": 0.88,
+  "confidence_threshold_low": 0.65,
+  "policy_engine_enabled": true,
+  "fail_closed_enabled": true,
+  "benchmark_id": "phase10_final_baseline_freeze",
+  "benchmark_hash": "no-fixture-specified",
+  "environment": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.3",
+    "playwright": "0.9.0",
+    "machine": "AMD64",
+    "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel"
+  },
+  "metadata": {
+    "phase": "Phase 10 \u2014 Independent Validation & Release Certification",
+    "release_candidate": "v1.0-RC",
+    "architecture_frozen": true,
+    "fine_tuning_bypassed": true,
+    "eval_framework": "Playwright + ARIA + Selective Verifier + Policy Engine"
+  }
+}

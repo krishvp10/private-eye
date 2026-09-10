@@ -1,0 +1,13 @@
+{
+  "kill_switch_verified": true,
+  "stop_latency_ms": "0.043 ms",
+  "subsequent_actions_dispatched": 0,
+  "stop_event": {
+    "event_id": "kill_1789067670610",
+    "triggered_at_utc": "2026-09-10T19:14:30.610912+00:00",
+    "reason": "Human operator pressed EMERGENCY STOP on monitoring console",
+    "triggered_by": "operator_ui",
+    "interrupted_step": 4,
+    "agent_state_before_stop": "dispatching_playwright_click"
+  }
+}

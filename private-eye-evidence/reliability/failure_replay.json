@@ -1,0 +1,114 @@
+{
+  "replays": [
+    {
+      "workflow_id": "wf_med_02",
+      "repetition": 4,
+      "difficulty": "MEDIUM",
+      "failed_step": 6,
+      "failure_class": "semantic_selection_failure",
+      "failure_nature": "DETERMINISTIC",
+      "replay_outcome": "Failed identically on replay (Deterministic DOM/Prompt artifact)",
+      "root_cause_analysis": "Prompt ambiguity or DOM structural hierarchy"
+    },
+    {
+      "workflow_id": "wf_med_04",
+      "repetition": 3,
+      "difficulty": "MEDIUM",
+      "failed_step": 6,
+      "failure_class": "stale_ref",
+      "failure_nature": "STOCHASTIC",
+      "replay_outcome": "Succeeded upon replay (Stochastic timing/render jitter resolved)",
+      "root_cause_analysis": "Transient Playwright network rendering timing race"
+    },
+    {
+      "workflow_id": "wf_med_07",
+      "repetition": 2,
+      "difficulty": "MEDIUM",
+      "failed_step": 7,
+      "failure_class": "post_condition_failure",
+      "failure_nature": "STOCHASTIC",
+      "replay_outcome": "Succeeded upon replay (Stochastic timing/render jitter resolved)",
+      "root_cause_analysis": "Transient Playwright network rendering timing race"
+    },
+    {
+      "workflow_id": "wf_med_08",
+      "repetition": 1,
+      "difficulty": "MEDIUM",
+      "failed_step": 6,
+      "failure_class": "ambiguous_target",
+      "failure_nature": "DETERMINISTIC",
+      "replay_outcome": "Failed identically on replay (Deterministic DOM/Prompt artifact)",
+      "root_cause_analysis": "Prompt ambiguity or DOM structural hierarchy"
+    },
+    {
+      "workflow_id": "wf_long_01",
+      "repetition": 4,
+      "difficulty": "LONG",
+      "failed_step": 15,
+      "failure_class": "semantic_selection_failure",
+      "failure_nature": "DETERMINISTIC",
+      "replay_outcome": "Failed identically on replay (Deterministic DOM/Prompt artifact)",
+      "root_cause_analysis": "Prompt ambiguity or DOM structural hierarchy"
+    },
+    {
+      "workflow_id": "wf_long_02",
+      "repetition": 3,
+      "difficulty": "LONG",
+      "failed_step": 12,
+      "failure_class": "stale_ref",
+      "failure_nature": "STOCHASTIC",
+      "replay_outcome": "Succeeded upon replay (Stochastic timing/render jitter resolved)",
+      "root_cause_analysis": "Transient Playwright network rendering timing race"
+    },
+    {
+      "workflow_id": "wf_long_04",
+      "repetition": 2,
+      "difficulty": "LONG",
+      "failed_step": 12,
+      "failure_class": "no_progress",
+      "failure_nature": "STOCHASTIC",
+      "replay_outcome": "Succeeded upon replay (Stochastic timing/render jitter resolved)",
+      "root_cause_analysis": "Transient Playwright network rendering timing race"
+    },
+    {
+      "workflow_id": "wf_long_05",
+      "repetition": 1,
+      "difficulty": "LONG",
+      "failed_step": 15,
+      "failure_class": "model_timeout",
+      "failure_nature": "STOCHASTIC",
+      "replay_outcome": "Succeeded upon replay (Stochastic timing/render jitter resolved)",
+      "root_cause_analysis": "Transient Playwright network rendering timing race"
+    },
+    {
+      "workflow_id": "wf_long_06",
+      "repetition": 3,
+      "difficulty": "LONG",
+      "failed_step": 12,
+      "failure_class": "post_condition_failure",
+      "failure_nature": "STOCHASTIC",
+      "replay_outcome": "Succeeded upon replay (Stochastic timing/render jitter resolved)",
+      "root_cause_analysis": "Transient Playwright network rendering timing race"
+    },
+    {
+      "workflow_id": "wf_long_07",
+      "repetition": 2,
+      "difficulty": "LONG",
+      "failed_step": 15,
+      "failure_class": "stale_ref",
+      "failure_nature": "STOCHASTIC",
+      "replay_outcome": "Succeeded upon replay (Stochastic timing/render jitter resolved)",
+      "root_cause_analysis": "Transient Playwright network rendering timing race"
+    },
+    {
+      "workflow_id": "wf_long_08",
+      "repetition": 4,
+      "difficulty": "LONG",
+      "failed_step": 12,
+      "failure_class": "no_progress",
+      "failure_nature": "STOCHASTIC",
+      "replay_outcome": "Succeeded upon replay (Stochastic timing/render jitter resolved)",
+      "root_cause_analysis": "Transient Playwright network rendering timing race"
+    }
+  ]
+}

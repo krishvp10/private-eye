@@ -1,0 +1,382 @@
+{
+  "audit_session": {
+    "date": "2026-09-11",
+    "phase": "Phase 7 - Verified Multimodal Grounding",
+    "status": "FORENSICS_COMPLETE_LIVE_ABLATION_PENDING"
+  },
+  "work_completed": {
+    "forensic_analysis": {
+      "status": "COMPLETE",
+      "description": "Inspected live Qwen smoke failure",
+      "key_finding": "Model repeatedly selected e10 (username textbox) instead of e15 (Sign In button)",
+      "failure_class": "state_progress_blindness_with_likely_prompt_context_failure",
+      "root_causes": [
+        "Lexical similarity bias in local ranking",
+        "Old post-condition treated mechanical click as success",
+        "Recovery retry lacked explicit failure context",
+        "No local blocker against repeated failed actions"
+      ],
+      "artifacts": [
+        "eval/phase7_failure_forensics.py",
+        "eval/reports/phase7_failure_forensics.json",
+        "eval/reports/phase7_failure_forensics.md"
+      ]
+    },
+    "protocol_enhancements": {
+      "status": "COMPLETE",
+      "components": [
+        {
+          "name": "Progress State Fields",
+          "file": "shared/protocol.py",
+          "additions": [
+            "previous_action: dict[str, Any] | None",
+            "previous_execution_success: bool | None",
+            "previous_post_condition_success: bool | None",
+            "previous_failure_class: str | None"
+          ],
+          "invariant": "Only safe structural data, no raw values or secrets"
+        },
+        {
+          "name": "Selection Status Enum",
+          "file": "shared/protocol.py",
+          "values": ["SELECTED", "AMBIGUOUS", "NO_VALID_CANDIDATE"],
+          "purpose": "Allow VLM to communicate ambiguity or lack of valid candidate"
+        },
+        {
+          "name": "Action Confidence & Metadata",
+          "file": "shared/protocol.py",
+          "additions": [
+            "confidence: float | None",
+            "reason_code: str | None",
+            "alternatives_considered: list[str]"
+          ]
+        }
+      ]
+    },
+    "safety_improvements": {
+      "status": "COMPLETE",
+      "components": [
+        {
+          "name": "Tightened Post-Condition Logic",
+          "file": "client/agent.py",
+          "change": "Click post-condition now requires observable transition (URL change, element removal, state change) not merely mechanical success",
+          "impact": "Prevents false-positive progress claims"
+        },
+        {
+          "name": "Repeated Action Blocking",
+          "file": "client/agent.py",
+          "change": "Added local gate: if proposed_ref == previous_ref AND previous_post_condition_success=false, block action",
+          "impact": "Prevents infinite-loop repetition after failed progress"
+        },
+        {
+          "name": "Progress State in VLM Context",
+          "file": "server/vlm.py",
+          "change": "Serializes previous_failure_class and post-condition results to model request",
+          "impact": "VLM receives explicit notification of previous action failure"
+        },
+        {
+          "name": "Failure-Aware Retry Instruction",
+          "file": "server/prompts.py",
+          "change": "Added: 'If the previous action did not advance the page, choose a different candidate or return no_valid_candidate'",
+          "impact": "Instructs VLM to avoid repeating failed actions"
+        }
+      ]
+    },
+    "visual_grounding_primitives": {
+      "status": "COMPLETE",
+      "components": [
+        {
+          "name": "Candidate Visual Marking",
+          "file": "client/visual_grounding.py",
+          "description": "Draws orange boxes and labels (C1, C2, ...) on sanitized screenshots",
+          "signature": "mark_candidates(sanitized_screenshot_bytes, candidates, padding=4) -> MarkedCandidateImage",
+          "privacy_guarantee": "Input must be already-redacted; output cannot reconstruct secrets",
+          "new_lines": 70
+        },
+        {
+          "name": "Candidate Crop Extraction (Existing)",
+          "file": "client/verifier.py",
+          "description": "Extracts localized bounding-box crops from sanitized screenshots",
+          "privacy_guarantee": "Redacted regions cannot be recovered from crops",
+          "status": "Verified, unchanged"
+        }
+      ]
+    },
+    "testing": {
+      "status": "COMPLETE",
+      "new_tests": [
+        {
+          "file": "tests/test_visual_grounding.py",
+          "cases": [
+            "test_mark_candidates_uses_sanitized_input_and_returns_mapping",
+            "Confirms label-to-reference mapping",
+            "Verifies marked image is generated and differs from input"
+          ],
+          "new_lines": 28
+        },
+        {
+          "file": "tests/test_progress_state.py",
+          "cases": [
+            "test_progress_state_is_serialized_without_sensitive_values",
+            "Confirms progress fields included, secrets excluded",
+            "Checks ABCDE****F, SuperSecret****! patterns absent"
+          ],
+          "new_lines": 24
+        }
+      ],
+      "full_suite_result": {
+        "total": 84,
+        "passed": 84,
+        "failed": 0,
+        "warnings": 2,
+        "duration_seconds": 66.55,
+        "status": "PASS"
+      },
+      "regression_coverage": {
+        "adversarial": "3 passed",
+        "capture_aria": "1 passed",
+        "candidates": "2 passed",
+        "executor": "4 passed",
+        "grounding_benchmark": "3 passed",
+        "recovery": "3 passed",
+        "real_vlm": "6 passed",
+        "verifier": "4 passed",
+        "visual_grounding_new": "1 passed",
+        "progress_state_new": "1 passed"
+      }
+    },
+    "quality_checks": {
+      "status": "COMPLETE",
+      "linting": {
+        "tool": "ruff",
+        "files_checked": [
+          "client/agent.py",
+          "client/visual_grounding.py",
+          "tests/test_visual_grounding.py",
+          "tests/test_progress_state.py"
+        ],
+        "errors_fixed": 1,
+        "violations_remaining": 0,
+        "result": "PASS"
+      },
+      "compilation": {
+        "tool": "compileall",
+        "scope": ["client", "server", "shared", "eval", "tests"],
+        "result": "PASS"
+      },
+      "whitespace": {
+        "tool": "git diff --check",
+        "result": "PASS"
+      },
+      "secret_scan": {
+        "patterns": ["ABCDE****F", "4839 **** 5201", "SuperSecret****!"],
+        "scope": ["eval/reports", "private-eye-docs"],
+        "leaks_found": 0,
+        "result": "PASS"
+      }
+    },
+    "documentation": {
+      "status": "COMPLETE",
+      "new_files": [
+        {
+          "path": "private-eye-docs/PHASE7_PLAN.md",
+          "content": "Phase 7 ablation strategy with six controlled variants (V0-V5)",
+          "lines": 40
+        },
+        {
+          "path": "private-eye-docs/PHASE7_REPORT.md",
+          "content": "Current Phase 7 status: forensics complete, live ablation pending",
+          "lines": 45
+        },
+        {
+          "path": "eval/reports/AUDIT_SESSION_PHASE7.md",
+          "content": "Comprehensive session audit of Phase 7 work",
+          "lines": 380
+        }
+      ],
+      "modified_files": [
+        {
+          "path": "private-eye-docs/PHASE6_PLAN.md",
+          "change": "Clarified deterministic local benchmark vs live VLM accuracy",
+          "lines_changed": -5
+        },
+        {
+          "path": "private-eye-docs/AUDIT_REPORT.md",
+          "change": "Updated test count (82→84), documented Phase 7 limitations",
+          "lines_changed": 2
+        }
+      ]
+    }
+  },
+  "measured_metrics": {
+    "phase_7_forensics": {
+      "live_failure_repeated_target": "e10",
+      "e10_identity": {
+        "role": "textbox",
+        "name": "Username or Registration ID",
+        "sensitive": false,
+        "visible": true,
+        "enabled": true
+      },
+      "local_top_candidate": "e10",
+      "other_candidates": [
+        {"ref": "e13", "role": "textbox", "name": "[REDACTED FIELD]", "rank_score": 0.468},
+        {"ref": "e15", "role": "button", "name": "Sign In", "rank_score": 0.4024}
+      ],
+      "failure_classification": {
+        "candidate_ambiguity": "possible",
+        "prompt_context_failure": "likely",
+        "visual_semantic_mismatch": "not_isolated",
+        "state_progress_blindness": "confirmed_by_repeated_target",
+        "model_generation_failure": "possible"
+      },
+      "recomputed_post_condition": "no_state_progress"
+    },
+    "test_suite": {
+      "total": 84,
+      "passed": 84,
+      "failed": 0,
+      "pass_rate": "100%"
+    },
+    "code_quality": {
+      "linting_violations": 0,
+      "compilation_errors": 0,
+      "whitespace_violations": 0,
+      "secret_leaks": 0
+    }
+  },
+  "privacy_audit": {
+    "status": "PASS",
+    "invariants": [
+      {
+        "name": "Raw Vault Values",
+        "status": "✅ MAINTAINED",
+        "evidence": "Only value_ref transmitted; executor resolves locally"
+      },
+      {
+        "name": "Sensitive Field Values",
+        "status": "✅ MAINTAINED",
+        "evidence": "Redacted before sanitization; crops cannot reconstruct"
+      },
+      {
+        "name": "Sensitive Candidate Names",
+        "status": "✅ MAINTAINED",
+        "evidence": "Serialized as [REDACTED FIELD] in outbound context"
+      },
+      {
+        "name": "Progress State Safety",
+        "status": "✅ MAINTAINED",
+        "evidence": "Only structural data, no raw values or vault keys"
+      },
+      {
+        "name": "Visual Artifacts",
+        "status": "✅ MAINTAINED",
+        "evidence": "All screenshots/crops originate from redacted images"
+      }
+    ],
+    "test_coverage": [
+      "tests/test_privacy.py",
+      "tests/test_real_privacy_evidence.py",
+      "tests/test_progress_state.py (NEW)",
+      "eval/reports/real_privacy_evidence.json (21 vault entries, 0 leaks)"
+    ]
+  },
+  "not_yet_completed": {
+    "status": "EXPLICITLY_DOCUMENTED_AS_PENDING",
+    "items": [
+      {
+        "item": "Live Architecture Ablation (V0-V5)",
+        "requirement": "Running controlled variants against live Qwen with identical denominators",
+        "reason": "Requires live execution, instrumentation, and data collection"
+      },
+      {
+        "item": "VLM Verifier Accuracy",
+        "requirement": "Live accuracy measurement using actual crop context",
+        "reason": "Local verifier exists; live accuracy remains experimental"
+      },
+      {
+        "item": "Recovery A/B Comparison",
+        "requirement": "Fresh reasoning vs retry without fresh model invocation",
+        "reason": "Requires instrumented controlled comparison"
+      },
+      {
+        "item": "3B vs 7B Controlled Comparison",
+        "requirement": "Identical conditions after best architecture established",
+        "reason": "Requires stable baseline and complete model comparison harness"
+      },
+      {
+        "item": "Resolution Sweep",
+        "requirement": "Low/medium/high visual resolution sensitivity on live grounding",
+        "reason": "Phase 6 resolution work was local; live grounding sweep pending"
+      },
+      {
+        "item": "Error Taxonomy & Aggregate Metrics",
+        "requirement": "Live failure classification by hypothesis",
+        "reason": "Requires live data collection and analysis"
+      }
+    ]
+  },
+  "files_changed": {
+    "new_files": 5,
+    "modified_files": 6,
+    "total_changed": 11,
+    "summary": {
+      "client/visual_grounding.py": "NEW: 70 lines, candidate visual marking",
+      "tests/test_visual_grounding.py": "NEW: 28 lines, visual marking tests",
+      "tests/test_progress_state.py": "NEW: 24 lines, progress-state privacy tests",
+      "eval/phase7_failure_forensics.py": "NEW: 80 lines, forensic inspection",
+      "private-eye-docs/PHASE7_PLAN.md": "NEW: 40 lines, ablation strategy",
+      "private-eye-docs/PHASE7_REPORT.md": "NEW: 45 lines, Phase 7 status",
+      "eval/reports/AUDIT_SESSION_PHASE7.md": "NEW: 380 lines, comprehensive audit",
+      "client/agent.py": "MODIFIED: +30 lines, repeat blocker, progress state, post-condition tightening",
+      "private-eye-docs/PHASE6_PLAN.md": "MODIFIED: -5 lines, clarified deterministic vs live accuracy",
+      "private-eye-docs/AUDIT_REPORT.md": "MODIFIED: +2 lines, updated test count and limitations"
+    }
+  },
+  "deliverables_checklist": {
+    "forensic_analysis": "✅ COMPLETE",
+    "progress_state_protocol": "✅ COMPLETE",
+    "selection_status_enum": "✅ COMPLETE",
+    "post_condition_tightening": "✅ COMPLETE",
+    "repeated_action_blocking": "✅ COMPLETE",
+    "visual_marking_primitives": "✅ COMPLETE",
+    "crop_extraction_verification": "✅ VERIFIED",
+    "vlm_context_integration": "✅ COMPLETE",
+    "prompt_updates": "✅ COMPLETE",
+    "full_test_suite": "✅ PASS (84/84)",
+    "linting_and_compilation": "✅ PASS",
+    "secret_scanning": "✅ PASS (0 leaks)",
+    "phase_7_planning": "✅ COMPLETE",
+    "phase_7_reporting": "✅ COMPLETE",
+    "privacy_boundary": "✅ MAINTAINED",
+    "documentation": "✅ COMPLETE"
+  },
+  "next_phase_readiness": {
+    "prerequisites_met": [
+      "✅ Forensic analysis complete",
+      "✅ Progress-state protocol implemented",
+      "✅ Post-condition tightened",
+      "✅ Repeated-action blocking in place",
+      "✅ Visual marking primitives ready",
+      "✅ All tests passing",
+      "✅ Linting/compilation clean",
+      "✅ Privacy boundary preserved"
+    ],
+    "ready_for": "Live VLM architecture ablation (V0-V5) with controlled denominators",
+    "explicitly_pending": [
+      "Live grounding accuracy measurement",
+      "Verifier reranking evaluation",
+      "Recovery A/B comparison",
+      "Model comparison (3B vs 7B)",
+      "Resolution sweep",
+      "Error taxonomy aggregation"
+    ]
+  },
+  "session_conclusion": {
+    "phase": "Phase 7 - Forensic Analysis & Safety Enhancement",
+    "status": "FORENSICS_COMPLETE_LIVE_ABLATION_PENDING",
+    "summary": "Forensic root-cause analysis of live Qwen smoke failure complete. Safety boundary strengthened through explicit progress-state communication, post-condition tightening, repeated-action blocking, and visual grounding primitives. All new code regression-tested. Privacy invariants maintained. Live VLM improvement claims remain explicitly unclaimed and pending controlled validation.",
+    "key_achievement": "Identified state/progress blindness as primary failure mode and implemented targeted safety controls to prevent recurrence",
+    "regression_test_status": "84 passed, 0 failed, 100% pass rate"
+  }
+}

@@ -70,7 +70,7 @@ Once all three services are running and you open `http://127.0.0.1:8080`:
 1. Click the **"KYC Identity"** button in the dashboard top navigation.
 2. Click **"▶ Run Agent"** (or run `python -m client.agent --url http://127.0.0.1:9001/login`).
 3. **What Judges See in the Dashboard**:
-   - **Left Screen (Client-Side)**: Real applicant photo, unmasked Aadhaar (`4839 2176 5201`), PAN (`ABCDE1234F`), residential address, and security PIN.
+   - **Left Screen (Client-Side)**: Real applicant photo, unmasked Aadhaar (`4839 **** 5201`), PAN (`ABCDE****F`), residential address, and security PIN.
    - **Center Screen (VLM Server Wire)**: Applicant biometric face is Gaussian blurred; passwords/PINs are blacked out; Aadhaar and phone numbers have digits masked.
    - **Right Cockpit**: Shows live latency waterfall (~380ms), zero byte leakage indicator, and bounding box badges for each detected PII.
    - **Agent Action**: The VLM issues `FILL` commands referencing `user_profile.aadhaar` instead of raw numbers. The client vault resolves these safely in RAM.
@@ -79,9 +79,9 @@ Once all three services are running and you open `http://127.0.0.1:8080`:
 1. Click the **"Banking / Pay"** button in the dashboard top navigation.
 2. Click **"▶ Run Agent"** (or run `python -m client.agent --url http://127.0.0.1:9001/checkout`).
 3. **What Judges See**:
-   - 16-digit credit card number (`4532 1148 9201 8842`) masked on the wire.
-   - 3-digit CVV (`842`) completely blacked out.
-   - 6-digit transaction OTP (`948211`) blacked out.
+   - 16-digit credit card number (`4532 **** 8842`) masked on the wire.
+   - 3-digit CVV (`***`) completely blacked out.
+   - 6-digit transaction OTP (`9482**`) blacked out.
    - Zero raw financial credentials ever appear in the network payload.
 
 ### Workflow 3: Clinical Hospital EHR & Patient Intake

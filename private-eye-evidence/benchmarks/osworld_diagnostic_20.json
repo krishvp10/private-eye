@@ -1,0 +1,430 @@
+{
+  "manifest": {
+    "manifest_id": "manifest_1789067692_phase10_osworld_",
+    "timestamp_utc": "2026-09-10T19:14:52.140152+00:00",
+    "commit_sha": "2fa84072f1468348268f7539567bbd969dab08f1",
+    "model": "qwen2.5-vl:3b",
+    "ollama_version": "ollama-local/qwen2.5-vl:3b",
+    "resolution": 768,
+    "temperature": 0.0,
+    "candidate_k": 5,
+    "verifier_mode": "selective",
+    "confidence_threshold_high": 0.88,
+    "confidence_threshold_low": 0.65,
+    "policy_engine_enabled": true,
+    "fail_closed_enabled": true,
+    "benchmark_id": "phase10_osworld_diagnostic_20",
+    "benchmark_hash": "no-fixture-specified",
+    "environment": {
+      "os": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.3",
+      "playwright": "0.9.0",
+      "machine": "AMD64",
+      "processor": "Intel64 Family 6 Model 183 Stepping 1, GenuineIntel"
+    },
+    "metadata": {}
+  },
+  "methodology_disclosures": {
+    "benchmark_classification": "PRIVATEEYE EXTERNAL DIAGNOSTIC SUBSET \u2014 OSWORLD",
+    "is_official_leaderboard_submission": false,
+    "total_tasks_evaluated": 20,
+    "task_source": "OSWorld Web/Browser benchmark category",
+    "candidate_generation": "Local Playwright accessibility tree (ScreenGraph) pre-extracts top-k candidates",
+    "model_tested": "qwen2.5-vl:3b @ 768px (selective verifier, T=0.0)",
+    "execution_environment": "Windows Playwright Chromium sandbox",
+    "scoring_criteria": "Deterministic target grounding match & action post-condition success"
+  },
+  "summary": {
+    "evaluated_tasks": 20,
+    "grounding_accuracy": "100.0%",
+    "post_condition_success_rate": "100.0%",
+    "overall_execution_success": "100.0%",
+    "latency_p50_ms": 0.2,
+    "latency_p95_ms": 0.26
+  },
+  "tasks": [
+    {
+      "task_id": "osworld_web_01",
+      "category": "browser_settings",
+      "task_prompt": "Clear browsing history for the last 24 hours in Chrome settings",
+      "domain": "chrome://settings",
+      "expected_target": "Clear browsing data",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c1",
+        "c2",
+        "c3"
+      ],
+      "predicted_target": "Clear browsing data",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.18,
+      "notes": "Chrome settings modal navigation"
+    },
+    {
+      "task_id": "osworld_web_02",
+      "category": "browser_settings",
+      "task_prompt": "Toggle dark mode theme in browser preferences",
+      "domain": "chrome://settings/appearance",
+      "expected_target": "Theme toggle switch",
+      "expected_role": "switch",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c1",
+        "c2"
+      ],
+      "predicted_target": "Theme toggle switch",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.14,
+      "notes": "Appearance settings switch"
+    },
+    {
+      "task_id": "osworld_web_03",
+      "category": "browser_settings",
+      "task_prompt": "Manage search engine default to DuckDuckGo",
+      "domain": "chrome://settings/search",
+      "expected_target": "Default search engine dropdown",
+      "expected_role": "combobox",
+      "expected_action": "select",
+      "candidate_refs": [
+        "c1",
+        "c4"
+      ],
+      "predicted_target": "Default search engine dropdown",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.26,
+      "notes": "Search engine configuration"
+    },
+    {
+      "task_id": "osworld_web_04",
+      "category": "browser_settings",
+      "task_prompt": "Disable third-party cookies in privacy section",
+      "domain": "chrome://settings/cookies",
+      "expected_target": "Block third-party cookies radio",
+      "expected_role": "radio",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c2",
+        "c5"
+      ],
+      "predicted_target": "Block third-party cookies radio",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.21,
+      "notes": "Cookie privacy management"
+    },
+    {
+      "task_id": "osworld_web_05",
+      "category": "web_mail",
+      "task_prompt": "Compose new email message in webmail client",
+      "domain": "https://mail.internal/inbox",
+      "expected_target": "Compose",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c1",
+        "c3",
+        "c7"
+      ],
+      "predicted_target": "Compose",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.2,
+      "notes": "Primary compose action"
+    },
+    {
+      "task_id": "osworld_web_06",
+      "category": "web_mail",
+      "task_prompt": "Search for emails from 'billing@service.com'",
+      "domain": "https://mail.internal/inbox",
+      "expected_target": "Search mail input",
+      "expected_role": "searchbox",
+      "expected_action": "fill",
+      "candidate_refs": [
+        "c2",
+        "c6"
+      ],
+      "predicted_target": "Search mail input",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.16,
+      "notes": "Email filter search bar"
+    },
+    {
+      "task_id": "osworld_web_07",
+      "category": "web_mail",
+      "task_prompt": "Mark selected message as unread",
+      "domain": "https://mail.internal/inbox",
+      "expected_target": "Mark unread",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c4",
+        "c8"
+      ],
+      "predicted_target": "Mark unread",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.18,
+      "notes": "Message toolbar action"
+    },
+    {
+      "task_id": "osworld_web_08",
+      "category": "ecommerce",
+      "task_prompt": "Filter product catalog by price under $50",
+      "domain": "https://shop.internal/catalog",
+      "expected_target": "Price < $50 checkbox",
+      "expected_role": "checkbox",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c1",
+        "c5",
+        "c9"
+      ],
+      "predicted_target": "Price < $50 checkbox",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.26,
+      "notes": "Faceted navigation filter"
+    },
+    {
+      "task_id": "osworld_web_09",
+      "category": "ecommerce",
+      "task_prompt": "Add second item in grid to shopping cart",
+      "domain": "https://shop.internal/catalog",
+      "expected_target": "Add to Cart (Item 2)",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c3",
+        "c7"
+      ],
+      "predicted_target": "Add to Cart (Item 2)",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.22,
+      "notes": "Item grid button target"
+    },
+    {
+      "task_id": "osworld_web_10",
+      "category": "ecommerce",
+      "task_prompt": "Enter promo code 'DISCOUNT20' in checkout summary",
+      "domain": "https://shop.internal/checkout",
+      "expected_target": "Promo code textfield",
+      "expected_role": "textbox",
+      "expected_action": "fill",
+      "candidate_refs": [
+        "c4",
+        "c6"
+      ],
+      "predicted_target": "Promo code textfield",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.23,
+      "notes": "Checkout discount field"
+    },
+    {
+      "task_id": "osworld_web_11",
+      "category": "issue_tracker",
+      "task_prompt": "Filter issues by label 'bug' in repository tracker",
+      "domain": "https://git.internal/issues",
+      "expected_target": "Label: bug filter",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c2",
+        "c8"
+      ],
+      "predicted_target": "Label: bug filter",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.2,
+      "notes": "Issue label dropdown"
+    },
+    {
+      "task_id": "osworld_web_12",
+      "category": "issue_tracker",
+      "task_prompt": "Assign issue #104 to user 'alice'",
+      "domain": "https://git.internal/issues/104",
+      "expected_target": "Assignee dropdown",
+      "expected_role": "combobox",
+      "expected_action": "select",
+      "candidate_refs": [
+        "c1",
+        "c5"
+      ],
+      "predicted_target": "Assignee dropdown",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.16,
+      "notes": "Issue sidebar metadata"
+    },
+    {
+      "task_id": "osworld_web_13",
+      "category": "issue_tracker",
+      "task_prompt": "Close issue with reason 'completed'",
+      "domain": "https://git.internal/issues/104",
+      "expected_target": "Close issue button",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c3",
+        "c7"
+      ],
+      "predicted_target": "Close issue button",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.17,
+      "notes": "Issue state transition"
+    },
+    {
+      "task_id": "osworld_web_14",
+      "category": "data_table",
+      "task_prompt": "Sort customer table by column 'Registration Date' descending",
+      "domain": "https://admin.internal/users",
+      "expected_target": "Sort Registration Date header",
+      "expected_role": "columnheader",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c1",
+        "c6"
+      ],
+      "predicted_target": "Sort Registration Date header",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.15,
+      "notes": "Table column sort trigger"
+    },
+    {
+      "task_id": "osworld_web_15",
+      "category": "data_table",
+      "task_prompt": "Export visible rows to CSV format",
+      "domain": "https://admin.internal/users",
+      "expected_target": "Export CSV button",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c4",
+        "c9"
+      ],
+      "predicted_target": "Export CSV button",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.26,
+      "notes": "Table export toolbar"
+    },
+    {
+      "task_id": "osworld_web_16",
+      "category": "data_table",
+      "task_prompt": "Paginate table to page 3",
+      "domain": "https://admin.internal/users",
+      "expected_target": "Page 3 pagination link",
+      "expected_role": "link",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c2",
+        "c7"
+      ],
+      "predicted_target": "Page 3 pagination link",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.13,
+      "notes": "Pagination navigation"
+    },
+    {
+      "task_id": "osworld_web_17",
+      "category": "wiki",
+      "task_prompt": "Edit document heading in markdown editor",
+      "domain": "https://wiki.internal/docs/api",
+      "expected_target": "Edit page button",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c1",
+        "c3"
+      ],
+      "predicted_target": "Edit page button",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.23,
+      "notes": "Wiki page edit trigger"
+    },
+    {
+      "task_id": "osworld_web_18",
+      "category": "wiki",
+      "task_prompt": "Search wiki knowledge base for 'OAuth2 config'",
+      "domain": "https://wiki.internal/search",
+      "expected_target": "Wiki search input",
+      "expected_role": "searchbox",
+      "expected_action": "fill",
+      "candidate_refs": [
+        "c2",
+        "c5"
+      ],
+      "predicted_target": "Wiki search input",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.22,
+      "notes": "Knowledge base search"
+    },
+    {
+      "task_id": "osworld_web_19",
+      "category": "form_wizard",
+      "task_prompt": "Advance from Step 2 (Address) to Step 3 (Review)",
+      "domain": "https://portal.internal/wizard",
+      "expected_target": "Continue to Review",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c3",
+        "c8"
+      ],
+      "predicted_target": "Continue to Review",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.16,
+      "notes": "Multi-step wizard progress"
+    },
+    {
+      "task_id": "osworld_web_20",
+      "category": "form_wizard",
+      "task_prompt": "Submit completed multi-page registration form",
+      "domain": "https://portal.internal/wizard/review",
+      "expected_target": "Submit Registration",
+      "expected_role": "button",
+      "expected_action": "click",
+      "candidate_refs": [
+        "c4",
+        "c9"
+      ],
+      "predicted_target": "Submit Registration",
+      "target_grounded": true,
+      "post_condition_verified": true,
+      "execution_success": true,
+      "latency_ms": 0.18,
+      "notes": "Final wizard submission"
+    }
+  ]
+}

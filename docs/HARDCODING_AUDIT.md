@@ -24,7 +24,7 @@
 | 9 | `dashboard/app.py` | **B** | `url_map = {"kyc": .../login, "checkout": .../checkout, "patient": .../patient}` | Hardcodes the 3 demo sites into dashboard Python logic | Enumerate available domains dynamically from `demo_configs/` directory | ❌ No (Refactor) |
 | 10 | `dashboard/static/index.html` | **B / E** | Hardcoded domain buttons (`KYC Identity`, `Banking / Pay`, `Patient EHR`) | Adding a domain requires editing HTML | Populate domain selector pills dynamically via `/api/domains` | ❌ No (Refactor) |
 | 11 | `dashboard/static/app.js` | **C** | Fixed viewport assumptions `1280` and `800` for bounding box percentages | Misaligns overlay boxes when display container is letterboxed | Implement mathematical containment geometry (`geometry.js`) | ❌ No (Refactor) |
-| 12 | `tests/test_demo_site.py` & others | **A** | Synthetic user credentials (`APPL-2026-88192`, `SuperSecretPass123!`) | Deterministic test assertions | **Keep as explicit deterministic test fixtures** | ✅ Yes (Legitimate fixture) |
+| 12 | `tests/test_demo_site.py` & others | **A** | Synthetic user credentials (`APPL-2026-88192`, `SuperSecret****!`) | Deterministic test assertions | **Keep as explicit deterministic test fixtures** | ✅ Yes (Legitimate fixture) |
 | 13 | `eval/benchmark.py` | **A** | Ground truth evaluation metrics (F1, IoU targets) | Benchmark criteria from SIH problem statement | **Keep as evaluation rubric standard** | ✅ Yes (Legitimate rubric) |
 | 14 | `privacy/detectors/regex.py` | **C** | Statutory regex patterns for Aadhaar, PAN, Cards, Phones, Emails | Required statutory specifications for Indian & international identifiers | **Keep regex specifications**; ensure extensible by config | ✅ Yes (Statutory patterns) |
 

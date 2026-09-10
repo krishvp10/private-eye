@@ -1,0 +1,133 @@
+{
+  "audit_name": "phase7_privacy_invariant_audit",
+  "total_boundaries_audited": 11,
+  "vault_secrets_audited": 21,
+  "scanned_report_files": 87,
+  "total_raw_secret_leaks": 0,
+  "overall_status": "PASS",
+  "boundaries": [
+    {
+      "boundary_id": "B01",
+      "name": "Raw Screenshot",
+      "locality": "LOCAL_ONLY",
+      "remote_transmitted": false,
+      "invariant_enforced": "Never leaves local client process; discarded immediately after redaction.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B02",
+      "name": "Redacted Screenshot",
+      "locality": "REMOTE_ELIGIBLE",
+      "remote_transmitted": true,
+      "invariant_enforced": "Visual redaction engine covers PII bounding boxes with solid color masks before transmission.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B03",
+      "name": "Safe ScreenGraph",
+      "locality": "REMOTE_ELIGIBLE",
+      "remote_transmitted": true,
+      "invariant_enforced": "ScreenGraph traversal redacts sensitive DOM text nodes to [REDACTED]; passwords and secrets masked.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B04",
+      "name": "Safe Candidate List",
+      "locality": "REMOTE_ELIGIBLE",
+      "remote_transmitted": true,
+      "invariant_enforced": "SafeCandidate objects contain only ref, role, sanitized name, visibility, and bounding box. Value is local.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B05",
+      "name": "Marked Candidate Screenshot",
+      "locality": "REMOTE_ELIGIBLE",
+      "remote_transmitted": true,
+      "invariant_enforced": "mark_candidates draws candidate bounding boxes exclusively on already-redacted image bytes.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B06",
+      "name": "Candidate Visual Crops",
+      "locality": "REMOTE_ELIGIBLE",
+      "remote_transmitted": true,
+      "invariant_enforced": "Candidate crops are cropped exclusively from redacted screenshot bytes. No unredacted pixel is accessible.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B07",
+      "name": "Planner Prompt",
+      "locality": "REMOTE_ELIGIBLE",
+      "remote_transmitted": true,
+      "invariant_enforced": "Structured system/user prompt contains generic goal, safe candidates, and schema contract. Zero secrets.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B08",
+      "name": "Verifier Prompt",
+      "locality": "REMOTE_ELIGIBLE",
+      "remote_transmitted": true,
+      "invariant_enforced": "Verifier prompt contains task and candidate list; no user profile secrets or vault keys.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B09",
+      "name": "Model Response JSON",
+      "locality": "REMOTE_ORIGIN",
+      "remote_transmitted": true,
+      "invariant_enforced": "Model returns structured JSON with candidate_ref and selection_status. Value_ref resolution occurs locally.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B10",
+      "name": "Client Telemetry Logs",
+      "locality": "LOCAL_STORAGE",
+      "remote_transmitted": false,
+      "invariant_enforced": "Telemetry stores execution state, latency, and status codes. Excludes input field values.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    },
+    {
+      "boundary_id": "B11",
+      "name": "Benchmark & Diagnostic Reports",
+      "locality": "DISK_ARTIFACTS",
+      "remote_transmitted": false,
+      "invariant_enforced": "All generated eval JSON and markdown reports must be free of raw synthetic secrets.",
+      "raw_secret_leaks": 0,
+      "sensitive_metadata_leaks": 0,
+      "status": "PASS"
+    }
+  ],
+  "independent_network_evidence": {
+    "collection_point": "OutboundLeakInterceptor (client/agent.py -> server transmission)",
+    "evidence_method": "Deterministic runtime hook scanning all outbound JSON payloads against 21 vault secrets and regex detectors",
+    "synthetic_secrets_count": 21,
+    "packet_process_scope": "Intercepts all HTTP POST requests to remote VLM endpoint; blocks process if leak is detected",
+    "verified_invariants": [
+      "Every representation crossing the remote boundary obeys the same privacy invariant.",
+      "Crops derive only from already-redacted screenshots.",
+      "Sensitive form fills send only 'value_ref' (e.g. 'user_profile.aadhaar'); raw secret resolution happens strictly in local Playwright executor.",
+      "No raw passwords, card numbers, Aadhaar, PAN, or health data ever reach the network layer."
+    ],
+    "limitations": "This empirical test verifies zero raw secret leakage for the 21 audited synthetic vault credentials and regex patterns. It does not constitute legal privacy certification or formal cryptographic zero-knowledge proof."
+  }
+}
