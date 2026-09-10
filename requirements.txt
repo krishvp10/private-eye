@@ -12,7 +12,7 @@ pytest-playwright>=0.6.0
 
 # Vision & Image Processing
 pillow>=11.0.0
-opencv-python-headless>=4.10.0
+opencv-python-headless>=5.0.0.93
 onnxruntime>=1.20.0
 
 # System Telemetry & CLI Dashboard
