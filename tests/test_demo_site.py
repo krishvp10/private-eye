@@ -8,14 +8,17 @@ Validates that the synthetic KYC demo web application:
 """
 
 import json
-from pathlib import Path
-import pytest
-import uvicorn
+import socket
 import threading
 import time
-import socket
+from pathlib import Path
+
+import pytest
+import uvicorn
 from playwright.async_api import async_playwright
+
 from demo_sites.server import app
+
 
 def get_free_port() -> int:
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:

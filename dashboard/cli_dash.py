@@ -3,13 +3,13 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from rich.console import Console
 from rich.table import Table
 
 
-def render_dashboard(summary: Dict[str, Any]) -> None:
+def render_dashboard(summary: dict[str, Any]) -> None:
     console = Console()
     console.print("[bold green]RAW DATA NEVER TRANSMITTED[/bold green]")
     console.print(f"Run: {summary.get('run_id', 'unknown')} | Success: {summary.get('success', False)}")

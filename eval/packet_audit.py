@@ -14,7 +14,7 @@ import math
 import time
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 from client.vault import LocalVault
 from privacy.detectors.regex import PATTERNS
@@ -26,7 +26,7 @@ def calculate_shannon_entropy(text: str) -> float:
         return 0.0
     entropy = 0.0
     length = len(text)
-    freq: Dict[str, int] = {}
+    freq: dict[str, int] = {}
     for char in text:
         freq[char] = freq.get(char, 0) + 1
     for count in freq.values():
@@ -42,11 +42,11 @@ class PacketAuditRecord:
     byte_count: int
     sha256_hash: str
     entropy: float
-    scanned_patterns: List[str]
+    scanned_patterns: list[str]
     vault_secrets_checked: int
     violations_detected: int
     passed: bool
-    details: Dict[str, Any] = field(default_factory=dict)
+    details: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
@@ -59,17 +59,17 @@ class AuditCertificate:
     compliance_status: str
     certified_zero_leak: bool
     summary_hash: str
-    packet_records: List[PacketAuditRecord] = field(default_factory=list)
+    packet_records: list[PacketAuditRecord] = field(default_factory=list)
 
 
 class PacketAuditEngine:
     """Verifiable packet-level wire inspection and certification engine."""
 
-    def __init__(self, vault: Optional[LocalVault] = None) -> None:
+    def __init__(self, vault: LocalVault | None = None) -> None:
         self.vault = vault or LocalVault()
-        self.records: List[PacketAuditRecord] = []
+        self.records: list[PacketAuditRecord] = []
 
-    def audit_payload(self, payload: str | bytes, packet_id: Optional[str] = None) -> PacketAuditRecord:
+    def audit_payload(self, payload: str | bytes, packet_id: str | None = None) -> PacketAuditRecord:
         """Thoroughly audit a single outbound payload string or raw bytes."""
         ts = time.time()
         if isinstance(payload, bytes):
@@ -84,7 +84,7 @@ class PacketAuditEngine:
         byte_count = len(payload_bytes)
         entropy = calculate_shannon_entropy(payload_str[:4096])
 
-        violations: List[str] = []
+        violations: list[str] = []
         raw_secrets = self.vault.get_all_raw_secrets()
 
         # 1. Exact raw secret match
@@ -116,7 +116,7 @@ class PacketAuditEngine:
         self.records.append(record)
         return record
 
-    def generate_certificate(self, output_path: Optional[str] = None) -> AuditCertificate:
+    def generate_certificate(self, output_path: str | None = None) -> AuditCertificate:
         """Produce an official audit certificate across all inspected wire packets."""
         total_packets = len(self.records)
         total_bytes = sum(r.byte_count for r in self.records)
@@ -155,5 +155,5 @@ if __name__ == "__main__":
     print(f"Status: {cert.compliance_status}")
     print(f"Summary Hash: {cert.summary_hash}")
     print(f"Packets Inspected: {cert.total_packets_inspected}")
-    print(f"Certificate saved to: audit_certificate.json")
+    print("Certificate saved to: audit_certificate.json")
 

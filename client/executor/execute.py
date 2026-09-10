@@ -6,24 +6,26 @@ destructive action gating, and retry recovery.
 """
 
 import inspect
+import logging
 import os
 import time
-import logging
-from typing import Any, Awaitable, Callable, Dict, Optional
+from collections.abc import Awaitable, Callable
+from typing import Any
+
 from playwright.async_api import Locator, Page
+
+from client.vault import LocalVault
 from shared.protocol import (
     ActionType,
     AgentAction,
     ExecutionResult,
 )
-from client.vault import LocalVault
 
 logger = logging.getLogger("private_eye_executor")
 
 
 class ExecutorSecurityException(Exception):
     """Raised when an action violates client-side security policies."""
-    pass
 
 
 def classify_execution_error(error: str) -> str:
@@ -47,10 +49,10 @@ class ActionExecutor:
 
     def __init__(
         self,
-        vault: Optional[LocalVault] = None,
+        vault: LocalVault | None = None,
         confirm_destructive: bool = False,
-        require_confirmation: Optional[bool] = None,
-        confirmation_handler: Optional[Callable[[AgentAction], bool | Awaitable[bool]]] = None,
+        require_confirmation: bool | None = None,
+        confirmation_handler: Callable[[AgentAction], bool | Awaitable[bool]] | None = None,
         timeout_ms: int = 5000,
     ) -> None:
         self.vault = vault or LocalVault()
@@ -62,7 +64,7 @@ class ActionExecutor:
         )
         self.confirmation_handler = confirmation_handler
         self.timeout_ms = timeout_ms
-        self._ref_map: Dict[str, Dict[str, Any]] = {}
+        self._ref_map: dict[str, dict[str, Any]] = {}
 
     async def execute(self, page: Page, action: AgentAction, step: int = 1) -> ExecutionResult:
         """Validate and execute action against the active Playwright page."""
@@ -93,7 +95,9 @@ class ActionExecutor:
 
         # 3. Handle Navigation
         if action.action == ActionType.NAVIGATE:
-            if not action.url or not (action.url.startswith("http://") or action.url.startswith("https://")):
+            if not action.url or not (
+                action.url.startswith("http://") or action.url.startswith("https://")
+            ):
                 raise ExecutorSecurityException(f"Forbidden or invalid URL: '{action.url}'")
             await page.goto(action.url, timeout=self.timeout_ms)
             return ExecutionResult(
@@ -153,11 +157,13 @@ class ActionExecutor:
 
             elif action.action == ActionType.FILL:
                 if not action.value_ref:
-                    raise ExecutorSecurityException("Fill action requires 'value_ref'. Raw values are prohibited.")
-                
+                    raise ExecutorSecurityException(
+                        "Fill action requires 'value_ref'. Raw values are prohibited."
+                    )
+
                 # Resolve value locally from private vault
                 secret_value = self.vault.resolve(action.value_ref)
-                
+
                 # Fill without logging the secret
                 await locator.fill(secret_value, timeout=self.timeout_ms)
 
@@ -193,13 +199,17 @@ class ActionExecutor:
 
         if t.ref:
             if not self._ref_map:
-                raise ExecutorSecurityException("Unknown element ref; capture mapping is unavailable.")
+                raise ExecutorSecurityException(
+                    "Unknown element ref; capture mapping is unavailable."
+                )
             record = self._ref_map.get(t.ref)
             if not record:
                 raise ExecutorSecurityException(f"Unknown element ref: {t.ref}")
             locator = page.locator(f"#{record['element_id']}")
             if not await locator.is_visible():
                 raise ExecutorSecurityException(f"reference_not_visible:{t.ref}")
+            if not await locator.is_enabled():
+                raise ExecutorSecurityException(f"reference_not_enabled:{t.ref}")
             expected_name = record.get("name")
             if expected_name:
                 actual_name = await locator.get_attribute("aria-label") or ""
@@ -238,7 +248,7 @@ class ActionExecutor:
             return bool(await decision)
         return bool(decision)
 
-    def set_reference_map(self, mapping: dict[str, str | Dict[str, Any]]) -> None:
+    def set_reference_map(self, mapping: dict[str, str | dict[str, Any]]) -> None:
         """Install the current capture's safe ref -> local DOM id mapping."""
         self._ref_map = {}
         for ref, value in mapping.items():

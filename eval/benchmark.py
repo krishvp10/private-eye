@@ -12,21 +12,23 @@ Generates the scorecard summary and confusion matrix.
 
 import asyncio
 import json
-import time
-from pathlib import Path
-from typing import Any, Dict, List
 import socket
 import threading
+import time
+from pathlib import Path
+from typing import Any
+
 import uvicorn
 from playwright.async_api import async_playwright
-from client.capture import capture_page
-from demo_sites.server import app as demo_app
-from privacy.pipeline import PrivacyPipeline
-from privacy.redaction.masker import RedactionEngine
-from eval.latency import TelemetryCollector, StepTelemetry
-from eval.redaction import compute_redaction_metrics
 from rich.console import Console
 from rich.table import Table
+
+from client.capture import capture_page
+from demo_sites.server import app as demo_app
+from eval.latency import StepTelemetry, TelemetryCollector
+from eval.redaction import compute_redaction_metrics
+from privacy.pipeline import PrivacyPipeline
+from privacy.redaction.masker import RedactionEngine
 
 GROUND_TRUTH_PATH = Path(__file__).parent.parent / "demo_sites" / "ground_truth.json"
 
@@ -45,7 +47,7 @@ def ensure_server_running(host: str = "127.0.0.1", port: int = 9001):
     time.sleep(1.0)
 
 
-async def run_benchmark(base_url: str = "http://127.0.0.1:9001") -> Dict[str, Any]:
+async def run_benchmark(base_url: str = "http://127.0.0.1:9001") -> dict[str, Any]:
     ensure_server_running()
     console = Console()
     telemetry = TelemetryCollector()

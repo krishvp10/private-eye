@@ -10,15 +10,17 @@ Validates the complete autonomous browser agent loop:
 7. Strict verification: ZERO raw PII leaked across the wire or in server logs.
 """
 
-import pytest
-import uvicorn
 import threading
 import time
+
+import pytest
+import uvicorn
+
 from client.agent import PrivateEyeAgent
-from server.api import app as server_app, RUN_AUDIT_LOGS
-from demo_sites.server import app as demo_app
 from client.vault import LocalVault
-from eval.leak_check import OutboundLeakInterceptor
+from demo_sites.server import app as demo_app
+from server.api import RUN_AUDIT_LOGS
+from server.api import app as server_app
 
 DEMO_PORT = 9007
 SERVER_PORT = 8007

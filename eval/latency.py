@@ -5,10 +5,10 @@ and monitors client memory (RSS) and CPU usage via psutil.
 """
 
 import os
-import time
+from dataclasses import dataclass
+from typing import Any
+
 import psutil
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
 
 
 @dataclass
@@ -32,9 +32,9 @@ class TelemetryCollector:
 
     def __init__(self) -> None:
         self.process = psutil.Process(os.getpid())
-        self.steps: List[StepTelemetry] = []
+        self.steps: list[StepTelemetry] = []
 
-    def get_resource_snapshot(self) -> Dict[str, float]:
+    def get_resource_snapshot(self) -> dict[str, float]:
         """Query current process RAM in MB and CPU percentage."""
         try:
             mem_info = self.process.memory_info()
@@ -59,7 +59,7 @@ class TelemetryCollector:
         )
         self.steps.append(step_data)
 
-    def summary(self) -> Dict[str, Any]:
+    def summary(self) -> dict[str, Any]:
         if not self.steps:
             return {}
         avg_total = sum(s.total_ms for s in self.steps) / len(self.steps)

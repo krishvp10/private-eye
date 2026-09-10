@@ -8,15 +8,10 @@ Validates:
 5. Telemetry audit log contains zero raw PII or secret values.
 """
 
-import pytest
 from fastapi.testclient import TestClient
-from server.api import app, RUN_AUDIT_LOGS
+
+from server.api import app
 from shared.protocol import (
-    ActionType,
-    AgentAction,
-    ImageMeta,
-    Redaction,
-    RedactionMap,
     ScreenContext,
     ScreenGraph,
     ScreenNode,

@@ -1,0 +1,110 @@
+{
+  "site_id": "patient",
+  "display_name": "Patient EHR",
+  "portal_title": "Clinical Consultation & Intake",
+  "portal_subtitle": "Apollo Life Digital Hospital — Secure In-Patient Registration",
+  "theme_badge": "HIPAA & DISHA COMPLIANT EHR",
+  "theme_badge_style": "color: #38bdf8; background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3);",
+  "task": "Complete patient clinical intake",
+  "entry_route": "/patient",
+  "routes": [
+    {
+      "route": "/patient",
+      "title": "Patient Clinical EHR — Apollo Life Hospital",
+      "template": "form",
+      "next_route": "/success",
+      "badge_text": "DISHA HEALTH PRIVACY SHIELD",
+      "fields": [
+        {
+          "id": "field_uhid",
+          "label": "Universal Health ID (UHID / ABHA)",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "uhid",
+          "vault_ref": "user_profile.uhid",
+          "default_value": "ABHA-2026-98142-990"
+        },
+        {
+          "id": "field_patient_name",
+          "label": "Patient Full Name",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "name",
+          "vault_ref": "user_profile.name",
+          "autocomplete": "name",
+          "default_value": "Rahul Sharma"
+        },
+        {
+          "id": "field_dob",
+          "label": "Date of Birth",
+          "field_type": "date",
+          "sensitive": true,
+          "category": "dob",
+          "vault_ref": "user_profile.dob",
+          "autocomplete": "bday",
+          "default_value": "1990-05-15"
+        },
+        {
+          "id": "field_phone",
+          "label": "Emergency Contact Number",
+          "field_type": "tel",
+          "sensitive": true,
+          "category": "phone",
+          "vault_ref": "user_profile.phone",
+          "autocomplete": "tel",
+          "default_value": "9876543210"
+        },
+        {
+          "id": "field_diagnosis",
+          "label": "Primary Clinical Diagnosis & Pre-existing Conditions",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "health",
+          "vault_ref": "user_profile.diagnosis",
+          "default_value": "Type 2 Diabetes Mellitus with Mild Hypertension"
+        },
+        {
+          "id": "field_prescription",
+          "label": "Active Medications & Prescription Dosage",
+          "field_type": "textarea",
+          "sensitive": true,
+          "category": "health",
+          "vault_ref": "user_profile.prescription",
+          "default_value": "Metformin 500mg BD, Telmisartan 40mg OD, Atorvastatin 10mg HS"
+        },
+        {
+          "id": "field_insurance_id",
+          "label": "Health Insurance TPA Policy ID",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "pan",
+          "vault_ref": "user_profile.insurance_id",
+          "default_value": "MEDICLAIM-POL-8849102"
+        }
+      ],
+      "actions": [
+        {
+          "id": "btn_admit_patient",
+          "label": "Confirm Clinical Admission",
+          "role": "button",
+          "is_submit": true
+        }
+      ]
+    },
+    {
+      "route": "/success",
+      "title": "Clinical Registration Complete",
+      "template": "success",
+      "badge_text": "ADMISSION REGISTERED",
+      "fields": [],
+      "actions": [
+        {
+          "id": "btn_return",
+          "label": "Return to Dashboard",
+          "role": "button",
+          "is_submit": false
+        }
+      ]
+    }
+  ]
+}

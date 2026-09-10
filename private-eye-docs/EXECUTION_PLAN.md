@@ -26,13 +26,23 @@ local capture -> local privacy gate -> sanitized context -> VLM reasoning
 - Machine-readable request privacy inspection.
 - Destructive-action confirmation seam.
 - Reference visibility/name validation.
-- 28 passing automated tests.
+- 37 passing automated tests.
+- Context-ablation runner and honest SKIPPED report generation.
+- GitHub CI, CodeQL, Dependency Review, Dependabot, and manual benchmark workflows.
+- Playwright 1.62 AI ARIA snapshot integration with safe fallback.
+- Reproducible vLLM/Qwen deployment and health-check harness.
+- Model comparison report runner with explicit SKIPPED behavior.
+- Optional dashboard receives sanitized imagery only; raw screenshots stay local.
 
 ### Current environment blocker
 
 Live Qwen2.5-VL execution is not verified in this workstation because no reachable
 GPU-backed vLLM endpoint is configured. Real mode must remain explicitly configured;
 it must not silently fall back to mock reasoning.
+
+The same blocker applies to the context-ablation and five-run reports:
+`eval/reports/context_ablation.json` and `eval/reports/real_vlm_report.json` are
+SKIPPED, not PASS, until a reachable real endpoint is provided.
 
 ## Ordered milestones
 

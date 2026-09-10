@@ -3,7 +3,8 @@ Signal 1: DOM Heuristic Privacy Detector.
 Highest confidence detector operating on DOM element types, attributes, and accessible labels.
 """
 
-from typing import Any, Dict, List
+from typing import Any
+
 from shared.protocol import (
     BoundingBox,
     Detection,
@@ -45,8 +46,8 @@ AUTOCOMPLETE_MAP = {
 class DOMDetector:
     """Detects sensitive regions by inspecting DOM tag attributes and accessible labels."""
 
-    def detect(self, elements: List[Dict[str, Any]]) -> List[Detection]:
-        detections: List[Detection] = []
+    def detect(self, elements: list[dict[str, Any]]) -> list[Detection]:
+        detections: list[Detection] = []
 
         for el in elements:
             bbox_coords = el.get("bbox")

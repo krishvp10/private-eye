@@ -1,0 +1,60 @@
+{
+  "site_id": "sample_fixture",
+  "display_name": "Generic Fixture Portal",
+  "portal_title": "Enterprise Credential Gateway",
+  "portal_subtitle": "Testing Zero-Code Generalization for Dynamic Portals",
+  "theme_badge": "ZERO-CODE GENERALIZATION TEST",
+  "theme_badge_style": "color: #a855f7; background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.3);",
+  "task": "Complete fixture authentication test",
+  "entry_route": "/fixture",
+  "routes": [
+    {
+      "route": "/fixture",
+      "title": "Generic Test Fixture Form",
+      "template": "form",
+      "next_route": "/fixture-success",
+      "badge_text": "CONFIG-DRIVEN TEST SEED",
+      "fields": [
+        {
+          "id": "field_fixture_user",
+          "label": "Test Employee ID",
+          "field_type": "text",
+          "sensitive": false,
+          "default_value": "EMP-99042"
+        },
+        {
+          "id": "field_fixture_secret",
+          "label": "Confidential Security Key",
+          "field_type": "password",
+          "sensitive": true,
+          "category": "password",
+          "vault_ref": "user_profile.fixture_key",
+          "default_value": "FIXTURE-SECRET-XYZ-9912"
+        }
+      ],
+      "actions": [
+        {
+          "id": "btn_verify_fixture",
+          "label": "Verify Security Token",
+          "role": "button",
+          "is_submit": true
+        }
+      ]
+    },
+    {
+      "route": "/fixture-success",
+      "title": "Fixture Verification Complete",
+      "template": "success",
+      "badge_text": "GENERALIZATION CONFIRMED",
+      "fields": [],
+      "actions": [
+        {
+          "id": "btn_return",
+          "label": "Return Home",
+          "role": "button",
+          "is_submit": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,94 @@
+{
+  "site_id": "checkout",
+  "display_name": "Banking / Pay",
+  "portal_title": "Instant Merchant Settlement",
+  "portal_subtitle": "Authorize transaction of ₹4,999.00 via verified debit/credit card",
+  "theme_badge": "256-BIT ENCRYPTED CHECKOUT",
+  "theme_badge_style": "color: #10b981; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3);",
+  "task": "Complete payment transaction",
+  "entry_route": "/checkout",
+  "routes": [
+    {
+      "route": "/checkout",
+      "title": "Payment Checkout — Secure Banking Gateway",
+      "template": "form",
+      "next_route": "/success",
+      "badge_text": "256-BIT PCI-DSS COMPLIANT CHECKOUT",
+      "fields": [
+        {
+          "id": "field_card_number",
+          "label": "Card Number (16 Digits)",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "card",
+          "vault_ref": "user_profile.card_number",
+          "autocomplete": "cc-number",
+          "default_value": "4532 1148 9201 8842"
+        },
+        {
+          "id": "field_cardholder",
+          "label": "Cardholder Name",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "name",
+          "vault_ref": "user_profile.cardholder",
+          "autocomplete": "cc-name",
+          "default_value": "Rahul Sharma"
+        },
+        {
+          "id": "field_expiry",
+          "label": "Expiration Date (MM/YY)",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "dob",
+          "vault_ref": "user_profile.expiry",
+          "autocomplete": "cc-exp",
+          "default_value": "08/28"
+        },
+        {
+          "id": "field_cvv",
+          "label": "Security Code (CVV)",
+          "field_type": "password",
+          "sensitive": true,
+          "category": "cvv",
+          "vault_ref": "user_profile.cvv",
+          "autocomplete": "cc-csc",
+          "default_value": "842"
+        },
+        {
+          "id": "field_otp",
+          "label": "One-Time Password (OTP)",
+          "field_type": "password",
+          "sensitive": true,
+          "category": "password",
+          "vault_ref": "user_profile.otp",
+          "autocomplete": "one-time-code",
+          "default_value": "948211"
+        }
+      ],
+      "actions": [
+        {
+          "id": "btn_pay",
+          "label": "Pay ₹4,999 Securely",
+          "role": "button",
+          "is_submit": true
+        }
+      ]
+    },
+    {
+      "route": "/success",
+      "title": "Payment Authorized — Settlement Confirmed",
+      "template": "success",
+      "badge_text": "TRANSACTION SUCCESSFUL",
+      "fields": [],
+      "actions": [
+        {
+          "id": "btn_return",
+          "label": "Return to Merchant",
+          "role": "button",
+          "is_submit": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PrivateEye Privacy Verification Report — PE-VERIFY-1789049864-06AF1187</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 1.5cm;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      color: #1e293b;
+      background: #f8fafc;
+      margin: 0;
+      padding: 2rem;
+    }
+    .report-card {
+      max-width: 850px;
+      margin: 0 auto;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .brand h1 {
+      font-size: 1.5rem;
+      margin: 0 0 0.25rem 0;
+      color: #0f172a;
+    }
+    .brand p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #64748b;
+      font-family: monospace;
+    }
+    .status-badge {
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .status-badge.pass {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+    .status-badge.fail {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+    .panel-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748b;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 0.35rem;
+    }
+    .prop-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+      font-size: 0.85rem;
+    }
+    .prop-label {
+      color: #64748b;
+    }
+    .prop-val {
+      font-weight: 600;
+      color: #0f172a;
+      font-family: monospace;
+    }
+    .cat-pill {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-family: monospace;
+      margin: 0.2rem;
+    }
+    .integrity-box {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 1.25rem;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 0.8rem;
+      word-break: break-all;
+      margin-top: 1.5rem;
+    }
+    .integrity-box .label {
+      color: #94a3b8;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+    .footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      text-align: center;
+    }
+    @media print {
+      body { background: #fff; padding: 0; }
+      .report-card { border: none; box-shadow: none; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="report-card">
+    <div class="header">
+      <div class="brand">
+        <h1>PrivateEye Privacy Verification Report</h1>
+        <p>Verification ID: PE-VERIFY-1789049864-06AF1187</p>
+        <p>Timestamp: 2026-09-10T14:17:44Z</p>
+      </div>
+      <div class="status-badge pass">
+        VERIFIED ZERO-LEAK
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="panel-title">Execution Context</div>
+        <div class="prop-row"><span class="prop-label">Run ID:</span><span class="prop-val">run-verify-demo</span></div>
+        <div class="prop-row"><span class="prop-label">Workflow:</span><span class="prop-val">KYC</span></div>
+        <div class="prop-row"><span class="prop-label">Model Reasoning:</span><span class="prop-val">MOCK</span></div>
+        <div class="prop-row"><span class="prop-label">Steps Executed:</span><span class="prop-val">4</span></div>
+        <div class="prop-row"><span class="prop-label">Redactions Applied:</span><span class="prop-val">7</span></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Outbound Privacy Verifications</div>
+        <div class="prop-row"><span class="prop-label">Packet Wire Leaks:</span><span class="prop-val">ZERO_LEAK_CONFIRMED</span></div>
+        <div class="prop-row"><span class="prop-label">Server Log Leaks:</span><span class="prop-val">CLEAN</span></div>
+        <div class="prop-row"><span class="prop-label">Raw Secret Exposed:</span><span class="prop-val">NO</span></div>
+        <div class="prop-row"><span class="prop-label">Raw Screenshot Wire:</span><span class="prop-val">NO</span></div>
+        <div class="prop-row"><span class="prop-label">Local Vault Resolution:</span><span class="prop-val">ENFORCED</span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-title">Monitored PII / Sensitive Categories (7)</div>
+      <div><span class="cat-pill">aadhaar</span><span class="cat-pill">pan</span><span class="cat-pill">phone</span><span class="cat-pill">email</span><span class="cat-pill">dob</span><span class="cat-pill">card</span><span class="cat-pill">uhid</span></div>
+    </div>
+
+    <div class="integrity-box">
+      <div class="label">Cryptographic Integrity Hash (SHA-256)</div>
+      <div>06af1187f08b9c67523886668e55fe44554fb27dd4a0a6e34b4d23ce91202498</div>
+      <div style="margin-top: 0.5rem; color: #38bdf8; font-size: 0.75rem;">
+        Standard: PrivateEye Client-Side Sanitization & Outbound Wire Verification
+      </div>
+    </div>
+
+    <div class="footer">
+      Generated automatically by PrivateEye Verifiable Audit Subsystem.
+      This technical report documents zero raw sensitive token transmission on external AI model interfaces.
+    </div>
+  </div>
+</body>
+</html>

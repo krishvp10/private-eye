@@ -1,0 +1,21 @@
+{
+  "status": "SKIPPED",
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "models": [
+    {
+      "model": "Qwen/Qwen2.5-VL-3B-Instruct",
+      "status": "SKIPPED",
+      "reason": "PRIVATEEYE_VLM_MODE is not real",
+      "runs": []
+    },
+    {
+      "model": "Qwen/Qwen2.5-VL-7B-Instruct",
+      "status": "SKIPPED",
+      "reason": "PRIVATEEYE_VLM_MODE is not real",
+      "runs": []
+    }
+  ],
+  "note": "No model ranking is made without measured real-model evidence."
+}

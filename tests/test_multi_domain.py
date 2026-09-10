@@ -4,11 +4,11 @@ Validates PrivateEye across Banking/Checkout and Healthcare/Patient portals.
 Ensures zero raw card numbers, CVVs, UHIDs, or clinical prescriptions ever leak.
 """
 
-import json
 import socket
 import threading
 import time
 from pathlib import Path
+
 import pytest
 import uvicorn
 from playwright.async_api import async_playwright

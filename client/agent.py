@@ -12,22 +12,20 @@ import json
 import os
 import time
 import uuid
-import os
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any
 
 import httpx
 from playwright.async_api import async_playwright
 
-from client.capture import CapturedContext, capture_page
-from client.executor.execute import ActionExecutor
-from client.executor.execute import classify_execution_error
+from client.capture import capture_page
+from client.executor.execute import ActionExecutor, classify_execution_error
 from client.recovery import RecoveryController
 from eval.leak_check import OutboundLeakInterceptor
 from privacy.pipeline import PrivacyPipeline
 from privacy.redaction.masker import RedactionEngine
 from server.validation import validate_agent_action
-from shared.protocol import AgentAction, ActionType, ScreenContext
+from shared.protocol import ActionType, ScreenContext
 
 
 @dataclass
@@ -36,8 +34,8 @@ class AgentRunResult:
     success: bool
     final_url: str
     steps: int
-    telemetry: List[Dict[str, Any]] = field(default_factory=list)
-    errors: List[str] = field(default_factory=list)
+    telemetry: list[dict[str, Any]] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
 
 
 class PrivateEyeAgent:
@@ -46,10 +44,10 @@ class PrivateEyeAgent:
     def __init__(
         self,
         server_url: str = "http://127.0.0.1:8000",
-        dashboard_url: Optional[str] = None,
+        dashboard_url: str | None = None,
         max_steps: int = 24,
         task: str = "Complete the KYC verification form",
-        executor: Optional[ActionExecutor] = None,
+        executor: ActionExecutor | None = None,
     ) -> None:
         self.server_url = server_url.rstrip("/")
         dash = dashboard_url or os.environ.get("PRIVATEEYE_DASHBOARD_URL")
@@ -66,8 +64,8 @@ class PrivateEyeAgent:
 
     async def run(self, url: str) -> AgentRunResult:
         run_id = str(uuid.uuid4())
-        telemetry: List[Dict[str, Any]] = []
-        errors: List[str] = []
+        telemetry: list[dict[str, Any]] = []
+        errors: list[str] = []
 
         async with async_playwright() as playwright:
             browser = await playwright.chromium.launch(headless=True)
@@ -208,7 +206,7 @@ class PrivateEyeAgent:
             return AgentRunResult(run_id, False, final_url, self.max_steps, telemetry, errors)
 
 
-async def run_cli(url: str, server_url: str, task: str, max_steps: int, dashboard_url: Optional[str] = None) -> None:
+async def run_cli(url: str, server_url: str, task: str, max_steps: int, dashboard_url: str | None = None) -> None:
     result = await PrivateEyeAgent(server_url=server_url, dashboard_url=dashboard_url, task=task, max_steps=max_steps).run(url)
     print(json.dumps({
         "success": result.success,

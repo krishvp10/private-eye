@@ -5,8 +5,9 @@ Unit tests for the Verifiable Packet Audit Engine (eval/packet_audit.py).
 import json
 import tempfile
 from pathlib import Path
-from eval.packet_audit import PacketAuditEngine, calculate_shannon_entropy
+
 from client.vault import LocalVault
+from eval.packet_audit import PacketAuditEngine, calculate_shannon_entropy
 
 
 def test_shannon_entropy():

@@ -7,21 +7,19 @@ Guarantees zero recoverable text in masked regions.
 
 import io
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
-import cv2
+from typing import Any
+
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
+
+from privacy.redaction.policies import get_redaction_method
 from shared.protocol import (
-    BoundingBox,
     Detection,
-    DetectionCategory,
     Redaction,
     RedactionMap,
     RedactionMethod,
     ScreenGraph,
-    ScreenNode,
 )
-from privacy.redaction.policies import get_redaction_method
 
 
 @dataclass
@@ -43,7 +41,7 @@ class RedactionEngine:
         self,
         screenshot_bytes: bytes,
         screen_graph: ScreenGraph,
-        detections: List[Detection],
+        detections: list[Detection],
     ) -> RedactionResult:
         # Load image into Pillow
         image = Image.open(io.BytesIO(screenshot_bytes)).convert("RGB")
@@ -51,7 +49,7 @@ class RedactionEngine:
         total_screen_area = float(img_w * img_h)
 
         draw = ImageDraw.Draw(image)
-        redactions: List[Redaction] = []
+        redactions: list[Redaction] = []
         total_area = 0.0
 
         for det in detections:
@@ -125,12 +123,12 @@ class RedactionEngine:
             total_redacted_area=total_area,
         )
 
-    def _sanitize_graph(self, graph: ScreenGraph, detections: List[Detection]) -> ScreenGraph:
+    def _sanitize_graph(self, graph: ScreenGraph, detections: list[Detection]) -> ScreenGraph:
         """Deep copy and clean ScreenGraph so no sensitive text remains in labels."""
         graph_dict = graph.model_dump()
         redacted_categories = {d.category.value for d in detections}
 
-        def clean_node(node_dict: Dict[str, Any]):
+        def clean_node(node_dict: dict[str, Any]):
             name = node_dict.get("name") or ""
             # If name matches any sensitive keyword, sanitize it
             for cat in redacted_categories:
@@ -138,8 +136,7 @@ class RedactionEngine:
                     node_dict["sensitive"] = True
 
             # Invariant: never leave value in node
-            if "value" in node_dict:
-                del node_dict["value"]
+            node_dict.pop("value", None)
 
             for child in node_dict.get("children", []):
                 clean_node(child)
@@ -149,10 +146,10 @@ class RedactionEngine:
 
     def evaluate_redaction_accuracy(
         self,
-        predicted_redactions: List[Redaction],
-        ground_truth_elements: List[Dict[str, Any]],
+        predicted_redactions: list[Redaction],
+        ground_truth_elements: list[dict[str, Any]],
         screen_size: tuple = (1280, 800),
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Calculates IoU, coverage, over-redaction, and missed sensitive area
         by comparing predicted mask binary bitmap vs ground truth binary bitmap.

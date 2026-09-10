@@ -2,7 +2,7 @@
 
 import json
 import os
-from typing import Any, Dict, Optional
+from typing import Any
 
 import httpx
 
@@ -15,10 +15,10 @@ from shared.protocol import AgentAction, ScreenContext
 class VLMAdapter:
     def __init__(
         self,
-        endpoint_url: Optional[str] = None,
-        model_name: Optional[str] = None,
-        use_mock: Optional[bool] = None,
-        api_key: Optional[str] = None,
+        endpoint_url: str | None = None,
+        model_name: str | None = None,
+        use_mock: bool | None = None,
+        api_key: str | None = None,
         timeout: float = 30.0,
     ) -> None:
         mode = os.getenv("PRIVATEEYE_VLM_MODE", "mock").lower()
@@ -36,7 +36,7 @@ class VLMAdapter:
         self.timeout = timeout
         self.mock_fallback = MockVLM()
 
-    def build_request(self, context: ScreenContext) -> Dict[str, Any]:
+    def build_request(self, context: ScreenContext) -> dict[str, Any]:
         redaction_summary = "\n".join(
             f"- Region {r.region}: {r.category.value.upper()} masked via {r.method.value}"
             for r in context.redactions
@@ -69,7 +69,7 @@ class VLMAdapter:
         }
 
     @staticmethod
-    def parse_response(data: Dict[str, Any]) -> AgentAction:
+    def parse_response(data: dict[str, Any]) -> AgentAction:
         try:
             content = data["choices"][0]["message"]["content"]
             if isinstance(content, list):

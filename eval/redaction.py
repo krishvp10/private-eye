@@ -4,16 +4,18 @@ Computes Intersection-over-Union (IoU), coverage percentage, and over-redaction
 against synthetic ground-truth annotations.
 """
 
-from typing import Any, Dict, List, Tuple
+from typing import Any
+
 import numpy as np
+
 from shared.protocol import Redaction
 
 
 def compute_redaction_metrics(
-    redactions: List[Redaction],
-    ground_truth_bboxes: List[List[float]],
-    screen_size: Tuple[int, int] = (1280, 800),
-) -> Dict[str, Any]:
+    redactions: list[Redaction],
+    ground_truth_bboxes: list[list[float]],
+    screen_size: tuple[int, int] = (1280, 800),
+) -> dict[str, Any]:
     """
     Generate pixel-level bitmap masks for ground-truth vs predicted redactions,
     and calculate exact IoU, coverage, and over-mask metrics.

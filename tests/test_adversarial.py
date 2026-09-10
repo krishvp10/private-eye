@@ -8,17 +8,11 @@ Validates:
 """
 
 import pytest
-from eval.leak_check import OutboundLeakInterceptor, SecurityLeakException
+
 from client.vault import LocalVault
+from eval.leak_check import OutboundLeakInterceptor, SecurityLeakException
 from privacy.detectors.regex import RegexDetector
-from server.validation import validate_agent_action, ActionValidationError
-from shared.protocol import (
-    ActionType,
-    AgentAction,
-    ScreenContext,
-    ScreenGraph,
-    ScreenNode,
-)
+from server.validation import ActionValidationError, validate_agent_action
 
 
 def test_adversarial_regex_patterns():

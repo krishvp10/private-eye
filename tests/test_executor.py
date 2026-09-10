@@ -7,19 +7,21 @@ Validates:
 4. ExecutionResult reporting.
 """
 
+import threading
+import time
+
 import pytest
+import uvicorn
 from playwright.async_api import async_playwright
+
 from client.executor.execute import ActionExecutor, ExecutorSecurityException
 from client.vault import LocalVault
+from demo_sites.server import app
 from shared.protocol import (
     ActionTarget,
     ActionType,
     AgentAction,
 )
-from demo_sites.server import app
-import uvicorn
-import threading
-import time
 
 PORT = 9005
 BASE_URL = f"http://127.0.0.1:{PORT}"

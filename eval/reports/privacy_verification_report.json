@@ -1,0 +1,37 @@
+{
+  "title": "PrivateEye Privacy Verification Report",
+  "verification_id": "PE-VERIFY-1789049864-06AF1187",
+  "run_id": "run-verify-demo",
+  "timestamp_utc": "2026-09-10T14:17:44Z",
+  "workflow": "kyc",
+  "model_mode": "mock",
+  "execution_summary": {
+    "total_steps": 4,
+    "total_redactions": 7,
+    "pii_categories_monitored": 7,
+    "vault_entities_isolated": 21
+  },
+  "privacy_guarantees": {
+    "packet_leak_status": "ZERO_LEAK_CONFIRMED",
+    "server_log_leak_status": "CLEAN",
+    "raw_secrets_transmitted": false,
+    "raw_screenshots_transmitted": false,
+    "cookies_transmitted": false,
+    "local_vault_resolution_enforced": true,
+    "zero_leak_audit_pass": true
+  },
+  "categories_tested": [
+    "aadhaar",
+    "pan",
+    "phone",
+    "email",
+    "dob",
+    "card",
+    "uhid"
+  ],
+  "cryptographic_integrity": {
+    "algorithm": "SHA-256",
+    "report_hash": "06af1187f08b9c67523886668e55fe44554fb27dd4a0a6e34b4d23ce91202498",
+    "audit_standard": "PrivateEye Client-Side Sanitization & Outbound Wire Verification"
+  }
+}

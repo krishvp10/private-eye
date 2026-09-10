@@ -4,9 +4,11 @@ Provides both DOM-guided avatar/biometric detection and visual face detection
 using local OpenCV image processing with zero cloud calls.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 import cv2
 import numpy as np
+
 from shared.protocol import (
     BoundingBox,
     Detection,
@@ -26,8 +28,8 @@ class FaceDetector:
         except Exception:
             self.face_cascade = None
 
-    def detect(self, elements: List[Dict[str, Any]], screenshot_bytes: Optional[bytes] = None) -> List[Detection]:
-        detections: List[Detection] = []
+    def detect(self, elements: list[dict[str, Any]], screenshot_bytes: bytes | None = None) -> list[Detection]:
+        detections: list[Detection] = []
 
         # 1. DOM-anchored biometric avatar detection
         for el in elements:

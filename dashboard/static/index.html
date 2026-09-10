@@ -13,17 +13,18 @@
       <div class="logo-badge">🛡️</div>
       <div class="brand-titles">
         <h1>PrivateEye Inspector</h1>
-        <p>Smart India Hackathon • Dept. of Space / ISRO • Problem 26171</p>
+        <p>Zero-Leak Browser Agent • Dept. of Space / ISRO • Problem 26171</p>
       </div>
     </div>
 
     <div class="nav-actions">
       <div class="status-pill">
         <div class="pulse-dot"></div>
-        <span>0 BYTES RAW PII ON WIRE</span>
+        <span id="wire_leak_status">0 BYTES RAW PII ON WIRE</span>
       </div>
 
-      <div class="domain-selector">
+      <div id="domain_selector" class="domain-selector">
+        <!-- Dynamically populated from /api/domains -->
         <button class="domain-btn active" data-domain="kyc">KYC Identity</button>
         <button class="domain-btn" data-domain="checkout">Banking / Pay</button>
         <button class="domain-btn" data-domain="patient">Patient EHR</button>
@@ -34,6 +35,27 @@
       </button>
     </div>
   </header>
+
+  <!-- Interactive Timeline Scrubber Bar -->
+  <nav class="timeline-bar" aria-label="Step History Timeline">
+    <div class="timeline-controls">
+      <button id="btn_first_step" class="timeline-nav-btn" title="Jump to first step (Home)">⏮ First</button>
+      <button id="btn_prev_step" class="timeline-nav-btn" title="Previous step (Left Arrow)">◀ Prev</button>
+      <div id="step_chips_container" class="step-chips-container">
+        <button class="step-chip active" data-step="0">Step 0 (Init)</button>
+      </div>
+      <button id="btn_next_step" class="timeline-nav-btn" title="Next step (Right Arrow)">Next ▶</button>
+      <button id="btn_last_step" class="timeline-nav-btn" title="Jump to latest step (End)">Last ⏭</button>
+      <button id="btn_live_toggle" class="timeline-live-btn active" title="Follow live execution (L)">
+        <span class="live-dot"></span> LIVE
+      </button>
+    </div>
+    <div class="timeline-meta">
+      <span id="replay_mode_badge" class="replay-badge live">LIVE STREAM</span>
+      <span id="step_indicator" class="step-indicator">Step 0 / 0</span>
+      <span id="geometry_indicator" class="geom-indicator" title="Source vs Container Aspect Ratio">1280×800 Contain</span>
+    </div>
+  </nav>
 
   <!-- Main 3-Column Split Visualizer -->
   <main class="dashboard-grid">
@@ -46,7 +68,7 @@
         </div>
         <span class="pill-tag pill-private">🔐 LOCAL VAULT ONLY</span>
       </div>
-      <div class="screen-viewport">
+      <div id="viewport_raw" class="screen-viewport">
         <div id="placeholder_raw" class="placeholder-msg">
           <div class="placeholder-icon">🖥️</div>
           <div>Awaiting agent execution...</div>
@@ -64,7 +86,7 @@
         </div>
         <span class="pill-tag pill-sanitized">🛡️ SANITIZED WIRE CONTEXT</span>
       </div>
-      <div class="screen-viewport">
+      <div id="viewport_sanitized" class="screen-viewport">
         <div id="placeholder_sanitized" class="placeholder-msg">
           <div class="placeholder-icon">🔒</div>
           <div>Sanitized context will stream here</div>
@@ -76,10 +98,11 @@
 
     <!-- Column 3: Live Privacy & Performance Telemetry -->
     <aside class="telemetry-col">
-      <!-- Active Step & Action Card -->
+      <!-- Active Step & Execution Status Card -->
       <div class="metric-panel">
         <div class="panel-heading">
           <span id="step_num">Step 0</span>
+          <span id="execution_state_badge" class="state-badge idle">IDLE</span>
           <span id="current_url" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); text-transform: lowercase;">Idle</span>
         </div>
         <div class="action-card">
@@ -145,7 +168,7 @@
       </div>
 
       <!-- Detected PII Elements Table -->
-      <div class="metric-panel" style="flex: 1;">
+      <div class="metric-panel">
         <div class="panel-heading">Detected Sensitive Nodes</div>
         <div class="detections-table-wrap">
           <table class="det-table">
@@ -167,9 +190,24 @@
           </table>
         </div>
       </div>
+
+      <!-- Safe Audit Event Stream -->
+      <div class="metric-panel" style="flex: 1;">
+        <div class="panel-heading">
+          <span>Safe Execution Audit Log</span>
+          <span class="pill-tag pill-sanitized">0 Raw Secrets</span>
+        </div>
+        <div id="event_log_container" class="event-log-container">
+          <div class="event-log-entry info">
+            <span class="event-time">00:00:00</span>
+            <span class="event-msg">PrivateEye telemetry cockpit initialized</span>
+          </div>
+        </div>
+      </div>
     </aside>
   </main>
 
+  <script src="/static/geometry.js"></script>
   <script src="/static/app.js"></script>
 </body>
 </html>

@@ -5,7 +5,6 @@ import pytest
 from server.vlm import VLMAdapter
 from shared.protocol import (
     ActionType,
-    ImageMeta,
     ScreenContext,
     ScreenGraph,
     ScreenNode,

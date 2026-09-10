@@ -3,20 +3,20 @@ Server-side action validation and schema guard (LLM01 Prompt Injection defense).
 Ensures any action emitted by a VLM conforms strictly to safe operations.
 """
 
-from typing import Any, Dict
+from typing import Any
 from urllib.parse import urlparse
+
 from shared.protocol import ActionType, AgentAction
 
 
 class ActionValidationError(Exception):
     """Raised when an action violates safety or schema constraints."""
-    pass
 
 
 ALLOWED_ACTIONS = {action.value for action in ActionType}
 
 
-def validate_agent_action(action_dict: Dict[str, Any]) -> AgentAction:
+def validate_agent_action(action_dict: dict[str, Any]) -> AgentAction:
     """
     Strictly validate and parse an incoming action from the VLM.
     Rejects:

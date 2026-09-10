@@ -7,14 +7,15 @@ Validates that capture.py correctly extracts:
 - Sanitized ScreenGraph adhering to the zero-leak invariant
 """
 
-import json
-import pytest
-from playwright.async_api import async_playwright
-from client.capture import capture_page
-from demo_sites.server import app
-import uvicorn
 import threading
 import time
+
+import pytest
+import uvicorn
+from playwright.async_api import async_playwright
+
+from client.capture import capture_page
+from demo_sites.server import app
 
 PORT = 9002
 BASE_URL = f"http://127.0.0.1:{PORT}"
@@ -44,6 +45,7 @@ async def test_capture_page_structure():
         assert len(captured.screenshot_bytes) > 1000
         assert captured.url == f"{BASE_URL}/kyc"
         assert captured.viewport == {"width": 1280, "height": 800}
+        assert captured.aria_snapshot is not None
 
         # 2. Visible text validation
         assert "Individual Identity Certification" in captured.visible_text
@@ -73,6 +75,8 @@ async def test_capture_page_structure():
                 assert len(child.bbox) == 4
                 assert child.bbox[2] > 0  # width > 0
                 assert child.bbox[3] > 0  # height > 0
+                assert child.visible is True
+                assert child.enabled is True
 
         await browser.close()
 
@@ -81,6 +85,7 @@ async def test_capture_page_structure():
 async def test_capture_cli(tmp_path):
     """Test CLI execution writes all 3 artifacts: screenshot, screen_graph, visible_text."""
     from client.capture import run_cli
+
     out_dir = str(tmp_path / "cli_out")
     await run_cli(f"{BASE_URL}/kyc", out_dir)
 
@@ -89,4 +94,3 @@ async def test_capture_cli(tmp_path):
     assert (out_p / "screenshot.jpg").stat().st_size > 0
     assert (out_p / "screen_graph.json").exists()
     assert (out_p / "visible_text.json").exists()
-

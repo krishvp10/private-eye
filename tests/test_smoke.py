@@ -8,17 +8,13 @@ Phase 0 Smoke Tests:
 import pytest
 from fastapi.testclient import TestClient
 from playwright.async_api import async_playwright
+
 from server.api import app
 from shared.protocol import (
-    ActionTarget,
-    ActionType,
     AgentAction,
-    BoundingBox,
-    Detection,
     DetectionCategory,
     DetectionSource,
     Redaction,
-    RedactionMap,
     RedactionMethod,
     ScreenContext,
     ScreenGraph,

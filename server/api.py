@@ -4,19 +4,21 @@ Provides /v1/analyze, /v1/health, and /v1/runs endpoints.
 Guarantees zero logging of raw screenshots or sensitive values.
 """
 
-import time
 import logging
+import time
+from typing import Any
+
 import httpx
-from typing import Any, Dict, List
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
+
+from server.mock_vlm import MockVLM
+from server.validation import validate_agent_action
+from server.vlm import VLMAdapter
 from shared.protocol import (
     AgentAction,
     ScreenContext,
 )
-from server.mock_vlm import MockVLM
-from server.validation import validate_agent_action
-from server.vlm import VLMAdapter
 
 # Configure structured logging
 logging.basicConfig(
@@ -40,7 +42,7 @@ app.add_middleware(
 )
 
 # In-memory audit run log (stores metadata only, NO raw images or PII)
-RUN_AUDIT_LOGS: List[Dict[str, Any]] = []
+RUN_AUDIT_LOGS: list[dict[str, Any]] = []
 
 # Mock VLM instance
 mock_vlm = MockVLM()
@@ -48,7 +50,7 @@ vlm = VLMAdapter()
 
 
 @app.get("/v1/health")
-async def health_check() -> Dict[str, Any]:
+async def health_check() -> dict[str, Any]:
     """Health check endpoint confirming server and model readiness."""
     return {
         "status": "ok",
@@ -113,6 +115,11 @@ async def analyze_screen(context: ScreenContext, request: Request) -> AgentActio
 
 
 @app.get("/v1/runs")
-async def get_run_audit() -> List[Dict[str, Any]]:
+async def get_run_audit() -> list[dict[str, Any]]:
     """Return read-only telemetry audit trail (PII-free)."""
     return RUN_AUDIT_LOGS
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server.api:app", host="127.0.0.1", port=8000, log_level="info")

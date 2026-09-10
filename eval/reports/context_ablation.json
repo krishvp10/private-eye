@@ -1,0 +1,18 @@
+{
+  "status": "SKIPPED",
+  "reason": "PRIVATEEYE_VLM_MODE is not real",
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "variants": {
+    "screenshot_only": {
+      "status": "SKIPPED"
+    },
+    "screenshot_graph": {
+      "status": "SKIPPED"
+    },
+    "screenshot_graph_redactions": {
+      "status": "SKIPPED"
+    }
+  }
+}

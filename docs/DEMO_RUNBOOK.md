@@ -5,39 +5,56 @@
 
 ---
 
-## 🚀 Quick Start in 60 Seconds
+## 🚀 One-Command Launch (Recommended)
 
-PrivateEye runs **100% locally** on any standard developer laptop. It requires **no external API keys**, **no GPU**, and has **zero cloud dependencies** by default.
+PrivateEye provides a unified process supervisor that launches the portal, VLM server, cockpit dashboard, health checks, and opens your browser automatically:
 
-### Step 0: Run Test Suite (Self-Test Verification)
-Confirm all components and invariants pass in your local environment:
 ```powershell
-.\.venv\Scripts\pytest -q
+.\.venv\Scripts\python demo.py
 ```
-*Expected: `34 passed in ~28s`.*
+
+To demonstrate a specific workflow directly:
+```powershell
+.\.venv\Scripts\python demo.py --domain kyc        # Identity & PAN/Aadhaar Redaction
+.\.venv\Scripts\python demo.py --domain checkout   # Banking & Credit Card Blackout
+.\.venv\Scripts\python demo.py --domain patient    # Clinical EHR & Healthcare Records
+```
+
+When you are finished, press **Ctrl+C** in the terminal: the supervisor will gracefully terminate all subprocesses and release all network ports (0 orphan processes).
 
 ---
 
-## 🖥️ Live Visual Demonstration Setup
+## 🧭 Interactive Historical Step Scrubber
 
-To run the interactive side-by-side demonstration, open three terminal tabs in this repository:
+The visual cockpit on [http://127.0.0.1:8080](http://127.0.0.1:8080) retains the **complete immutable execution history**:
+- **Step Scrubber Bar**: Click any past step (`Step 1`, `Step 2` ... `Step N`) to inspect what the agent saw at that exact point in time.
+- **Side-by-Side Verification**:
+  - **Left**: Client-side raw user screen (Strictly local, never leaves your computer).
+  - **Right**: Sanitized wire screen (What the external AI server actually receives).
+  - **Bounding Boxes**: Exact bounding box overlays calculated dynamically with mathematical containment geometry (no letterboxing drift).
+- **Keyboard Navigation**:
+  - `◀ Left Arrow`: Step backward in time.
+  - `Right Arrow ▶`: Step forward in time.
+  - `Home` / `End`: Jump to first / latest step.
+  - `L`: Toggle live streaming follow mode.
 
-### Terminal 1: Launch Local Application Portals (Port 9001)
-Hosts synthetic KYC, Banking Checkout, and Patient EHR portals:
+---
+
+## 🛠️ Alternative: Manual 3-Terminal Setup
+
+If you prefer running components in separate terminals for inspection:
+
+### Terminal 1: Launch Local Portals (Port 9001)
 ```powershell
 .\.venv\Scripts\python -m demo_sites.server
 ```
-*(Runs at `http://127.0.0.1:9001`)*
 
 ### Terminal 2: Launch PrivateEye VLM Backend (Port 8000)
-Runs the privacy-aware reasoning server (deterministic mock or local LLM):
 ```powershell
 .\.venv\Scripts\python -m server.api
 ```
-*(Runs at `http://127.0.0.1:8000`)*
 
 ### Terminal 3: Launch Visual Cockpit Dashboard (Port 8080)
-Hosts the real-time split-screen visualizer:
 ```powershell
 .\.venv\Scripts\python -m dashboard.app
 ```
@@ -78,13 +95,22 @@ Once all three services are running and you open `http://127.0.0.1:8080`:
 
 ---
 
-## 🛡️ Packet-Level Cryptographic Audit
+## 🛡️ Verifiable Privacy & Packet Audit Reports
 
-To mathematically verify that zero raw sensitive data ever crosses the wire, execute the audit engine:
+### 1. Privacy Verification Report (HTML & JSON)
+Generate a human-readable, print-friendly verification report complete with cryptographic SHA-256 integrity hash:
+```powershell
+.\.venv\Scripts\python -m eval.privacy_report --workflow kyc --steps 4 --redactions 7
+```
+- Open `eval/reports/privacy_verification_report.html` in your browser to view or print/export as PDF.
+- Inspect `eval/reports/privacy_verification_report.json` for automated CI validation.
+
+### 2. Wire Packet Entropy & Zero-Leak Audit
+To mathematically verify that zero raw sensitive data ever crosses the wire, execute the packet audit engine:
 ```powershell
 .\.venv\Scripts\python -c "from eval.packet_audit import PacketAuditEngine; engine = PacketAuditEngine(); print(engine.generate_certificate('audit_certificate.json').compliance_status)"
 ```
-This inspects the wire payloads against all local vault secrets, calculates Shannon entropy, and creates `audit_certificate.json` stamped with a cryptographic SHA-256 summary hash.
+This inspects wire payloads against all local vault secrets, calculates Shannon entropy, and creates `audit_certificate.json` stamped with a cryptographic SHA-256 summary hash.
 
 ---
 

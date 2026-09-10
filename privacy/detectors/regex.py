@@ -5,7 +5,8 @@ Aadhaar, PAN, Phone, Email, DOB, and Credit Cards.
 """
 
 import re
-from typing import Any, Dict, List
+from typing import Any
+
 from shared.protocol import (
     BoundingBox,
     Detection,
@@ -40,9 +41,9 @@ PATTERNS = {
 class RegexDetector:
     """Scans text content and DOM elements using calibrated regex patterns."""
 
-    def detect_in_elements(self, elements: List[Dict[str, Any]]) -> List[Detection]:
+    def detect_in_elements(self, elements: list[dict[str, Any]]) -> list[Detection]:
         """Detect regex patterns associated with specific rendered DOM element regions."""
-        detections: List[Detection] = []
+        detections: list[Detection] = []
 
         for el in elements:
             bbox_coords = el.get("bbox")
@@ -68,9 +69,9 @@ class RegexDetector:
 
         return detections
 
-    def detect_in_text(self, text: str, bounding_box: BoundingBox) -> List[Detection]:
+    def detect_in_text(self, text: str, bounding_box: BoundingBox) -> list[Detection]:
         """Detect PII in visible prose when no element-level box is available."""
-        detections: List[Detection] = []
+        detections: list[Detection] = []
         for category, regex in PATTERNS.items():
             if regex.search(text):
                 detections.append(
@@ -85,7 +86,7 @@ class RegexDetector:
                 )
         return detections
 
-    def scan_raw_text(self, text: str) -> List[Dict[str, Any]]:
+    def scan_raw_text(self, text: str) -> list[dict[str, Any]]:
         """Identify matches in unstructured text strings."""
         matches = []
         for category, regex in PATTERNS.items():

@@ -8,15 +8,17 @@ Validates:
 """
 
 import json
-from pathlib import Path
-import pytest
-from playwright.async_api import async_playwright
-from client.capture import capture_page
-from privacy.pipeline import PrivacyPipeline
-from demo_sites.server import app
-import uvicorn
 import threading
 import time
+from pathlib import Path
+
+import pytest
+import uvicorn
+from playwright.async_api import async_playwright
+
+from client.capture import capture_page
+from demo_sites.server import app
+from privacy.pipeline import PrivacyPipeline
 
 PORT = 9003
 BASE_URL = f"http://127.0.0.1:{PORT}"

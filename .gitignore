@@ -47,4 +47,6 @@ metrics.db
 *.log
 .claude/
 agent/
+.agents/
+
 

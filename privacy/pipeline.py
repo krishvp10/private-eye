@@ -4,17 +4,16 @@ Combines DOM heuristics, regex text matching, lightweight NER, and local face de
 Deduplicates overlapping regions and prioritizes high-confidence signals.
 """
 
-from typing import Any, Dict, List, Optional, Set
+from typing import Any
+
+from privacy.detectors.dom import DOMDetector
+from privacy.detectors.face import FaceDetector
+from privacy.detectors.ner import LightweightNERDetector
+from privacy.detectors.regex import RegexDetector
 from shared.protocol import (
     BoundingBox,
     Detection,
-    DetectionCategory,
-    DetectionSource,
 )
-from privacy.detectors.dom import DOMDetector
-from privacy.detectors.regex import RegexDetector
-from privacy.detectors.ner import LightweightNERDetector
-from privacy.detectors.face import FaceDetector
 
 
 def compute_iou(b1: BoundingBox, b2: BoundingBox) -> float:
@@ -49,13 +48,13 @@ class PrivacyPipeline:
 
     def detect(
         self,
-        elements: List[Dict[str, Any]],
-        screenshot_bytes: Optional[bytes] = None,
-        visible_text: Optional[str] = None,
-        viewport: Optional[Dict[str, int]] = None,
-    ) -> List[Detection]:
+        elements: list[dict[str, Any]],
+        screenshot_bytes: bytes | None = None,
+        visible_text: str | None = None,
+        viewport: dict[str, int] | None = None,
+    ) -> list[Detection]:
         """Run all signals in priority order and merge detections."""
-        all_candidates: List[Detection] = []
+        all_candidates: list[Detection] = []
 
         # Signal 1: DOM Heuristics (Level 1 priority)
         all_candidates.extend(self.dom_detector.detect(elements))
@@ -90,14 +89,14 @@ class PrivacyPipeline:
 
         return deduped
 
-    def _deduplicate_detections(self, detections: List[Detection]) -> List[Detection]:
+    def _deduplicate_detections(self, detections: list[Detection]) -> list[Detection]:
         """Merge/deduplicate overlapping bounding boxes."""
         if not detections:
             return []
 
         # Sort by confidence descending
         sorted_dets = sorted(detections, key=lambda d: d.confidence, reverse=True)
-        accepted: List[Detection] = []
+        accepted: list[Detection] = []
 
         for candidate in sorted_dets:
             overlap = False
@@ -113,17 +112,17 @@ class PrivacyPipeline:
 
     def evaluate_against_ground_truth(
         self,
-        predicted: List[Detection],
-        ground_truth: List[Dict[str, Any]],
+        predicted: list[Detection],
+        ground_truth: list[dict[str, Any]],
         iou_threshold: float = 0.40,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         Calculates True Positives, False Positives, False Negatives,
         Precision, Recall, and F1 score against ground truth.
         """
         tp = 0
         fp = 0
-        matched_gt_indices: Set[int] = set()
+        matched_gt_indices: set[int] = set()
 
         for pred in predicted:
             matched = False

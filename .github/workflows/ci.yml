@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install ruff mypy
+          python -m playwright install --with-deps chromium
+      - name: Compile Python modules
+        run: python -m compileall -q client server shared privacy eval dashboard demo_sites
+      - name: Ruff check
+        run: ruff check . --select E9,F63,F7,F82
+      - name: Ruff format check
+        run: |
+          ruff format --check \
+            client/capture.py shared/protocol.py eval/context_ablation.py \
+            eval/model_comparison.py eval/real_vlm_canary.py scripts/check_vlm.py \
+            tests/test_capture.py tests/test_capture_aria.py tests/test_experiment_skips.py \
+            tests/test_canary_skips.py
+      - name: Mypy
+        run: |
+          mypy --python-version 3.13 --ignore-missing-imports --follow-imports=skip \
+            client/capture.py shared/protocol.py eval/context_ablation.py \
+            eval/model_comparison.py eval/real_vlm_canary.py scripts/check_vlm.py
+      - name: Full test suite
+        run: pytest -q
+      - name: Privacy tests
+        run: pytest -q tests/test_privacy.py tests/test_privacy_report.py tests/test_packet_audit.py
+      - name: Security tests
+        run: pytest -q tests/test_adversarial.py tests/test_real_vlm.py tests/test_executor.py
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-reports
+          path: |
+            eval/reports/*.json
+            eval/reports/*.md
+          if-no-files-found: ignore

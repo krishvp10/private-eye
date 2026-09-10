@@ -8,19 +8,19 @@ Validates:
 """
 
 import io
-from pathlib import Path
-import pytest
-import numpy as np
-from PIL import Image
-from playwright.async_api import async_playwright
-from client.capture import capture_page
-from privacy.pipeline import PrivacyPipeline
-from privacy.redaction.masker import RedactionEngine
-from shared.protocol import DetectionCategory, RedactionMethod
-from demo_sites.server import app
-import uvicorn
 import threading
 import time
+
+import pytest
+import uvicorn
+from PIL import Image
+from playwright.async_api import async_playwright
+
+from client.capture import capture_page
+from demo_sites.server import app
+from privacy.pipeline import PrivacyPipeline
+from privacy.redaction.masker import RedactionEngine
+from shared.protocol import DetectionCategory
 
 PORT = 9004
 BASE_URL = f"http://127.0.0.1:{PORT}"

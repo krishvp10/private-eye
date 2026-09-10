@@ -6,7 +6,8 @@ without requiring heavy external downloads or cloud APIs.
 """
 
 import re
-from typing import Any, Dict, List
+from typing import Any
+
 from shared.protocol import (
     BoundingBox,
     Detection,
@@ -21,8 +22,8 @@ ADDRESS_KEYWORDS = re.compile(r"\b(road|rd|nagar|layout|sector|colony|street|cro
 class LightweightNERDetector:
     """Local, offline Named Entity Recognition heuristics for Name and Address."""
 
-    def detect_in_elements(self, elements: List[Dict[str, Any]]) -> List[Detection]:
-        detections: List[Detection] = []
+    def detect_in_elements(self, elements: list[dict[str, Any]]) -> list[Detection]:
+        detections: list[Detection] = []
 
         for el in elements:
             bbox_coords = el.get("bbox")

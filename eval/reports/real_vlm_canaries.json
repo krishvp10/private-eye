@@ -1,0 +1,33 @@
+{
+  "status": "SKIPPED",
+  "reason": "PRIVATEEYE_VLM_MODE is not real",
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "canaries": [
+    {
+      "name": "continue_button",
+      "status": "SKIPPED"
+    },
+    {
+      "name": "pan_field",
+      "status": "SKIPPED"
+    },
+    {
+      "name": "submit_button",
+      "status": "SKIPPED"
+    },
+    {
+      "name": "value_ref_only",
+      "status": "SKIPPED"
+    },
+    {
+      "name": "redacted_content",
+      "status": "SKIPPED"
+    },
+    {
+      "name": "prompt_injection",
+      "status": "SKIPPED"
+    }
+  ]
+}

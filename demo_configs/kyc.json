@@ -1,0 +1,163 @@
+{
+  "site_id": "kyc",
+  "display_name": "KYC Identity",
+  "portal_title": "National KYC Verification Portal",
+  "portal_subtitle": "Applicant Identity & Biometric Verification",
+  "theme_badge": "GOVERNMENT OF INDIA • UIDAI VERIFIED",
+  "theme_badge_style": "color: #10b981; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3);",
+  "task": "Complete the KYC verification form",
+  "entry_route": "/login",
+  "routes": [
+    {
+      "route": "/login",
+      "title": "Portal Login — National Verification Service",
+      "template": "login",
+      "next_route": "/kyc",
+      "badge_text": "SECURE GOVERNMENT GATEWAY",
+      "fields": [
+        {
+          "id": "field_username",
+          "label": "Application ID / Username",
+          "field_type": "text",
+          "sensitive": false,
+          "default_value": "APPL-2026-88192"
+        },
+        {
+          "id": "field_password",
+          "label": "Access Key / Password",
+          "field_type": "password",
+          "sensitive": true,
+          "category": "password",
+          "vault_ref": "user_profile.password",
+          "autocomplete": "current-password",
+          "default_value": "SuperSecretPass123!"
+        }
+      ],
+      "actions": [
+        {
+          "id": "btn_login",
+          "label": "Sign In",
+          "role": "button",
+          "is_submit": true
+        }
+      ]
+    },
+    {
+      "route": "/kyc",
+      "title": "Identity Verification — Document Submission",
+      "template": "form",
+      "next_route": "/success",
+      "has_face_avatar": true,
+      "badge_text": "UIDAI & NSDL ENCRYPTED FORM",
+      "fields": [
+        {
+          "id": "field_name",
+          "label": "Applicant Full Name",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "name",
+          "vault_ref": "user_profile.name",
+          "autocomplete": "name",
+          "default_value": "Rahul Sharma"
+        },
+        {
+          "id": "field_email",
+          "label": "Email Address",
+          "field_type": "email",
+          "sensitive": true,
+          "category": "email",
+          "vault_ref": "user_profile.email",
+          "autocomplete": "email",
+          "default_value": "rahul.sharma@example.com"
+        },
+        {
+          "id": "field_phone",
+          "label": "Mobile Phone Number",
+          "field_type": "tel",
+          "sensitive": true,
+          "category": "phone",
+          "vault_ref": "user_profile.phone",
+          "autocomplete": "tel",
+          "default_value": "9876543210"
+        },
+        {
+          "id": "field_aadhaar",
+          "label": "Aadhaar Card (12 Digits)",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "aadhaar",
+          "vault_ref": "user_profile.aadhaar",
+          "default_value": "4839 2176 5201"
+        },
+        {
+          "id": "field_pan",
+          "label": "Permanent Account Number (PAN)",
+          "field_type": "text",
+          "sensitive": true,
+          "category": "pan",
+          "vault_ref": "user_profile.pan",
+          "default_value": "ABCDE1234F"
+        },
+        {
+          "id": "field_dob",
+          "label": "Date of Birth (YYYY-MM-DD)",
+          "field_type": "date",
+          "sensitive": true,
+          "category": "dob",
+          "vault_ref": "user_profile.dob",
+          "autocomplete": "bday",
+          "default_value": "1990-05-15"
+        },
+        {
+          "id": "field_pin",
+          "label": "Security PIN (6 Digits)",
+          "field_type": "password",
+          "sensitive": true,
+          "category": "password",
+          "vault_ref": "user_profile.pin",
+          "autocomplete": "current-password",
+          "default_value": "889241"
+        },
+        {
+          "id": "field_address",
+          "label": "Residential Address",
+          "field_type": "textarea",
+          "sensitive": true,
+          "category": "address",
+          "vault_ref": "user_profile.address",
+          "autocomplete": "street-address",
+          "default_value": "42 Palm Grove Road, Indiranagar, Bengaluru 560038"
+        }
+      ],
+      "actions": [
+        {
+          "id": "field_consent",
+          "label": "Consent",
+          "role": "checkbox",
+          "is_submit": false
+        },
+        {
+          "id": "btn_submit",
+          "label": "Submit Application",
+          "role": "button",
+          "is_submit": true
+        }
+      ]
+    },
+    {
+      "route": "/success",
+      "title": "KYC Certified — Identity Verification Successful",
+      "template": "success",
+      "badge_text": "APPLICATION APPROVED",
+      "fields": [],
+      "actions": [
+        {
+          "id": "btn_return",
+          "label": "Return to Portal",
+          "role": "button",
+          "is_submit": false
+        }
+      ]
+    }
+  ]
+}

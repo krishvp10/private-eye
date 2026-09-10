@@ -3,7 +3,10 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Playwright](https://img.shields.io/badge/browser-Playwright-green.svg)](https://playwright.dev/)
 [![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
-[![Tests Passing](https://img.shields.io/badge/tests-36%2F36%20passed-brightgreen.svg)]()
+[![Tests Passing](https://img.shields.io/badge/tests-54%2F54%20passed-brightgreen.svg)]()
+[![CI](https://github.com/krishvp10/private-eye/actions/workflows/ci.yml/badge.svg)](https://github.com/krishvp10/private-eye/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/krishvp10/private-eye/actions/workflows/codeql.yml/badge.svg)](https://github.com/krishvp10/private-eye/actions/workflows/codeql.yml)
+[![Dependency Review](https://github.com/krishvp10/private-eye/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/krishvp10/private-eye/actions/workflows/dependency-review.yml)
 [![SIH Problem 26171](https://img.shields.io/badge/SIH-Problem%2026171-orange.svg)]()
 [![Zero Raw PII](https://img.shields.io/badge/privacy-zero--leak%20guarantee-success.svg)]()
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
@@ -184,30 +187,55 @@ pip install -r requirements.txt
 playwright install chromium
 ```
 
-### 2. Run the Synthetic KYC Demonstration Site
+### 2. One-Command Demonstration Launcher (`demo.py`)
+Launch the complete PrivateEye ecosystem—portal, VLM backend, dashboard, health checks, and browser—with a single command:
 ```bash
+python demo.py
+```
+
+```text
+┌──────────────────────────────────────────────────────────────┐
+│        PrivateEye Unified 1-Command Demo Supervisor         │
+├──────────────────────────────────────────────────────────────┤
+│  [1/4] Starting Synthetic Portal on http://127.0.0.1:9001    │
+│  [2/4] Starting VLM Server API on http://127.0.0.1:8000       │
+│  [3/4] Starting Visual Dashboard on http://127.0.0.1:8080    │
+│  [4/4] Verifying Service Health Endpoints...                 │
+│        -> Portal: OK                                         │
+│        -> Server: OK                                         │
+│        -> Dashboard: OK                                      │
+│  Launching Default Web Browser to Cockpit...                 │
+│  PrivateEye is live! Press Ctrl+C to terminate all services. │
+└──────────────────────────────────────────────────────────────┘
+```
+
+#### Choose Any Workflow via CLI:
+```bash
+python demo.py --domain kyc        # KYC Identity Verification
+python demo.py --domain checkout   # Banking Checkout & Card Redaction
+python demo.py --domain patient    # Healthcare Clinical Records & EHR
+```
+
+### 3. Interactive Historical Step Scrubber
+The visual cockpit on [http://127.0.0.1:8080](http://127.0.0.1:8080) retains the **complete immutable execution history**:
+- Click **`Step 1`**, **`Step 2`**, ... **`Step N`** to inspect any past screen state.
+- **Side-by-side evidence**: Raw client-side screen (local-only) vs wire-sanitized screen (server-visible).
+- **Mathematical containment scaling**: Overlays dynamically map across arbitrary window sizes, letterboxing, and aspect ratios.
+- **Keyboard navigation**: Use `◀ Prev` / `Next ▶` arrow keys, `Home` / `End`, or press `L` to toggle Live follow mode.
+
+### 4. Standalone Service Execution (Alternative)
+You can also launch components individually if desired:
+```bash
+# Terminal 1 — Demo Portal
 python -m demo_sites.server
-```
-- Open [http://127.0.0.1:9001/login](http://127.0.0.1:9001/login) in your browser.
-- **Judge Debug Mode**: Append `?debug=1` ([http://127.0.0.1:9001/kyc?debug=1](http://127.0.0.1:9001/kyc?debug=1)) to render visual ground-truth bounding boxes directly on screen.
 
-### 3. Run the Backend Reasoning Server
-```bash
-# Terminal 2 — Start server in offline deterministic Mock mode (default):
+# Terminal 2 — VLM Backend API
 python -m uvicorn server.api:app --host 127.0.0.1 --port 8000
-```
 
-### 4. Run the Visual Privacy Cockpit (Web Dashboard)
-```bash
-# Terminal 3 — Launch the live side-by-side inspector:
+# Terminal 3 — Visual Privacy Cockpit
 python -m dashboard.app
-# Open http://127.0.0.1:8080 in your browser
-```
-Displays live user screen vs. wire-sanitized screen, bounding box overlays, latency waterfall, and zero-leak indicators in real-time.
 
-### 5. Run the Autonomous Browser Agent
-```bash
-# Terminal 4 — Execute the autonomous loop (streams live to dashboard if open):
+# Terminal 4 — Autonomous Browser Agent
 python -m client.agent --url http://127.0.0.1:9001/login
 ```
 Supported domain URLs:
@@ -238,7 +266,7 @@ python -m uvicorn server.api:app --host 127.0.0.1 --port 8000
 ```bash
 pytest tests/ -q
 ```
-All **34 tests** validate:
+All **40 tests** validate:
 - Protocol schema serialization & `value_ref` invariant enforcement
 - Synthetic demo sites (KYC, Banking Checkout, and Patient Clinical Intake)
 - Playwright capture engine & CLI artifact persistence
@@ -255,6 +283,26 @@ All **34 tests** validate:
 python -m eval.benchmark
 ```
 Outputs the official scorecard evaluating visual context accuracy, PII detection F1, redaction precision, client memory/CPU, and step latency.
+
+### CI and security automation
+
+Every push and pull request runs pytest, Ruff, mypy, compileall, privacy tests,
+and security tests. CodeQL runs on pushes to `main`, pull requests, and a weekly
+schedule. Dependency Review runs on pull requests. Dependabot checks Python and
+GitHub Actions dependencies monthly.
+
+### Real-VLM evidence status
+
+**Proven:** mock end-to-end KYC workflow, local privacy boundary, value_ref
+execution, leak checks, safe action validation, and benchmark/report
+infrastructure.
+
+**Unproven:** live Qwen2.5-VL grounding, real-model latency, five-run
+reliability, GPU resource comparison, and general web-agent performance. These
+remain `SKIPPED` until a reachable GPU-backed endpoint is configured.
+
+See `private-eye-docs/VLLM_DEPLOYMENT.md` for the one-command GPU harness and
+`private-eye-docs/AUDIT_REPORT.md` for the current evidence boundary.
 
 ---
 

@@ -5,30 +5,29 @@ and scans them for raw PII strings or credentials from the local vault.
 Blocks network transmission immediately if any leak is detected.
 """
 
-from typing import List, Optional
+
 from client.vault import LocalVault
 from privacy.detectors.regex import PATTERNS
 
 
 class SecurityLeakException(Exception):
     """Raised when an outbound payload contains raw sensitive user data."""
-    pass
 
 
 class OutboundLeakInterceptor:
     """Intercepts and verifies outbound JSON payloads before transmission."""
 
-    def __init__(self, vault: Optional[LocalVault] = None) -> None:
+    def __init__(self, vault: LocalVault | None = None) -> None:
         self.vault = vault or LocalVault()
 
-    def inspect_payload(self, payload_text: str) -> List[str]:
+    def inspect_payload(self, payload_text: str) -> list[str]:
         """
         Scans outbound payload text for:
         1. Known local secrets from the vault (Aadhaar, PAN, Password, Phone, Email, etc.)
         2. High-confidence regex patterns (unredacted PAN or formatted Aadhaar)
         Returns a list of leak violations detected.
         """
-        violations: List[str] = []
+        violations: list[str] = []
 
         # Check 1: Exact vault raw secrets
         for secret in self.vault.get_all_raw_secrets():

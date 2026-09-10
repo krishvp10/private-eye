@@ -1,7 +1,11 @@
 """
 PrivateEye Visual Web Dashboard Server.
 Hosts real-time side-by-side visual privacy inspector on http://127.0.0.1:8080.
-Streams live step captures, redaction overlays, and zero-leak telemetry via Server-Sent Events (SSE).
+Features:
+- Live step streaming via Server-Sent Events (SSE).
+- Complete immutable step history with interactive timeline scrubber.
+- Dynamic domain enumeration from declarative site configs.
+- Zero-leak wire verification and latency waterfall metrics.
 """
 
 import asyncio
@@ -10,12 +14,16 @@ import os
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any
+
+import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
-import uvicorn
+
+from demo_sites.site_loader import registry
+from shared.config import config
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
@@ -30,11 +38,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# In-memory step event queue and subscriber set
-step_subscribers: List[asyncio.Queue] = []
-latest_step_state: Dict[str, Any] = {
+# In-memory step event queue, subscriber set, and complete step history
+step_subscribers: list[asyncio.Queue] = []
+step_history: dict[int, dict[str, Any]] = {}
+
+latest_step_state: dict[str, Any] = {
     "status": "ready",
     "step": 0,
+    "total_steps": 0,
+    "available_steps": [],
     "task": "Ready to launch PrivateEye privacy agent",
     "url": "http://127.0.0.1:9001/login",
     "raw_image_b64": "",
@@ -71,27 +83,70 @@ async def index():
 
 @app.get("/api/state")
 async def get_state():
-    """Return the latest step snapshot."""
-    return JSONResponse(latest_step_state)
+    """Return the latest step snapshot and available historical steps."""
+    resp = dict(latest_step_state)
+    resp["available_steps"] = sorted(list(step_history.keys()))
+    resp["total_steps"] = len(step_history)
+    return JSONResponse(resp)
+
+
+@app.get("/api/domains")
+async def get_domains():
+    """Return all configured domains dynamically loaded from demo_configs/."""
+    sites = registry.get_all_sites()
+    return JSONResponse([
+        {
+            "id": s.site_id,
+            "name": s.display_name,
+            "entry_route": s.entry_route,
+            "task": s.task,
+        }
+        for s in sites
+    ])
+
+
+@app.get("/api/history")
+async def get_history():
+    """Return summary list of all recorded steps in the active run."""
+    steps_summary = [
+        {
+            "step": s,
+            "url": data.get("url", ""),
+            "action": data.get("action", {}),
+            "detections_count": len(data.get("detections", [])),
+            "redactions_count": len(data.get("redactions", [])),
+            "total_ms": data.get("metrics", {}).get("total_ms", 0),
+        }
+        for s, data in sorted(step_history.items())
+    ]
+    return JSONResponse({
+        "total_steps": len(step_history),
+        "available_steps": sorted(list(step_history.keys())),
+        "steps": steps_summary,
+    })
+
+
+@app.get("/api/history/{step_num}")
+async def get_history_step(step_num: int):
+    """Return full snapshot for a specific historical step (for replay scrubber)."""
+    if step_num in step_history:
+        return JSONResponse(step_history[step_num])
+    return JSONResponse({"error": f"Step {step_num} not found"}, status_code=404)
 
 
 @app.post("/api/step")
-async def post_step(payload: Dict[str, Any]):
+async def post_step(payload: dict[str, Any]):
     """Receives a step snapshot broadcast from PrivateEyeAgent."""
     global latest_step_state
+    step = int(payload.get("step", 0))
+
+    # Store full snapshot in immutable step history
+    step_history[step] = dict(payload)
+
     latest_step_state.update(payload)
     latest_step_state["status"] = "running"
-    
-    # Store in history
-    hist = latest_step_state.setdefault("history", [])
-    hist.append({
-        "step": payload.get("step", 0),
-        "url": payload.get("url", ""),
-        "action": payload.get("action", {}),
-        "detections_count": len(payload.get("detections", [])),
-        "redactions_count": len(payload.get("redactions", [])),
-        "total_ms": payload.get("metrics", {}).get("total_ms", 0),
-    })
+    latest_step_state["total_steps"] = len(step_history)
+    latest_step_state["available_steps"] = sorted(list(step_history.keys()))
 
     # Broadcast to all active SSE subscribers
     data_str = json.dumps(payload)
@@ -104,7 +159,7 @@ async def post_step(payload: Dict[str, Any]):
     for q in dead_subscribers:
         step_subscribers.remove(q)
 
-    return {"status": "ok", "subscribers": len(step_subscribers)}
+    return {"status": "ok", "step": step, "subscribers": len(step_subscribers)}
 
 
 @app.get("/api/events")
@@ -123,8 +178,7 @@ async def events_stream(request: Request):
                 try:
                     data = await asyncio.wait_for(queue.get(), timeout=20.0)
                     yield f"data: {data}\n\n"
-                except asyncio.TimeoutError:
-                    # Keepalive ping
+                except TimeoutError:
                     yield ": keepalive\n\n"
         finally:
             if queue in step_subscribers:
@@ -134,20 +188,22 @@ async def events_stream(request: Request):
 
 
 @app.post("/api/trigger")
-async def trigger_run(payload: Optional[Dict[str, Any]] = None):
+async def trigger_run(payload: dict[str, Any] | None = None):
     """Launch a background agent run for interactive demonstrations."""
+    global step_history
     params = payload or {}
     domain = params.get("domain", "kyc")
-    port = params.get("port", 9001)
+    portal_port = params.get("port", config.PORT_PORTAL)
+    server_port = config.PORT_SERVER
 
-    url_map = {
-        "kyc": f"http://127.0.0.1:{port}/login",
-        "checkout": f"http://127.0.0.1:{port}/checkout",
-        "patient": f"http://127.0.0.1:{port}/patient",
-    }
-    target_url = url_map.get(domain, url_map["kyc"])
+    # Clear step history on fresh run
+    step_history.clear()
 
-    # Launch CLI run in background
+    # Match target URL dynamically from registry
+    site = registry.get_site(domain)
+    entry_route = site.entry_route if site else f"/{domain}"
+    target_url = f"http://127.0.0.1:{portal_port}{entry_route}"
+
     cmd = [
         sys.executable,
         "-m",
@@ -155,19 +211,21 @@ async def trigger_run(payload: Optional[Dict[str, Any]] = None):
         "--url",
         target_url,
         "--server-url",
-        "http://127.0.0.1:8000",
+        f"http://127.0.0.1:{server_port}",
+        "--dashboard-url",
+        f"http://127.0.0.1:{config.PORT_DASHBOARD}",
         "--max-steps",
         "15",
     ]
     env = dict(os.environ)
-    env["PRIVATEEYE_DASHBOARD_URL"] = "http://127.0.0.1:8080"
-    
+    env["PRIVATEEYE_DASHBOARD_URL"] = f"http://127.0.0.1:{config.PORT_DASHBOARD}"
+
     proc = subprocess.Popen(
         cmd,
         cwd=str(BASE_DIR.parent),
         env=env,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
     )
     return {
         "status": "launched",
@@ -177,8 +235,10 @@ async def trigger_run(payload: Optional[Dict[str, Any]] = None):
     }
 
 
-def run(host: str = "127.0.0.1", port: int = 8080):
-    uvicorn.run(app, host=host, port=port, log_level="info")
+def run(host: str | None = None, port: int | None = None):
+    h = host or config.HOST
+    p = port or config.PORT_DASHBOARD
+    uvicorn.run(app, host=h, port=p, log_level="info")
 
 
 if __name__ == "__main__":
