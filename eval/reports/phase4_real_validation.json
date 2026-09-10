@@ -1,6 +1,6 @@
 {
   "title": "PrivateEye Phase 4 Master Validation Report",
-  "generated_at": "2026-09-10T14:35:29Z",
+  "generated_at": "2026-09-10T14:47:28Z",
   "environment": {
     "platform": "Windows-11-10.0.26200-SP0",
     "python_version": "3.13.3",
@@ -19,8 +19,8 @@
   "evidence_tiers": {
     "tier_1_deterministic_synthetic": {
       "status": "PASS",
-      "total_automated_tests": 54,
-      "passing_tests": 54,
+      "total_automated_tests": 65,
+      "passing_tests": 65,
       "failing_tests": 0,
       "sih_rubric_pass": true,
       "scorecard": {
@@ -38,14 +38,15 @@
       "channel_e_f1_score": 0.9492,
       "channel_e_recall": 0.9032,
       "decoy_false_positives": 0,
-      "avg_channel_latency_ms": 0.23
+      "avg_channel_latency_ms": 0.42
     },
     "tier_3_real_vlm_evidence": {
       "packet_privacy_proof": {
-        "status": "PASS",
+        "status": "SKIPPED",
+        "evidence_source": "synthetic_local_harness",
         "secrets_audited_count": 21,
-        "zero_raw_pii_on_wire": true,
-        "server_logs_zero_leak": true,
+        "zero_raw_pii_on_wire": false,
+        "server_logs_zero_leak": false,
         "raw_screenshots_transmitted": false
       },
       "live_qwen_endpoint_execution": {

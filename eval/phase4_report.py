@@ -131,8 +131,8 @@ def compile_phase4_report() -> dict[str, Any]:
         "evidence_tiers": {
             "tier_1_deterministic_synthetic": {
                 "status": "PASS",
-                "total_automated_tests": 54,
-                "passing_tests": 54,
+                "total_automated_tests": 65,
+                "passing_tests": 65,
                 "failing_tests": 0,
                 "sih_rubric_pass": True,
                 "scorecard": {
@@ -154,10 +154,23 @@ def compile_phase4_report() -> dict[str, Any]:
             },
             "tier_3_real_vlm_evidence": {
                 "packet_privacy_proof": {
-                    "status": "PASS" if privacy_ev.get("zero_leak_verified") else "FAIL",
+                    "status": (
+                        "PASS"
+                        if privacy_ev.get("live_real_vlm_traffic_verified")
+                        and privacy_ev.get("zero_leak_verified")
+                        else "SKIPPED"
+                    ),
+                    "evidence_source": privacy_ev.get(
+                        "evidence_source", "unknown"
+                    ),
                     "secrets_audited_count": privacy_ev.get("secrets_tested_count", 21),
-                    "zero_raw_pii_on_wire": privacy_ev.get("zero_leak_verified", True),
-                    "server_logs_zero_leak": True,
+                    "zero_raw_pii_on_wire": (
+                        privacy_ev.get("live_real_vlm_traffic_verified", False)
+                        and privacy_ev.get("zero_leak_verified", False)
+                    ),
+                    "server_logs_zero_leak": (
+                        privacy_ev.get("live_real_vlm_traffic_verified", False)
+                    ),
                     "raw_screenshots_transmitted": False,
                 },
                 "live_qwen_endpoint_execution": {
@@ -231,8 +244,12 @@ def write_all_reports(report: dict[str, Any], taxonomy: dict[str, Any]) -> None:
         f"- **Average Channel Latency:** {t2['avg_channel_latency_ms']} ms per page",
         "",
         "## 3. Tier 3 — Real-VLM Wire & Outbound Privacy Proof",
-        f"- **Four-Boundary Wire Verification:** {'✅ PASS (100% CLEAN)' if t3['packet_privacy_proof']['zero_raw_pii_on_wire'] else '❌ FAIL'}",
+        (
+            f"- **Four-Boundary Wire Verification:** "
+            f"{'✅ PASS (live traffic)' if t3['packet_privacy_proof']['zero_raw_pii_on_wire'] else '⏸ SKIPPED (synthetic harness only)'}"
+        ),
         f"- **Secrets Audited Across Outbound Traffic:** {t3['packet_privacy_proof']['secrets_audited_count']} credential entities",
+        f"- **Evidence Source:** `{t3['packet_privacy_proof']['evidence_source']}`",
         "- **Raw Screenshots Transmitted:** NO (Sanitized visual context only)",
         "- **Server Log PII Leaks:** ZERO",
         f"- **Live Real-VLM Execution Status:** `{t3['live_qwen_endpoint_execution']['status']}`",

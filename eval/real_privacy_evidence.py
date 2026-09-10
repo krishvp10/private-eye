@@ -77,6 +77,8 @@ def audit_wire_traffic(
 
     evidence = {
         "title": "PrivateEye Real-VLM Outbound Packet Privacy Evidence",
+        "evidence_source": "synthetic_local_harness",
+        "live_real_vlm_traffic_verified": False,
         "run_id": context.run_id,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "secrets_tested_count": len(audit_findings),
@@ -102,6 +104,8 @@ def write_evidence_reports(evidence: dict[str, Any], output_dir: Path = Path("ev
     md_lines = [
         "# PrivateEye Real-VLM Outbound Packet Privacy Evidence",
         "",
+        f"**Evidence source:** `{evidence['evidence_source']}`",
+        f"**Live real-VLM traffic verified:** {'YES' if evidence['live_real_vlm_traffic_verified'] else 'NO'}",
         f"**Run ID:** {evidence['run_id']}",
         f"**Secrets Monitored:** {evidence['secrets_tested_count']} distinct credential entities",
         f"**Zero-Leak Verified:** {'YES (100% CLEAN)' if evidence['zero_leak_verified'] else 'NO (VIOLATIONS FOUND)'}",
@@ -126,7 +130,11 @@ def write_evidence_reports(evidence: dict[str, Any], output_dir: Path = Path("ev
         f"- **Authentication Headers Transmitted:** {'NO' if not evidence['perimeter_checks']['auth_headers_transmitted'] else 'YES'}",
         f"- **Fill Actions Constrained to `value_ref`:** {'YES' if evidence['perimeter_checks']['only_value_ref_in_action'] else 'NO'}",
         "",
-        "> **Cryptographic Guarantee**: No secret value is ever emitted in plain text across the network interface. The external model receives only sanitized visual frames and indirect vault references.",
+        (
+            "> This artifact validates the local privacy-audit harness with synthetic "
+            "request/response/log inputs. It is not evidence from a live Qwen request "
+            "until `live_real_vlm_traffic_verified` is true."
+        ),
     ])
 
     md_path = output_dir / "real_privacy_evidence.md"
@@ -166,4 +174,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

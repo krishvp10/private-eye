@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Corpus 12 — Multiline Address Block and Emergency Contact</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f8fafc; padding: 2rem; color: #334155; }
+    .card { max-width: 650px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; border: 1px solid #cbd5e1; }
+    .field { margin-bottom: 1rem; }
+    label { display: block; font-weight: bold; font-size: 0.8rem; margin-bottom: 0.25rem; color: #64748b; }
+    input, textarea { width: 100%; padding: 0.5rem; border: 1px solid #94a3b8; border-radius: 4px; box-sizing: border-box; }
+    .btn { background: #2563eb; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h3>Emergency Contact and Residential Dispatch</h3>
+    <div class="field">
+      <label for="contact_name">Primary Contact Name</label>
+      <input type="text" id="contact_name" value="Sunita R. Rao">
+    </div>
+    <div class="field">
+      <label for="contact_phone">Emergency Phone Number</label>
+      <input type="text" id="contact_phone" value="+91-98765-43210">
+    </div>
+    <div class="field">
+      <label for="dispatch_address">Complete Residential Address</label>
+      <textarea id="dispatch_address" rows="3">Flat 402, Shanti Heights, 14th Main Road, Indiranagar, Bengaluru, Karnataka, PIN: 560038</textarea>
+    </div>
+    <button class="btn" id="btn_save_dispatch">Save Dispatch Details</button>
+  </div>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "summary": {
+    "total_expected_entities": 37,
+    "total_detected_entities": 37,
+    "total_false_negatives": 0,
+    "recall": 1.0,
+    "missed_percentage": 0.0
+  },
+  "breakdown_by_root_cause": [],
+  "breakdown_by_category": [],
+  "missed_cases": []
+}

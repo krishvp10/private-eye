@@ -25,7 +25,7 @@ from eval.leak_check import OutboundLeakInterceptor
 from privacy.pipeline import PrivacyPipeline
 from privacy.redaction.masker import RedactionEngine
 from server.validation import validate_agent_action
-from shared.protocol import ActionType, ScreenContext
+from shared.protocol import ActionType, AgentAction, ScreenContext
 
 
 @dataclass
@@ -138,9 +138,38 @@ class PrivateEyeAgent:
                             self.executor._is_destructive(action),
                         )
                         if not decision.retry:
+                            if decision.escalate:
+                                action = AgentAction(
+                                    action=ActionType.ASK_USER,
+                                    reason=f"Action failed after {retry_count} retries ({failure_class}): {execution.error_message}",
+                                )
+                                execution = await self.executor.execute(page, action, step=step)
                             break
                         retry_count = decision.retry_count
-                        await page.reload(wait_until="networkidle")
+                        # Perform fresh capture to update references and avoid stale DOM locators
+                        fresh_cap = await capture_page(page)
+                        fresh_dets = self.pipeline.detect(
+                            fresh_cap.raw_elements,
+                            fresh_cap.screenshot_bytes,
+                            fresh_cap.visible_text,
+                            fresh_cap.viewport,
+                        )
+                        fresh_redacted = self.redactor.redact(
+                            fresh_cap.screenshot_bytes,
+                            fresh_cap.screen_graph,
+                            fresh_dets,
+                        )
+                        self.executor.set_reference_map(
+                            {
+                                node.ref: {
+                                    "element_id": node.id,
+                                    "role": node.role,
+                                    "name": node.name or "",
+                                }
+                                for node in fresh_redacted.sanitized_graph.root.children
+                                if node.ref
+                            }
+                        )
                         execution = await self.executor.execute(page, action, step=step)
                     target_ref = action.target.ref if action.target else None
                     step_total_ms = round((time.perf_counter() - step_started) * 1000, 2)

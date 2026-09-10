@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Corpus 11 — Dotted and Dashed PII with Decoys</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #fafafa; padding: 2rem; color: #1e293b; }
+    .box { max-width: 650px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; border: 1px solid #e2e8f0; }
+    .field { margin-bottom: 1rem; }
+    label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.25rem; color: #475569; }
+    input { width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
+    .btn { background: #0f172a; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h3>Tax Authority Portal — Identity Update</h3>
+    <div class="field">
+      <label for="dot_aadhaar">Aadhaar (Dot Separator)</label>
+      <input type="text" id="dot_aadhaar" value="9012.3456.7890">
+    </div>
+    <div class="field">
+      <label for="dash_pan">Permanent Account Number (Dashed)</label>
+      <input type="text" id="dash_pan" value="ABCDE-1234-F">
+    </div>
+    <div class="field">
+      <label for="decoy_order_code">Order Reference Code (Decoy Non-PII)</label>
+      <input type="text" id="decoy_order_code" value="ORD-9012-3456">
+    </div>
+    <button class="btn" id="btn_submit_update">Update Records</button>
+  </div>
+</body>
+</html>

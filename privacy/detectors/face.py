@@ -36,12 +36,25 @@ class FaceDetector:
             category = (el.get("category") or "").lower()
             elem_id = el.get("id", "").lower()
             role = (el.get("role") or "").lower()
+            field_type = (el.get("field_type") or "").lower()
             bbox_coords = el.get("bbox")
 
             if not bbox_coords or len(bbox_coords) != 4 or bbox_coords[2] <= 0 or bbox_coords[3] <= 0:
                 continue
 
-            if category == "face" or "face" in elem_id or "avatar" in elem_id:
+            # Text fields and buttons are never face images
+            if field_type in {"text", "password", "number", "tel", "email", "input", "textarea"}:
+                continue
+            if role in {"textbox", "input", "checkbox", "combobox", "button"}:
+                continue
+
+            is_face_element = (
+                category == "face"
+                or (role in {"img", "figure", "image"} and ("face" in elem_id or "avatar" in elem_id))
+                or elem_id.startswith("img_face")
+                or elem_id.startswith("avatar")
+            )
+            if is_face_element:
                 detections.append(
                     Detection(
                         category=DetectionCategory.FACE,

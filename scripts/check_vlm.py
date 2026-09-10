@@ -17,7 +17,9 @@ from typing import Any
 import httpx
 
 
-def check_endpoint(base_url: str = "http://127.0.0.1:8000/v1", target_model: str | None = None) -> dict[str, Any]:
+def check_endpoint(
+    base_url: str = "http://127.0.0.1:8000/v1", target_model: str | None = None
+) -> dict[str, Any]:
     clean_url = base_url.rstrip("/")
     result: dict[str, Any] = {
         "status": "BLOCKED",
@@ -39,7 +41,9 @@ def check_endpoint(base_url: str = "http://127.0.0.1:8000/v1", target_model: str
 
             data = resp.json()
             models: list[str] = [
-                str(m["id"]) for m in data.get("data", []) if isinstance(m, dict) and isinstance(m.get("id"), str)
+                str(m["id"])
+                for m in data.get("data", [])
+                if isinstance(m, dict) and isinstance(m.get("id"), str)
             ]
             result["models_available"] = models
 
@@ -48,7 +52,9 @@ def check_endpoint(base_url: str = "http://127.0.0.1:8000/v1", target_model: str
                 matched = any(normalized_target in m.lower() for m in models)
                 if not matched:
                     result["status"] = "FAIL"
-                    result["reason"] = f"Model '{target_model}' not found among available models: {models}"
+                    result["reason"] = (
+                        f"Model '{target_model}' not found among available models: {models}"
+                    )
                     return result
 
             result["status"] = "PASS"
@@ -67,8 +73,12 @@ def check_endpoint(base_url: str = "http://127.0.0.1:8000/v1", target_model: str
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Check health of an OpenAI-compatible VLM endpoint")
-    parser.add_argument("--base-url", default="http://127.0.0.1:8000/v1", help="Base URL of OpenAI-compatible API")
+    parser = argparse.ArgumentParser(
+        description="Check health of an OpenAI-compatible VLM endpoint"
+    )
+    parser.add_argument(
+        "--base-url", default="http://127.0.0.1:8000/v1", help="Base URL of OpenAI-compatible API"
+    )
     parser.add_argument("--model", default=None, help="Specific model ID to verify")
     args = parser.parse_args()
 

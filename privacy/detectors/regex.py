@@ -17,19 +17,18 @@ from shared.protocol import (
 # Regex specifications
 PATTERNS = {
     DetectionCategory.AADHAAR: re.compile(
-        r"\b[2-9][0-9]{3}\s*[-]?\s*[0-9]{4}\s*[-]?\s*[0-9]{4}\b"
+        r"\b[2-9][0-9]{3}[\s\.\-]*[0-9]{4}[\s\.\-]*[0-9]{4}\b"
     ),
     DetectionCategory.PAN: re.compile(
-        r"\b[A-Z]\s*[A-Z]\s*[A-Z]\s*[A-Z]\s*[A-Z]\s*[0-9]\s*[0-9]\s*[0-9]\s*[0-9]\s*[A-Z]\b",
-        re.IGNORECASE,
+        r"\b[A-Za-z]{5}[\s\.\-]?[0-9]{4}[\s\.\-]?[A-Za-z]\b"
     ),
     DetectionCategory.PHONE: re.compile(
-        r"\b(?:\+91|91|0)?[\s-]*[6-9]\d{4}[\s-]?\d{5}\b"
+        r"\b(?:\+?91|0)?[\s\.\-]*[6-9]\d{4}[\s\.\-]?\d{5}\b"
     ),
     DetectionCategory.EMAIL: re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"),
     DetectionCategory.DOB: re.compile(r"\b(?:\d{4}-\d{2}-\d{2}|\d{2}/\d{2}/\d{4}|\d{2}/\d{2})\b"),
     DetectionCategory.CARD: re.compile(
-        r"\b(?:4[0-9]{3}|5[1-5][0-9]{2}|6011|3[47][0-9]{2})[\s-]?[0-9]{4}[\s-]?[0-9]{4}[\s-]?[0-9]{4}\b"
+        r"\b(?:4[0-9]{3}|5[1-5][0-9]{2}|6011|3[47][0-9]{2})[\s\.\-]?[0-9]{4}[\s\.\-]?[0-9]{4}[\s\.\-]?[0-9]{4}\b"
     ),
     DetectionCategory.UHID: re.compile(
         r"\b(?:UHID|ABHA)[-:\s][A-Za-z0-9-]{6,20}\b",

@@ -1,0 +1,65 @@
+{
+  "timestamp": "2026-09-10T14:53:22Z",
+  "target_model": "Qwen/Qwen2.5-VL-3B-Instruct",
+  "endpoint": "http://127.0.0.1:8000/v1",
+  "gpu": {
+    "gpu_available": true,
+    "gpu_name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "vram_total_mb": 8188,
+    "vram_free_mb": 7957,
+    "vram_used_mb": 0,
+    "driver_version": "581.86",
+    "cuda_version": "13.0"
+  },
+  "endpoint_status": "BLOCKED",
+  "endpoint_reason": "Connection refused at http://127.0.0.1:8000/v1. Ensure vLLM or Ollama is running.",
+  "configurations": {
+    "LOW": {
+      "status": "SKIPPED",
+      "reason": "No active VLM endpoint at http://127.0.0.1:8000/v1: Connection refused at http://127.0.0.1:8000/v1. Ensure vLLM or Ollama is running.",
+      "min_pixels": 100352,
+      "max_pixels": 200704,
+      "target_dimension": "approx. 448 x 448",
+      "description": "Aggressive downscaling for minimal latency and compute budget",
+      "metrics": {
+        "grounding_accuracy": null,
+        "workflow_success": null,
+        "avg_model_latency_ms": null,
+        "total_latency_ms": null,
+        "vram_allocated_mb": null
+      }
+    },
+    "MEDIUM": {
+      "status": "SKIPPED",
+      "reason": "No active VLM endpoint at http://127.0.0.1:8000/v1: Connection refused at http://127.0.0.1:8000/v1. Ensure vLLM or Ollama is running.",
+      "min_pixels": 200704,
+      "max_pixels": 401408,
+      "target_dimension": "approx. 640 x 640",
+      "description": "Balanced trade-off recommended for dense UI screenshots",
+      "metrics": {
+        "grounding_accuracy": null,
+        "workflow_success": null,
+        "avg_model_latency_ms": null,
+        "total_latency_ms": null,
+        "vram_allocated_mb": null
+      }
+    },
+    "HIGH": {
+      "status": "SKIPPED",
+      "reason": "No active VLM endpoint at http://127.0.0.1:8000/v1: Connection refused at http://127.0.0.1:8000/v1. Ensure vLLM or Ollama is running.",
+      "min_pixels": 401408,
+      "max_pixels": 802816,
+      "target_dimension": "approx. 896 x 896",
+      "description": "High visual fidelity for tiny fonts and compact controls",
+      "metrics": {
+        "grounding_accuracy": null,
+        "workflow_success": null,
+        "avg_model_latency_ms": null,
+        "total_latency_ms": null,
+        "vram_allocated_mb": null
+      }
+    }
+  },
+  "selected_configuration": "MEDIUM",
+  "selection_rationale": "MEDIUM resolution (~400k max pixels) is selected as the recommended baseline: it preserves legible DOM labels and small buttons while maintaining manageable VRAM and acceptable inference latency on an 8GB RTX 4060 Laptop GPU."
+}

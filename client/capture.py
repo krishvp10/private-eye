@@ -32,8 +32,9 @@ JS_DOM_EXTRACTOR = """
 () => {
     const interactiveSelectors = [
         'button', 'input', 'select', 'textarea', 'a[href]',
-        '[role="button"]', '[role="checkbox"]', '[role="textbox"]',
-        '[data-sensitive="true"]', 'svg[data-category="face"]'
+        'img', 'span[id]', 'p[id]',
+        '[role="button"]', '[role="checkbox"]', '[role="textbox"]', '[role="img"]',
+        '[data-sensitive="true"]', '[data-category]', 'svg[data-category="face"]'
     ];
     
     const elements = Array.from(document.querySelectorAll(interactiveSelectors.join(', ')));
@@ -53,7 +54,7 @@ JS_DOM_EXTRACTOR = """
         );
         
         // Find accessible name / label
-        let name = el.getAttribute('aria-label') || el.innerText || '';
+        let name = el.getAttribute('aria-label') || el.getAttribute('alt') || el.innerText || '';
         if (!name && el.id) {
             const label = document.querySelector(`label[for="${el.id}"]`);
             if (label) {

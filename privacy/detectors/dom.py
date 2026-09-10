@@ -13,19 +13,19 @@ from shared.protocol import (
 )
 
 LABEL_CATEGORY_KEYWORDS = {
-    DetectionCategory.PASSWORD: ["password", "pin", "secret"],
-    DetectionCategory.AADHAAR: ["aadhaar", "uidai", "aadhar"],
     DetectionCategory.PAN: ["pan", "permanent account number"],
+    DetectionCategory.AADHAAR: ["aadhaar", "uidai", "aadhar"],
+    DetectionCategory.UHID: ["uhid", "abha", "health id", "patient id"],
+    DetectionCategory.CARD: ["card number", "card_number", "debit card", "credit card"],
+    DetectionCategory.CVV: ["cvv", "security code", "cvc"],
     DetectionCategory.PHONE: ["phone", "mobile", "tel", "contact number"],
     DetectionCategory.EMAIL: ["email", "mail"],
     DetectionCategory.DOB: ["dob", "date of birth", "birth date", "bday", "expiry", "expiration"],
+    DetectionCategory.PASSWORD: ["password", "pin", "passcode"],
     DetectionCategory.ADDRESS: ["address", "street", "residence", "postal"],
-    DetectionCategory.NAME: ["full name", "applicant name", "first name", "last name", "cardholder", "patient name"],
+    DetectionCategory.NAME: ["name", "full name", "applicant name", "first name", "last name", "nominee name", "cardholder", "patient name"],
     DetectionCategory.FACE: ["face", "avatar", "biometric", "portrait", "photo"],
-    DetectionCategory.CARD: ["card number", "card_number", "debit card", "credit card"],
-    DetectionCategory.CVV: ["cvv", "security code", "cvc"],
     DetectionCategory.HEALTH: ["diagnosis", "prescription", "medication", "medical history"],
-    DetectionCategory.UHID: ["uhid", "abha", "health id", "patient id"],
 }
 
 AUTOCOMPLETE_MAP = {

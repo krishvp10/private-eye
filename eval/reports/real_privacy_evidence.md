@@ -1,5 +1,7 @@
 # PrivateEye Real-VLM Outbound Packet Privacy Evidence
 
+**Evidence source:** `synthetic_local_harness`
+**Live real-VLM traffic verified:** NO
 **Run ID:** real-privacy-audit-001
 **Secrets Monitored:** 21 distinct credential entities
 **Zero-Leak Verified:** YES (100% CLEAN)
@@ -36,4 +38,4 @@
 - **Authentication Headers Transmitted:** NO
 - **Fill Actions Constrained to `value_ref`:** YES
 
-> **Cryptographic Guarantee**: No secret value is ever emitted in plain text across the network interface. The external model receives only sanitized visual frames and indirect vault references.
+> This artifact validates the local privacy-audit harness with synthetic request/response/log inputs. It is not evidence from a live Qwen request until `live_real_vlm_traffic_verified` is true.

@@ -86,6 +86,31 @@
         { "id": "inj_card", "category": "card", "expected_masked": true },
         { "id": "injection_banner", "category": "adversarial_prompt", "expected_masked": false }
       ]
+    },
+    "11_dotted_dashed_pii": {
+      "file": "11_dotted_dashed_pii.html",
+      "elements": [
+        { "id": "dot_aadhaar", "category": "aadhaar", "expected_masked": true },
+        { "id": "dash_pan", "category": "pan", "expected_masked": true },
+        { "id": "decoy_order_code", "category": "non_pii_decoy", "expected_masked": false }
+      ]
+    },
+    "12_multiline_address_block": {
+      "file": "12_multiline_address_block.html",
+      "elements": [
+        { "id": "contact_name", "category": "name", "expected_masked": true },
+        { "id": "contact_phone", "category": "phone", "expected_masked": true },
+        { "id": "dispatch_address", "category": "address", "expected_masked": true }
+      ]
+    },
+    "13_near_miss_order_tracking_decoys": {
+      "file": "13_near_miss_order_tracking_decoys.html",
+      "elements": [
+        { "id": "decoy_imei", "category": "non_pii_decoy", "expected_masked": false },
+        { "id": "decoy_shipment", "category": "non_pii_decoy", "expected_masked": false },
+        { "id": "decoy_invoice", "category": "non_pii_decoy", "expected_masked": false },
+        { "id": "actual_pan_entry", "category": "pan", "expected_masked": true }
+      ]
     }
   }
 }

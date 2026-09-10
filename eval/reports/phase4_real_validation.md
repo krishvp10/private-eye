@@ -1,6 +1,6 @@
 # PrivateEye Phase 4 Master Validation Report
 
-**Generated:** 2026-09-10T14:35:29Z
+**Generated:** 2026-09-10T14:47:28Z
 **Environment:** Windows-11-10.0.26200-SP0
 **GPU Hardware:** NVIDIA GeForce RTX 4060 Laptop GPU (8188 MiB, Driver 581.86)
 **Pinned Model Setup:** `Qwen/Qwen2.5-VL-3B-Instruct` via vLLM
@@ -8,7 +8,7 @@
 ---
 
 ## 1. Tier 1 — Deterministic Synthetic Benchmark
-- **Status:** PASS (54/54 unit tests passing)
+- **Status:** PASS (65/65 unit tests passing)
 - **PII Detection F1:** 1.0 (Precision: 100%, Recall: 100%)
 - **Redaction Precision:** 100.0% (Over-mask: 0.0%)
 - **Client Processing RAM / Latency:** 60.2 MB / 38.5 ms
@@ -17,11 +17,12 @@
 - **Status:** PASS (10 challenge fixtures evaluated)
 - **Full Pipeline F1 Score:** **0.949** (Recall: 90.3%)
 - **Decoy Number False Positives:** 0 (Zero over-masking of non-PII logistics/order codes)
-- **Average Channel Latency:** 0.23 ms per page
+- **Average Channel Latency:** 0.42 ms per page
 
 ## 3. Tier 3 — Real-VLM Wire & Outbound Privacy Proof
-- **Four-Boundary Wire Verification:** ✅ PASS (100% CLEAN)
+- **Four-Boundary Wire Verification:** ⏸ SKIPPED (synthetic harness only)
 - **Secrets Audited Across Outbound Traffic:** 21 credential entities
+- **Evidence Source:** `synthetic_local_harness`
 - **Raw Screenshots Transmitted:** NO (Sanitized visual context only)
 - **Server Log PII Leaks:** ZERO
 - **Live Real-VLM Execution Status:** `SKIPPED`

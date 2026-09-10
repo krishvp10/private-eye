@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Corpus 13 — Near-Miss Numerical Decoys (Zero-FP Verification)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; background: #f1f5f9; padding: 2rem; color: #0f172a; }
+    .card { max-width: 650px; margin: 0 auto; background: white; padding: 2rem; border-radius: 8px; border: 1px solid #cbd5e1; }
+    .field { margin-bottom: 1rem; }
+    label { display: block; font-weight: 600; font-size: 0.85rem; margin-bottom: 0.25rem; color: #475569; }
+    input { width: 100%; padding: 0.5rem; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-box; }
+    .btn { background: #0284c7; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h3>Hardware Warranty and Logistics Register</h3>
+    <div class="field">
+      <label for="decoy_imei">Device IMEI Hardware Serial (15 digits)</label>
+      <input type="text" id="decoy_imei" value="864209041289123">
+    </div>
+    <div class="field">
+      <label for="decoy_shipment">Courier Air Waybill (12 digits)</label>
+      <input type="text" id="decoy_shipment" value="109283746501">
+    </div>
+    <div class="field">
+      <label for="decoy_invoice">Commercial Invoice Identifier (Alphanumeric Code)</label>
+      <input type="text" id="decoy_invoice" value="INV-2026-X9912">
+    </div>
+    <div class="field">
+      <label for="actual_pan_entry">Required Filing PAN</label>
+      <input type="text" id="actual_pan_entry" value="FGHPK7712M">
+    </div>
+    <button class="btn" id="btn_verify_warranty">Register Warranty</button>
+  </div>
+</body>
+</html>

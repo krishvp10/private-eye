@@ -1,56 +1,56 @@
 {
-  "timestamp": "2026-09-10T14:31:21Z",
-  "total_fixtures": 10,
+  "timestamp": "2026-09-10T14:52:39Z",
+  "total_fixtures": 13,
   "channel_metrics": {
     "A_DOM_ONLY": {
       "name": "Channel A: DOM attributes only",
-      "true_positives": 27,
+      "true_positives": 37,
       "false_positives": 0,
-      "false_negatives": 4,
+      "false_negatives": 0,
       "precision": 1.0,
-      "recall": 0.871,
-      "f1_score": 0.931,
-      "avg_latency_ms": 0.08
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "avg_latency_ms": 0.09
     },
     "B_DOM_REGEX": {
       "name": "Channel B: DOM + Regex",
-      "true_positives": 27,
+      "true_positives": 37,
       "false_positives": 0,
-      "false_negatives": 4,
+      "false_negatives": 0,
       "precision": 1.0,
-      "recall": 0.871,
-      "f1_score": 0.931,
-      "avg_latency_ms": 0.14
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "avg_latency_ms": 0.15
     },
     "C_DOM_REGEX_NER": {
       "name": "Channel C: DOM + Regex + Heuristics/NER",
-      "true_positives": 27,
+      "true_positives": 37,
       "false_positives": 0,
-      "false_negatives": 4,
+      "false_negatives": 0,
       "precision": 1.0,
-      "recall": 0.871,
-      "f1_score": 0.931,
-      "avg_latency_ms": 0.16
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "avg_latency_ms": 0.18
     },
     "D_DOM_REGEX_NER_FACE": {
       "name": "Channel D: DOM + Regex + NER + Face Cascade",
-      "true_positives": 27,
+      "true_positives": 37,
       "false_positives": 0,
-      "false_negatives": 4,
+      "false_negatives": 0,
       "precision": 1.0,
-      "recall": 0.871,
-      "f1_score": 0.931,
+      "recall": 1.0,
+      "f1_score": 1.0,
       "avg_latency_ms": 0.18
     },
     "E_FULL_PIPELINE": {
       "name": "Channel E: Full Multi-Signal Pipeline",
-      "true_positives": 28,
+      "true_positives": 37,
       "false_positives": 0,
-      "false_negatives": 3,
+      "false_negatives": 0,
       "precision": 1.0,
-      "recall": 0.9032,
-      "f1_score": 0.9492,
-      "avg_latency_ms": 0.23
+      "recall": 1.0,
+      "f1_score": 1.0,
+      "avg_latency_ms": 0.24
     }
   }
 }

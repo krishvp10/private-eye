@@ -3,9 +3,10 @@
 ## Executive result
 
 The local privacy-preserving browser-agent MVP is implemented and regression-tested.
-The real-Qwen evidence phase is **not complete** because this workstation has no
-reachable GPU-backed OpenAI-compatible Qwen2.5-VL endpoint. No real-model result
-has been fabricated.
+The real-Qwen evidence phase is **not complete** because this workstation has
+no reachable GPU-backed OpenAI-compatible Qwen2.5-VL endpoint. A local NVIDIA
+GeForce RTX 4060 Laptop GPU is present, but the required serving runtime is not
+installed or running. No real-model result has been fabricated.
 
 ## Verified complete
 
@@ -26,7 +27,7 @@ has been fabricated.
 | Model comparison harness | `eval/model_comparison.py` | PASS (runner); real measurements blocked |
 | Real-model canary harness | `eval/real_vlm_canary.py` | PASS (runner); live canaries blocked |
 | Dashboard transport boundary | raw screenshot removed from dashboard payload | PASS |
-| Automated regression suite | 56 passed | PASS |
+| Automated regression suite | 65 passed | PASS |
 
 ## Evidence not yet available
 
@@ -74,10 +75,14 @@ Current reports:
   there is no source-code fallback copy of the fixture secrets.
 - The one-command supervisor detects occupied ports with a bind probe and
   propagates configured portal, backend, and dashboard ports to child services.
+- The current packet evidence artifact is explicitly marked
+  `synthetic_local_harness`; it must not be described as evidence from a live
+  Qwen request.
 
 ## Known limitations
 
-1. No GPU/vLLM endpoint is available, so real-model claims cannot be made.
+1. No reachable Qwen endpoint is available. The local GPU exists, but vLLM and
+   Ollama are not installed and the available WSL distribution is stopped.
 2. The current retry loop reloads and retries the previous action; a complete
    fresh-capture/reasoning retry orchestration remains to be implemented.
 3. Post-condition verification is not yet a first-class per-action contract.
