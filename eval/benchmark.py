@@ -15,8 +15,12 @@ import json
 import time
 from pathlib import Path
 from typing import Any, Dict, List
+import socket
+import threading
+import uvicorn
 from playwright.async_api import async_playwright
 from client.capture import capture_page
+from demo_sites.server import app as demo_app
 from privacy.pipeline import PrivacyPipeline
 from privacy.redaction.masker import RedactionEngine
 from eval.latency import TelemetryCollector, StepTelemetry
@@ -27,7 +31,22 @@ from rich.table import Table
 GROUND_TRUTH_PATH = Path(__file__).parent.parent / "demo_sites" / "ground_truth.json"
 
 
+def ensure_server_running(host: str = "127.0.0.1", port: int = 9001):
+    """Check if the demo server is already running, or spin it up in background."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.settimeout(0.3)
+        if s.connect_ex((host, port)) == 0:
+            return  # Already running
+
+    config = uvicorn.Config(demo_app, host=host, port=port, log_level="error")
+    server = uvicorn.Server(config)
+    t = threading.Thread(target=server.run, daemon=True)
+    t.start()
+    time.sleep(1.0)
+
+
 async def run_benchmark(base_url: str = "http://127.0.0.1:9001") -> Dict[str, Any]:
+    ensure_server_running()
     console = Console()
     telemetry = TelemetryCollector()
 

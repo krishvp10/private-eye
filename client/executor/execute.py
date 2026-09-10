@@ -26,6 +26,20 @@ class ExecutorSecurityException(Exception):
     pass
 
 
+def classify_execution_error(error: str) -> str:
+    """Map local execution failures to the stable experiment taxonomy."""
+    text = error.lower()
+    if "reference_" in text or "unknown element ref" in text:
+        return "grounding"
+    if "confirmation" in text or "forbidden" in text or "security" in text:
+        return "policy"
+    if "timeout" in text:
+        return "execution"
+    if "target" in text or "locator" in text or "element" in text:
+        return "execution"
+    return "execution"
+
+
 class ActionExecutor:
     """Safely executes structured browser actions on the local client machine."""
 
@@ -111,6 +125,7 @@ class ActionExecutor:
                 success=False,
                 duration_ms=round((time.perf_counter() - start_time) * 1000, 2),
                 error_message=str(exc),
+                failure_class=classify_execution_error(str(exc)),
             )
 
         # 6. Destructive Action Confirmation Gate
@@ -123,6 +138,7 @@ class ActionExecutor:
                     success=False,
                     duration_ms=round((time.perf_counter() - start_time) * 1000, 2),
                     error_message="confirmation_required",
+                    failure_class="policy",
                 )
 
         # 7. Execute Click or Fill
@@ -165,6 +181,7 @@ class ActionExecutor:
                 success=False,
                 duration_ms=duration_ms,
                 error_message=str(e),
+                failure_class=classify_execution_error(str(e)),
             )
 
     async def _resolve_locator(self, page: Page, action: AgentAction) -> Locator:

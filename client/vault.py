@@ -22,6 +22,18 @@ class LocalVault:
         "user_profile.password": "SuperSecretPass123!",
         "user_profile.pin": "889241",
         "user_profile.address": "42 Palm Grove Road, Indiranagar, Bengaluru 560038",
+        # Banking & Financial
+        "user_profile.card_number": "4532 1148 9201 8842",
+        "user_profile.cardholder": "Rahul Sharma",
+        "user_profile.expiry": "08/28",
+        "user_profile.cvv": "842",
+        "user_profile.otp": "948211",
+        # Healthcare & Medical
+        "user_profile.uhid": "ABHA-2026-98142-990",
+        "user_profile.diagnosis": "Type 2 Diabetes Mellitus with Mild Hypertension",
+        "user_profile.prescription": "Metformin 500mg BD, Telmisartan 40mg OD, Atorvastatin 10mg HS",
+        "user_profile.doctor": "Dr. Ananya Roy, MD (Cardiology)",
+        "user_profile.insurance_id": "MEDICLAIM-POL-8849102",
     }
 
     def __init__(self, profile_data: Optional[Dict[str, str]] = None) -> None:

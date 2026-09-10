@@ -1,0 +1,34 @@
+{
+  "audit_id": "AUDIT-1789047553-DCBAD430",
+  "generated_at": "2026-09-10T13:39:13Z",
+  "total_packets_inspected": 1,
+  "total_bytes_analyzed": 72,
+  "raw_pii_leaks_found": 0,
+  "compliance_status": "CERTIFIED_100_PERCENT_ZERO_RAW_PII_EXPOSURE",
+  "certified_zero_leak": true,
+  "summary_hash": "dcbad4303a71be4adb8005f0fc751a6bd4979b43e11fcf0fd2654b63504c9d90",
+  "packet_records": [
+    {
+      "packet_id": "pkt-0001-1789047553317",
+      "timestamp": 1789047553.3170598,
+      "byte_count": 72,
+      "sha256_hash": "b7c33a49806166838f0dd49d4fcaf73e9935a2958da40ea5801e781b4ca11379",
+      "entropy": 4.3404,
+      "scanned_patterns": [
+        "aadhaar",
+        "pan",
+        "phone",
+        "email",
+        "dob",
+        "card",
+        "uhid"
+      ],
+      "vault_secrets_checked": 20,
+      "violations_detected": 0,
+      "passed": true,
+      "details": {
+        "violations": []
+      }
+    }
+  ]
+}

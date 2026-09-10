@@ -33,6 +33,10 @@ class DetectionCategory(str, Enum):
     NAME = "name"
     DOB = "dob"
     ADDRESS = "address"
+    CARD = "card"
+    CVV = "cvv"
+    HEALTH = "health"
+    UHID = "uhid"
 
 
 class DetectionSource(str, Enum):
@@ -210,3 +214,4 @@ class ExecutionResult(BaseModel):
     success: bool
     duration_ms: float
     error_message: Optional[str] = None
+    failure_class: Optional[str] = None

@@ -26,7 +26,14 @@ PATTERNS = {
         r"\b(?:\+91|91|0)?[\s-]*[6-9]\d{4}[\s-]?\d{5}\b"
     ),
     DetectionCategory.EMAIL: re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b"),
-    DetectionCategory.DOB: re.compile(r"\b(?:\d{4}-\d{2}-\d{2}|\d{2}/\d{2}/\d{4})\b"),
+    DetectionCategory.DOB: re.compile(r"\b(?:\d{4}-\d{2}-\d{2}|\d{2}/\d{2}/\d{4}|\d{2}/\d{2})\b"),
+    DetectionCategory.CARD: re.compile(
+        r"\b(?:4[0-9]{3}|5[1-5][0-9]{2}|6011|3[47][0-9]{2})[\s-]?[0-9]{4}[\s-]?[0-9]{4}[\s-]?[0-9]{4}\b"
+    ),
+    DetectionCategory.UHID: re.compile(
+        r"\b(?:UHID|ABHA)[-:\s][A-Za-z0-9-]{6,20}\b",
+        re.IGNORECASE,
+    ),
 }
 
 

@@ -12,15 +12,19 @@ from shared.protocol import (
 )
 
 LABEL_CATEGORY_KEYWORDS = {
-    DetectionCategory.PASSWORD: ["password", "pin", "secret", "cvv", "security code"],
+    DetectionCategory.PASSWORD: ["password", "pin", "secret"],
     DetectionCategory.AADHAAR: ["aadhaar", "uidai", "aadhar"],
     DetectionCategory.PAN: ["pan", "permanent account number"],
     DetectionCategory.PHONE: ["phone", "mobile", "tel", "contact number"],
     DetectionCategory.EMAIL: ["email", "mail"],
-    DetectionCategory.DOB: ["dob", "date of birth", "birth date", "bday"],
+    DetectionCategory.DOB: ["dob", "date of birth", "birth date", "bday", "expiry", "expiration"],
     DetectionCategory.ADDRESS: ["address", "street", "residence", "postal"],
-    DetectionCategory.NAME: ["full name", "applicant name", "first name", "last name"],
+    DetectionCategory.NAME: ["full name", "applicant name", "first name", "last name", "cardholder", "patient name"],
     DetectionCategory.FACE: ["face", "avatar", "biometric", "portrait", "photo"],
+    DetectionCategory.CARD: ["card number", "card_number", "debit card", "credit card"],
+    DetectionCategory.CVV: ["cvv", "security code", "cvc"],
+    DetectionCategory.HEALTH: ["diagnosis", "prescription", "medication", "medical history"],
+    DetectionCategory.UHID: ["uhid", "abha", "health id", "patient id"],
 }
 
 AUTOCOMPLETE_MAP = {
@@ -29,7 +33,9 @@ AUTOCOMPLETE_MAP = {
     "email": DetectionCategory.EMAIL,
     "tel": DetectionCategory.PHONE,
     "tel-national": DetectionCategory.PHONE,
-    "cc-number": DetectionCategory.PAN,
+    "cc-number": DetectionCategory.CARD,
+    "cc-csc": DetectionCategory.CVV,
+    "cc-exp": DetectionCategory.DOB,
     "bday": DetectionCategory.DOB,
     "street-address": DetectionCategory.ADDRESS,
     "name": DetectionCategory.NAME,

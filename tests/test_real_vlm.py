@@ -43,6 +43,8 @@ def test_real_request_contains_only_sanitized_multimodal_context(monkeypatch):
     assert "SANITIZED_IMAGE" in serialized
     assert "Rahul Sharma" not in serialized
     assert "ABCDE1234F" not in serialized
+    assert request["response_format"]["type"] == "json_schema"
+    assert request["response_format"]["json_schema"]["strict"] is True
     assert "Authorization" not in serialized
 
 

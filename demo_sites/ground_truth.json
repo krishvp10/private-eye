@@ -89,6 +89,110 @@
           "ground_truth_pattern": "42 Palm Grove Road, Indiranagar, Bengaluru 560038"
         }
       ]
+    },
+    "/checkout": {
+      "elements": [
+        {
+          "id": "field_card_number",
+          "category": "card",
+          "selector": "#field_card_number",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "4532 1148 9201 8842"
+        },
+        {
+          "id": "field_cardholder",
+          "category": "name",
+          "selector": "#field_cardholder",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "Rahul Sharma"
+        },
+        {
+          "id": "field_expiry",
+          "category": "dob",
+          "selector": "#field_expiry",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "08/28"
+        },
+        {
+          "id": "field_cvv",
+          "category": "cvv",
+          "selector": "#field_cvv",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "842"
+        },
+        {
+          "id": "field_otp",
+          "category": "password",
+          "selector": "#field_otp",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "948211"
+        }
+      ]
+    },
+    "/patient": {
+      "elements": [
+        {
+          "id": "field_uhid",
+          "category": "uhid",
+          "selector": "#field_uhid",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "ABHA-2026-98142-990"
+        },
+        {
+          "id": "field_patient_name",
+          "category": "name",
+          "selector": "#field_patient_name",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "Rahul Sharma"
+        },
+        {
+          "id": "field_dob",
+          "category": "dob",
+          "selector": "#field_dob",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "1990-05-15"
+        },
+        {
+          "id": "field_phone",
+          "category": "phone",
+          "selector": "#field_phone",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "9876543210"
+        },
+        {
+          "id": "field_diagnosis",
+          "category": "health",
+          "selector": "#field_diagnosis",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "Type 2 Diabetes Mellitus with Mild Hypertension"
+        },
+        {
+          "id": "field_prescription",
+          "category": "health",
+          "selector": "#field_prescription",
+          "type": "textarea",
+          "sensitive": true,
+          "ground_truth_pattern": "Metformin 500mg BD, Telmisartan 40mg OD, Atorvastatin 10mg HS"
+        },
+        {
+          "id": "field_insurance_id",
+          "category": "pan",
+          "selector": "#field_insurance_id",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "MEDICLAIM-POL-8849102"
+        }
+      ]
     }
   }
 }

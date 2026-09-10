@@ -58,7 +58,14 @@ class VLMAdapter:
                 ]},
             ],
             "temperature": 0.0,
-            "response_format": {"type": "json_object"},
+            "response_format": {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "privateeye_agent_action",
+                    "strict": True,
+                    "schema": AgentAction.model_json_schema(),
+                },
+            },
         }
 
     @staticmethod

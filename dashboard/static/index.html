@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrivateEye — Visual Privacy Inspector & Telemetry Cockpit</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Top Navigation & Header -->
+  <header class="top-nav">
+    <div class="brand-section">
+      <div class="logo-badge">🛡️</div>
+      <div class="brand-titles">
+        <h1>PrivateEye Inspector</h1>
+        <p>Smart India Hackathon • Dept. of Space / ISRO • Problem 26171</p>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <div class="status-pill">
+        <div class="pulse-dot"></div>
+        <span>0 BYTES RAW PII ON WIRE</span>
+      </div>
+
+      <div class="domain-selector">
+        <button class="domain-btn active" data-domain="kyc">KYC Identity</button>
+        <button class="domain-btn" data-domain="checkout">Banking / Pay</button>
+        <button class="domain-btn" data-domain="patient">Patient EHR</button>
+      </div>
+
+      <button id="btn_run_agent" class="run-btn">
+        <span>▶</span> Run Agent
+      </button>
+    </div>
+  </header>
+
+  <!-- Main 3-Column Split Visualizer -->
+  <main class="dashboard-grid">
+    <!-- Column 1: Client-Side Raw User Screen -->
+    <section class="screen-card">
+      <div class="card-header">
+        <div class="header-meta">
+          <span class="header-icon">💻</span>
+          <span class="card-title">Client-Side User Screen</span>
+        </div>
+        <span class="pill-tag pill-private">🔐 LOCAL VAULT ONLY</span>
+      </div>
+      <div class="screen-viewport">
+        <div id="placeholder_raw" class="placeholder-msg">
+          <div class="placeholder-icon">🖥️</div>
+          <div>Awaiting agent execution...</div>
+        </div>
+        <img id="img_raw" class="screen-img" style="display: none;" alt="Client Raw Screen">
+      </div>
+    </section>
+
+    <!-- Column 2: VLM Server Sanitized Screen -->
+    <section class="screen-card">
+      <div class="card-header">
+        <div class="header-meta">
+          <span class="header-icon">☁️</span>
+          <span class="card-title">VLM Server Wire View</span>
+        </div>
+        <span class="pill-tag pill-sanitized">🛡️ SANITIZED WIRE CONTEXT</span>
+      </div>
+      <div class="screen-viewport">
+        <div id="placeholder_sanitized" class="placeholder-msg">
+          <div class="placeholder-icon">🔒</div>
+          <div>Sanitized context will stream here</div>
+        </div>
+        <img id="img_sanitized" class="screen-img" style="display: none;" alt="Sanitized Wire Screen">
+        <div id="bbox_overlay" class="overlay-layer"></div>
+      </div>
+    </section>
+
+    <!-- Column 3: Live Privacy & Performance Telemetry -->
+    <aside class="telemetry-col">
+      <!-- Active Step & Action Card -->
+      <div class="metric-panel">
+        <div class="panel-heading">
+          <span id="step_num">Step 0</span>
+          <span id="current_url" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); text-transform: lowercase;">Idle</span>
+        </div>
+        <div class="action-card">
+          <div id="action_type" class="action-type-badge">Awaiting Action</div>
+          <div id="action_detail" class="action-detail">No active browser action</div>
+          <div id="action_reason" class="action-reason">Launch an automated run to begin</div>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Grid -->
+      <div class="metric-panel">
+        <div class="panel-heading">Privacy & Performance Metrics</div>
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <div class="metric-label">Step Latency</div>
+            <div id="val_latency" class="metric-val val-cyan">0 ms</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Payload Size</div>
+            <div id="val_payload" class="metric-val">0 KB</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">PII Detections</div>
+            <div id="val_detections" class="metric-val val-green">0</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-label">Redactions</div>
+            <div id="val_redactions" class="metric-val val-green">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Latency Waterfall -->
+      <div class="metric-panel">
+        <div class="panel-heading">Step Latency Breakdown</div>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <div class="waterfall-row">
+            <span class="waterfall-label">Capture</span>
+            <div class="waterfall-bar-wrap"><div id="bar_capture" class="waterfall-bar" style="width: 20%;"></div></div>
+            <span id="val_cap_ms" class="waterfall-val">35ms</span>
+          </div>
+          <div class="waterfall-row">
+            <span class="waterfall-label">Privacy</span>
+            <div class="waterfall-bar-wrap"><div id="bar_privacy" class="waterfall-bar" style="width: 15%;"></div></div>
+            <span id="val_priv_ms" class="waterfall-val">18ms</span>
+          </div>
+          <div class="waterfall-row">
+            <span class="waterfall-label">Redact</span>
+            <div class="waterfall-bar-wrap"><div id="bar_redact" class="waterfall-bar" style="width: 10%;"></div></div>
+            <span id="val_red_ms" class="waterfall-val">12ms</span>
+          </div>
+          <div class="waterfall-row">
+            <span class="waterfall-label">Wire Net</span>
+            <div class="waterfall-bar-wrap"><div id="bar_wire" class="waterfall-bar" style="width: 25%;"></div></div>
+            <span id="val_net_ms" class="waterfall-val">45ms</span>
+          </div>
+          <div class="waterfall-row">
+            <span class="waterfall-label">Exec</span>
+            <div class="waterfall-bar-wrap"><div id="bar_exec" class="waterfall-bar" style="width: 30%;"></div></div>
+            <span id="val_exec_ms" class="waterfall-val">60ms</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detected PII Elements Table -->
+      <div class="metric-panel" style="flex: 1;">
+        <div class="panel-heading">Detected Sensitive Nodes</div>
+        <div class="detections-table-wrap">
+          <table class="det-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Source</th>
+                <th>Conf</th>
+                <th>Evidence ID</th>
+              </tr>
+            </thead>
+            <tbody id="detections_tbody">
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--text-dim); padding: 1rem;">
+                  No active detections
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

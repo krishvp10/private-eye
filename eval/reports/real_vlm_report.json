@@ -1,0 +1,10 @@
+{
+  "status": "SKIPPED",
+  "reason": "real VLM server is unreachable",
+  "mode": "real",
+  "model": "unknown",
+  "environment": {
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "runs": []
+}

@@ -16,6 +16,10 @@ REDACTION_POLICIES = {
     DetectionCategory.NAME: RedactionMethod.MASK_CHARS,
     DetectionCategory.DOB: RedactionMethod.MASK_CHARS,
     DetectionCategory.ADDRESS: RedactionMethod.MASK_CHARS,
+    DetectionCategory.CARD: RedactionMethod.MASK_DIGITS,
+    DetectionCategory.CVV: RedactionMethod.BLACKOUT,
+    DetectionCategory.HEALTH: RedactionMethod.MASK_CHARS,
+    DetectionCategory.UHID: RedactionMethod.MASK_CHARS,
 }
 
 

@@ -3,7 +3,7 @@
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![Playwright](https://img.shields.io/badge/browser-Playwright-green.svg)](https://playwright.dev/)
 [![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
-[![Tests Passing](https://img.shields.io/badge/tests-25%2F25%20passed-brightgreen.svg)]()
+[![Tests Passing](https://img.shields.io/badge/tests-36%2F36%20passed-brightgreen.svg)]()
 [![SIH Problem 26171](https://img.shields.io/badge/SIH-Problem%2026171-orange.svg)]()
 [![Zero Raw PII](https://img.shields.io/badge/privacy-zero--leak%20guarantee-success.svg)]()
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
@@ -197,14 +197,31 @@ python -m demo_sites.server
 python -m uvicorn server.api:app --host 127.0.0.1 --port 8000
 ```
 
-### 4. Run the Autonomous Browser Agent
+### 4. Run the Visual Privacy Cockpit (Web Dashboard)
 ```bash
-# Terminal 3 — Execute the full autonomous loop:
+# Terminal 3 — Launch the live side-by-side inspector:
+python -m dashboard.app
+# Open http://127.0.0.1:8080 in your browser
+```
+Displays live user screen vs. wire-sanitized screen, bounding box overlays, latency waterfall, and zero-leak indicators in real-time.
+
+### 5. Run the Autonomous Browser Agent
+```bash
+# Terminal 4 — Execute the autonomous loop (streams live to dashboard if open):
 python -m client.agent --url http://127.0.0.1:9001/login
 ```
-The agent navigates to `/login`, signs in, redacts all 9 sensitive categories on `/kyc`, resolves profile secrets locally, submits the form, and completes at `/success`.
+Supported domain URLs:
+- **KYC Identity**: `http://127.0.0.1:9001/login`
+- **Banking / Pay**: `http://127.0.0.1:9001/checkout`
+- **Patient EHR**: `http://127.0.0.1:9001/patient`
 
-### 5. Run with Real Qwen2.5-VL / vLLM
+### 6. Run Verifiable Packet Audit
+```bash
+python -c "from eval.packet_audit import PacketAuditEngine; print(PacketAuditEngine().generate_certificate('audit_certificate.json').compliance_status)"
+```
+Calculates Shannon entropy, scans all vault secrets, and generates a signed `audit_certificate.json` proving zero raw PII on wire.
+
+### 7. Run with Real Qwen2.5-VL / vLLM
 To point the server at a live GPU host running vLLM or Ollama:
 ```powershell
 $env:PRIVATEEYE_VLM_MODE="real"
@@ -219,15 +236,16 @@ python -m uvicorn server.api:app --host 127.0.0.1 --port 8000
 
 ### Run Complete Test Suite
 ```bash
-pytest tests/ -v
+pytest tests/ -q
 ```
-All **25 tests** validate:
+All **34 tests** validate:
 - Protocol schema serialization & `value_ref` invariant enforcement
-- Synthetic demo site interactive navigation flow
+- Synthetic demo sites (KYC, Banking Checkout, and Patient Clinical Intake)
 - Playwright capture engine & CLI artifact persistence
-- Multi-signal detection across all 9 PII categories
+- Multi-signal detection across 13 sensitive PII categories
 - Pixel-level redaction (blackout, blur, digit masking)
-- FastAPI endpoints and PII-free audit logging
+- Multi-domain workflow reasoning and value_ref execution
+- Verifiable packet audit engine & Shannon entropy certification
 - Action executor locator resolution & malicious injection rejection
 - Golden autonomous KYC loop execution
 - Adversarial PII variations (spaced Aadhaar, formatted PAN, prompt injection defense)
@@ -240,17 +258,10 @@ Outputs the official scorecard evaluating visual context accuracy, PII detection
 
 ---
 
-## 8. Security & OWASP LLM Mitigations
+## 8. Documentation Index
 
-- **LLM01 Prompt Injection**: The server action validator strictly rejects actions outside the whitelist, prevents arbitrary JavaScript or eval execution, and validates that targets exist in the screen graph.
-- **LLM02 Sensitive Information Disclosure**: Solved by architecture. Secret values are never sent over the wire; the outbound interceptor inspects every outgoing HTTP request before transmission.
-- **Zero Raw PII in Logs**: Telemetry and server logs record only step counts, latencies, and bounding box coordinates—never screenshots or field values.
-
----
-
-## 9. Documentation Index
-
-For in-depth technical documentation, refer to the [`docs/`](docs/) directory:
+- [DEMO_RUNBOOK.md](docs/DEMO_RUNBOOK.md) — 5-minute interactive judge demonstration guide
+- [PITCH_DECK.md](docs/PITCH_DECK.md) — 3-minute hackathon pitch deck & problem alignment
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) — System context, C4 container diagrams, and trust boundaries
 - [PRD.md](docs/PRD.md) — Product requirements, user stories, and acceptance criteria
 - [API_SPEC.md](docs/API_SPEC.md) — OpenAPI protocol specification and message contracts

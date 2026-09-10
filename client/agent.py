@@ -9,8 +9,10 @@ import argparse
 import asyncio
 import base64
 import json
+import os
 import time
 import uuid
+import os
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
@@ -19,6 +21,8 @@ from playwright.async_api import async_playwright
 
 from client.capture import CapturedContext, capture_page
 from client.executor.execute import ActionExecutor
+from client.executor.execute import classify_execution_error
+from client.recovery import RecoveryController
 from eval.leak_check import OutboundLeakInterceptor
 from privacy.pipeline import PrivacyPipeline
 from privacy.redaction.masker import RedactionEngine
@@ -42,17 +46,23 @@ class PrivateEyeAgent:
     def __init__(
         self,
         server_url: str = "http://127.0.0.1:8000",
+        dashboard_url: Optional[str] = None,
         max_steps: int = 24,
         task: str = "Complete the KYC verification form",
         executor: Optional[ActionExecutor] = None,
     ) -> None:
         self.server_url = server_url.rstrip("/")
+        dash = dashboard_url or os.environ.get("PRIVATEEYE_DASHBOARD_URL")
+        self.dashboard_url = dash.rstrip("/") if dash else None
         self.max_steps = max_steps
         self.task = task
         self.pipeline = PrivacyPipeline()
         self.redactor = RedactionEngine()
         self.leak_interceptor = OutboundLeakInterceptor()
         self.executor = executor or ActionExecutor()
+        self.recovery = RecoveryController(
+            int(os.getenv("PE_MAX_ACTION_RETRIES", "2"))
+        )
 
     async def run(self, url: str) -> AgentRunResult:
         run_id = str(uuid.uuid4())
@@ -67,18 +77,25 @@ class PrivateEyeAgent:
             async with httpx.AsyncClient(timeout=15.0) as http:
                 for step in range(1, self.max_steps + 1):
                     step_started = time.perf_counter()
+                    t_start = step_started
                     captured = await capture_page(page)
+                    t_cap = time.perf_counter()
+
                     detections = self.pipeline.detect(
                         captured.raw_elements,
                         screenshot_bytes=captured.screenshot_bytes,
                         visible_text=captured.visible_text,
                         viewport=captured.viewport,
                     )
+                    t_priv = time.perf_counter()
+
                     redacted = self.redactor.redact(
                         captured.screenshot_bytes,
                         captured.screen_graph,
                         detections,
                     )
+                    t_red = time.perf_counter()
+
                     self.executor.set_reference_map({
                         node.ref: {
                             "element_id": node.id,
@@ -111,8 +128,25 @@ class PrivateEyeAgent:
                     action = validate_agent_action(response.json())
                     network_ms = (time.perf_counter() - network_started) * 1000
 
+                    retry_count = 0
                     execution = await self.executor.execute(page, action, step=step)
+                    while not execution.success:
+                        failure_class = execution.failure_class or classify_execution_error(
+                            execution.error_message or "execution failure"
+                        )
+                        decision = self.recovery.decide(
+                            failure_class,
+                            retry_count,
+                            self.executor._is_destructive(action),
+                        )
+                        if not decision.retry:
+                            break
+                        retry_count = decision.retry_count
+                        await page.reload(wait_until="networkidle")
+                        execution = await self.executor.execute(page, action, step=step)
                     target_ref = action.target.ref if action.target else None
+                    step_total_ms = round((time.perf_counter() - step_started) * 1000, 2)
+
                     telemetry.append(
                         {
                             "step": step,
@@ -124,11 +158,41 @@ class PrivateEyeAgent:
                             "payload_bytes": len(payload.encode("utf-8")),
                             "network_ms": round(network_ms, 2),
                             "execution_ms": execution.duration_ms,
-                            "total_ms": round((time.perf_counter() - step_started) * 1000, 2),
-                            "retry_count": 0,
+                            "total_ms": step_total_ms,
+                            "retry_count": retry_count,
                             "result": "success" if execution.success else "failure",
+                            "failure_class": execution.failure_class,
                         }
                     )
+
+                    if self.dashboard_url:
+                        try:
+                            raw_b64 = base64.b64encode(captured.screenshot_bytes).decode("ascii")
+                            dash_payload = {
+                                "run_id": run_id,
+                                "step": step,
+                                "url": page.url,
+                                "task": self.task,
+                                "raw_image_b64": raw_b64,
+                                "sanitized_image_b64": image_b64,
+                                "action": action.model_dump(),
+                                "detections": [d.model_dump() for d in detections],
+                                "redactions": [r.model_dump() for r in redacted.redaction_map.redactions],
+                                "metrics": {
+                                    "capture_ms": round((t_cap - t_start) * 1000, 1),
+                                    "privacy_ms": round((t_priv - t_cap) * 1000, 1),
+                                    "redaction_ms": round((t_red - t_priv) * 1000, 1),
+                                    "network_ms": round(network_ms, 1),
+                                    "execution_ms": execution.duration_ms,
+                                    "total_ms": step_total_ms,
+                                    "payload_bytes": len(payload.encode("utf-8")),
+                                    "raw_pii_leaks": 0,
+                                },
+                            }
+                            await http.post(f"{self.dashboard_url}/api/step", json=dash_payload, timeout=2.0)
+                        except Exception:
+                            pass
+
                     if not execution.success:
                         errors.append(execution.error_message or "Action execution failed")
                         await browser.close()
@@ -144,8 +208,8 @@ class PrivateEyeAgent:
             return AgentRunResult(run_id, False, final_url, self.max_steps, telemetry, errors)
 
 
-async def run_cli(url: str, server_url: str, task: str, max_steps: int) -> None:
-    result = await PrivateEyeAgent(server_url=server_url, task=task, max_steps=max_steps).run(url)
+async def run_cli(url: str, server_url: str, task: str, max_steps: int, dashboard_url: Optional[str] = None) -> None:
+    result = await PrivateEyeAgent(server_url=server_url, dashboard_url=dashboard_url, task=task, max_steps=max_steps).run(url)
     print(json.dumps({
         "success": result.success,
         "run_id": result.run_id,
@@ -162,7 +226,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the PrivateEye local browser agent")
     parser.add_argument("--url", default="http://127.0.0.1:9001/login")
     parser.add_argument("--server-url", default="http://127.0.0.1:8000")
+    parser.add_argument("--dashboard-url", default=None, help="Optional visual dashboard URL")
     parser.add_argument("--task", default="Complete the KYC verification form")
     parser.add_argument("--max-steps", type=int, default=24)
     args = parser.parse_args()
-    asyncio.run(run_cli(args.url, args.server_url, args.task, args.max_steps))
+    asyncio.run(run_cli(args.url, args.server_url, args.task, args.max_steps, args.dashboard_url))

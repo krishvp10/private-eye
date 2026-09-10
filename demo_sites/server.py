@@ -54,6 +54,26 @@ async def post_kyc(request: Request):
     return RedirectResponse(url="/success", status_code=303)
 
 
+@app.get("/checkout", response_class=HTMLResponse)
+async def get_checkout():
+    return read_template("checkout.html")
+
+
+@app.post("/checkout")
+async def post_checkout(request: Request):
+    return RedirectResponse(url="/success", status_code=303)
+
+
+@app.get("/patient", response_class=HTMLResponse)
+async def get_patient():
+    return read_template("patient.html")
+
+
+@app.post("/patient")
+async def post_patient(request: Request):
+    return RedirectResponse(url="/success", status_code=303)
+
+
 @app.get("/success", response_class=HTMLResponse)
 async def get_success():
     return read_template("success.html")

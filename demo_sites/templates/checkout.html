@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Checkout — Secure Banking Gateway</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="brand-header">
+    <div class="brand-badge" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #10b981;">
+      256-BIT ENCRYPTED CHECKOUT
+    </div>
+    <h1 class="portal-title">Instant Merchant Settlement</h1>
+    <p class="portal-subtitle">Authorize transaction of ₹4,999.00 via verified debit/credit card</p>
+  </div>
+
+  <main class="card" role="main">
+    <form id="form_checkout" action="/checkout" method="POST">
+      <div class="form-grid">
+        <!-- Card Number -->
+        <div class="form-group form-full">
+          <label for="field_card_number">
+            Card Number (16 Digits)
+            <span class="field-sensitive-tag">[FINANCIAL PII: CARD]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_card_number" 
+            name="card_number" 
+            autocomplete="cc-number" 
+            required 
+            aria-label="Card Number"
+            data-sensitive="true"
+            data-category="pan"
+            value="4532 1148 9201 8842"
+          >
+        </div>
+
+        <!-- Cardholder Name -->
+        <div class="form-group">
+          <label for="field_cardholder">
+            Cardholder Name
+            <span class="field-sensitive-tag">[PII: NAME]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_cardholder" 
+            name="cardholder" 
+            autocomplete="cc-name" 
+            required 
+            aria-label="Cardholder Name"
+            data-sensitive="true"
+            data-category="name"
+            value="Rahul Sharma"
+          >
+        </div>
+
+        <!-- Expiration Date -->
+        <div class="form-group">
+          <label for="field_expiry">
+            Expiration Date (MM/YY)
+            <span class="field-sensitive-tag">[SENSITIVE: EXPIRY]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_expiry" 
+            name="expiry" 
+            autocomplete="cc-exp" 
+            required 
+            aria-label="Expiration Date"
+            data-sensitive="true"
+            data-category="dob"
+            value="08/28"
+          >
+        </div>
+
+        <!-- CVV / Security Code -->
+        <div class="form-group">
+          <label for="field_cvv">
+            Security Code (CVV)
+            <span class="field-sensitive-tag">[CONFIDENTIAL: BLACKOUT]</span>
+          </label>
+          <input 
+            type="password" 
+            id="field_cvv" 
+            name="cvv" 
+            autocomplete="cc-csc" 
+            maxlength="4" 
+            required 
+            aria-label="Security Code"
+            data-sensitive="true"
+            data-category="password"
+            value="842"
+          >
+        </div>
+
+        <!-- Authorization OTP -->
+        <div class="form-group">
+          <label for="field_otp">
+            One-Time Password (OTP)
+            <span class="field-sensitive-tag">[HIGHLY SENSITIVE: OTP]</span>
+          </label>
+          <input 
+            type="password" 
+            id="field_otp" 
+            name="otp" 
+            autocomplete="one-time-code" 
+            maxlength="6" 
+            required 
+            aria-label="One-Time Password"
+            data-sensitive="true"
+            data-category="password"
+            value="948211"
+          >
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button type="button" id="btn_cancel_checkout" class="btn btn-secondary" role="button">
+          Cancel
+        </button>
+        <button type="submit" id="btn_pay" class="btn btn-primary" role="button">
+          Pay ₹4,999 Securely
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script src="/static/js/debug.js"></script>
+</body>
+</html>

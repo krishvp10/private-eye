@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Clinical EHR — Apollo Life Hospital</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="brand-header">
+    <div class="brand-badge" style="background: rgba(59, 130, 246, 0.15); border-color: rgba(59, 130, 246, 0.4); color: #38bdf8;">
+      HIPAA & DISHA COMPLIANT EHR
+    </div>
+    <h1 class="portal-title">Clinical Consultation & Intake</h1>
+    <p class="portal-subtitle">Apollo Life Digital Hospital — Secure In-Patient Registration</p>
+  </div>
+
+  <main class="card" role="main">
+    <form id="form_patient" action="/patient" method="POST">
+      <div class="form-grid">
+        <!-- UHID (Universal Health ID) -->
+        <div class="form-group">
+          <label for="field_uhid">
+            Universal Health ID (UHID / ABHA)
+            <span class="field-sensitive-tag">[HEALTH PII: UHID]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_uhid" 
+            name="uhid" 
+            required 
+            aria-label="Universal Health ID"
+            data-sensitive="true"
+            data-category="uhid"
+            value="ABHA-2026-98142-990"
+          >
+        </div>
+
+        <!-- Full Name -->
+        <div class="form-group">
+          <label for="field_patient_name">
+            Patient Full Name
+            <span class="field-sensitive-tag">[PII: NAME]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_patient_name" 
+            name="patient_name" 
+            autocomplete="name" 
+            required 
+            aria-label="Patient Full Name"
+            data-sensitive="true"
+            data-category="name"
+            value="Rahul Sharma"
+          >
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group">
+          <label for="field_dob">
+            Date of Birth
+            <span class="field-sensitive-tag">[PII: DOB]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_dob" 
+            name="dob" 
+            autocomplete="bday" 
+            required 
+            aria-label="Date of Birth"
+            data-sensitive="true"
+            data-category="dob"
+            value="1990-05-15"
+          >
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group">
+          <label for="field_phone">
+            Emergency Contact Number
+            <span class="field-sensitive-tag">[PII: PHONE]</span>
+          </label>
+          <input 
+            type="tel" 
+            id="field_phone" 
+            name="phone" 
+            autocomplete="tel" 
+            required 
+            aria-label="Emergency Contact Number"
+            data-sensitive="true"
+            data-category="phone"
+            value="9876543210"
+          >
+        </div>
+
+        <!-- Clinical Diagnosis -->
+        <div class="form-group form-full">
+          <label for="field_diagnosis">
+            Primary Clinical Diagnosis & Pre-existing Conditions
+            <span class="field-sensitive-tag">[HIGHLY SENSITIVE: HEALTH]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_diagnosis" 
+            name="diagnosis" 
+            required 
+            aria-label="Clinical Diagnosis"
+            data-sensitive="true"
+            data-category="health"
+            value="Type 2 Diabetes Mellitus with Mild Hypertension"
+          >
+        </div>
+
+        <!-- Active Prescription -->
+        <div class="form-group form-full">
+          <label for="field_prescription">
+            Active Medications & Prescription Dosage
+            <span class="field-sensitive-tag">[HIGHLY SENSITIVE: HEALTH]</span>
+          </label>
+          <textarea 
+            id="field_prescription" 
+            name="prescription" 
+            rows="3" 
+            required 
+            aria-label="Active Medications"
+            data-sensitive="true"
+            data-category="health"
+          >Metformin 500mg BD, Telmisartan 40mg OD, Atorvastatin 10mg HS</textarea>
+        </div>
+
+        <!-- Attending Physician -->
+        <div class="form-group">
+          <label for="field_doctor">
+            Attending Physician / Specialist
+            <span class="field-sensitive-tag">[MEDICAL STAFF]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_doctor" 
+            name="doctor" 
+            required 
+            aria-label="Attending Physician"
+            value="Dr. Ananya Roy, MD (Cardiology)"
+          >
+        </div>
+
+        <!-- Insurance / TPA ID -->
+        <div class="form-group">
+          <label for="field_insurance_id">
+            Health Insurance TPA Policy ID
+            <span class="field-sensitive-tag">[FINANCIAL / POLICY]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_insurance_id" 
+            name="insurance_id" 
+            required 
+            aria-label="Health Insurance Policy ID"
+            data-sensitive="true"
+            data-category="pan"
+            value="MEDICLAIM-POL-8849102"
+          >
+        </div>
+      </div>
+
+      <div class="actions-row">
+        <button type="button" id="btn_cancel_patient" class="btn btn-secondary" role="button">
+          Cancel
+        </button>
+        <button type="submit" id="btn_admit_patient" class="btn btn-primary" role="button">
+          Confirm Clinical Admission
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script src="/static/js/debug.js"></script>
+</body>
+</html>
