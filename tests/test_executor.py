@@ -7,6 +7,7 @@ Validates:
 4. ExecutionResult reporting.
 """
 
+import socket
 import threading
 import time
 
@@ -23,7 +24,14 @@ from shared.protocol import (
     AgentAction,
 )
 
-PORT = 9005
+
+def _get_free_port() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return int(s.getsockname()[1])
+
+
+PORT = _get_free_port()
 BASE_URL = f"http://127.0.0.1:{PORT}"
 
 
@@ -40,10 +48,12 @@ def run_demo_server():
 
 @pytest.mark.asyncio
 async def test_executor_fill_and_click():
-    vault = LocalVault({
-        "user_profile.name": "Custom Test User",
-        "user_profile.email": "test.user@custom.domain",
-    })
+    vault = LocalVault(
+        {
+            "user_profile.name": "Custom Test User",
+            "user_profile.email": "test.user@custom.domain",
+        }
+    )
     executor = ActionExecutor(vault=vault)
 
     async with async_playwright() as p:
@@ -113,13 +123,15 @@ async def test_executor_requires_confirmation_for_destructive_action():
 @pytest.mark.asyncio
 async def test_executor_reference_metadata_must_match_current_page():
     executor = ActionExecutor()
-    executor.set_reference_map({
-        "e1": {
-            "element_id": "btn_cancel",
-            "role": "button",
-            "name": "Not Cancel",
+    executor.set_reference_map(
+        {
+            "e1": {
+                "element_id": "btn_cancel",
+                "role": "button",
+                "name": "Not Cancel",
+            }
         }
-    })
+    )
     action = AgentAction(
         action=ActionType.CLICK,
         target=ActionTarget(ref="e1"),

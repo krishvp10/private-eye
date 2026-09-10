@@ -8,6 +8,7 @@ Validates:
 """
 
 import io
+import socket
 import threading
 import time
 
@@ -22,7 +23,14 @@ from privacy.pipeline import PrivacyPipeline
 from privacy.redaction.masker import RedactionEngine
 from shared.protocol import DetectionCategory
 
-PORT = 9004
+
+def _get_free_port() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return int(s.getsockname()[1])
+
+
+PORT = _get_free_port()
 BASE_URL = f"http://127.0.0.1:{PORT}"
 
 
@@ -76,7 +84,9 @@ async def test_redaction_engine_execution():
         original_img = Image.open(io.BytesIO(captured.screenshot_bytes)).convert("RGB")
 
         # Find a password redaction
-        pw_redactions = [r for r in result.redaction_map.redactions if r.category == DetectionCategory.PASSWORD]
+        pw_redactions = [
+            r for r in result.redaction_map.redactions if r.category == DetectionCategory.PASSWORD
+        ]
         assert len(pw_redactions) > 0
         pw_box = pw_redactions[0].region
         px, py, pw, ph = [int(v) for v in pw_box]
@@ -89,7 +99,9 @@ async def test_redaction_engine_execution():
         assert max(pixel_val) <= 15, f"Password region not blackened! Value: {pixel_val}"
 
         # Check Face blur
-        face_redactions = [r for r in result.redaction_map.redactions if r.category == DetectionCategory.FACE]
+        face_redactions = [
+            r for r in result.redaction_map.redactions if r.category == DetectionCategory.FACE
+        ]
         assert len(face_redactions) > 0
 
         # 3. Evaluate accuracy vs elements

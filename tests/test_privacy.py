@@ -8,6 +8,7 @@ Validates:
 """
 
 import json
+import socket
 import threading
 import time
 from pathlib import Path
@@ -20,7 +21,14 @@ from client.capture import capture_page
 from demo_sites.server import app
 from privacy.pipeline import PrivacyPipeline
 
-PORT = 9003
+
+def _get_free_port() -> int:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(("127.0.0.1", 0))
+        return int(s.getsockname()[1])
+
+
+PORT = _get_free_port()
 BASE_URL = f"http://127.0.0.1:{PORT}"
 GROUND_TRUTH_PATH = Path(__file__).parent.parent / "demo_sites" / "ground_truth.json"
 
@@ -56,7 +64,15 @@ async def test_privacy_detection_all_categories():
 
         # Check that all 9 required categories were detected
         expected_categories = {
-            "face", "password", "aadhaar", "pan", "phone", "email", "name", "dob", "address"
+            "face",
+            "password",
+            "aadhaar",
+            "pan",
+            "phone",
+            "email",
+            "name",
+            "dob",
+            "address",
         }
         missing = expected_categories - detected_categories
         assert not missing, f"Missing detections for categories: {missing}"
