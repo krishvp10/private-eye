@@ -1,8 +1,8 @@
 # PrivateEye Real-VLM Outbound Packet Privacy Evidence
 
-**Evidence source:** `synthetic_local_harness`
-**Live real-VLM traffic verified:** NO
-**Run ID:** real-privacy-audit-001
+**Evidence source:** `live_real_vlm_request`
+**Live real-VLM traffic verified:** YES
+**Run ID:** live-real-vlm-privacy
 **Secrets Monitored:** 21 distinct credential entities
 **Zero-Leak Verified:** YES (100% CLEAN)
 

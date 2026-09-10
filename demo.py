@@ -56,6 +56,7 @@ def kill_process_tree(proc: subprocess.Popen) -> None:
         else:
             proc.terminate()
             proc.wait(timeout=2.0)
+    except (OSError, subprocess.TimeoutExpired):
         try:
             proc.kill()
             proc.wait(timeout=2.0)
@@ -103,7 +104,9 @@ class DemoSupervisor:
                 + "\nPlease free the occupied ports or specify alternate ports via CLI arguments."
             )
 
-    def start_service(self, name: str, module_name: str, env_vars: dict[str, str]) -> subprocess.Popen:
+    def start_service(
+        self, name: str, module_name: str, env_vars: dict[str, str]
+    ) -> subprocess.Popen:
         """Spawn a Python module as a supervised background subprocess."""
         env = dict(os.environ)
         env.update(env_vars)
@@ -178,7 +181,9 @@ class DemoSupervisor:
         print("[3/4] Polling service health checks...")
         if not self.wait_for_health():
             self.shutdown()
-            raise ServiceStartupError("Services failed to become healthy within the timeout window.")
+            raise ServiceStartupError(
+                "Services failed to become healthy within the timeout window."
+            )
 
         dashboard_url = f"http://{self.host}:{self.port_dashboard}?domain={self.domain}"
         print("[4/4] All services healthy and verified!\n")
@@ -216,7 +221,9 @@ class DemoSupervisor:
                 # Check that child processes are still running
                 for name, proc in self.processes.items():
                     if proc.poll() is not None:
-                        print(f"\nWarning: Service '{name}' exited unexpectedly with code {proc.poll()}.")
+                        print(
+                            f"\nWarning: Service '{name}' exited unexpectedly with code {proc.poll()}."
+                        )
                         self.shutdown()
                         return
                 time.sleep(1.0)
@@ -226,12 +233,19 @@ class DemoSupervisor:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="PrivateEye Unified 1-Command Demo Supervisor")
-    parser.add_argument("--domain", choices=["kyc", "checkout", "patient", "sample_fixture"], default="kyc", help="Domain to demonstrate")
+    parser.add_argument(
+        "--domain",
+        choices=["kyc", "checkout", "patient", "sample_fixture"],
+        default="kyc",
+        help="Domain to demonstrate",
+    )
     parser.add_argument("--host", default=None, help="Host interface; defaults to PRIVATEEYE_HOST")
     parser.add_argument("--port-portal", type=int, default=None, help="Portal port")
     parser.add_argument("--port-server", type=int, default=None, help="VLM Server API port")
     parser.add_argument("--port-dashboard", type=int, default=None, help="Dashboard port")
-    parser.add_argument("--no-browser", action="store_true", help="Skip opening the default web browser")
+    parser.add_argument(
+        "--no-browser", action="store_true", help="Skip opening the default web browser"
+    )
     args = parser.parse_args()
 
     supervisor = DemoSupervisor(

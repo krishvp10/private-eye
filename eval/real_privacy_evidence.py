@@ -28,6 +28,9 @@ def audit_wire_traffic(
     action: AgentAction,
     server_logs: str,
     vault: LocalVault | None = None,
+    *,
+    evidence_source: str = "synthetic_local_harness",
+    live_real_vlm_traffic_verified: bool = False,
 ) -> dict[str, Any]:
     """Inspects context payload, model action, and server logs for raw secret leakage."""
     local_vault = vault or LocalVault()
@@ -61,14 +64,16 @@ def audit_wire_traffic(
         if violation:
             total_violations += 1
 
-        audit_findings.append({
-            "vault_ref": ref,
-            "local_vault_status": "PRESENT_LOCALLY",
-            "request_wire_status": "LEAK_DETECTED" if in_request else "ABSENT",
-            "response_status": "LEAK_DETECTED" if in_response else "ABSENT",
-            "server_logs_status": "LEAK_DETECTED" if in_logs else "ABSENT",
-            "status": "FAIL" if violation else "PASS",
-        })
+        audit_findings.append(
+            {
+                "vault_ref": ref,
+                "local_vault_status": "PRESENT_LOCALLY",
+                "request_wire_status": "LEAK_DETECTED" if in_request else "ABSENT",
+                "response_status": "LEAK_DETECTED" if in_response else "ABSENT",
+                "server_logs_status": "LEAK_DETECTED" if in_logs else "ABSENT",
+                "status": "FAIL" if violation else "PASS",
+            }
+        )
 
     # Verify no raw screenshot bytes leaked inside unredacted channels
     raw_screenshot_leaked = False
@@ -77,8 +82,8 @@ def audit_wire_traffic(
 
     evidence = {
         "title": "PrivateEye Real-VLM Outbound Packet Privacy Evidence",
-        "evidence_source": "synthetic_local_harness",
-        "live_real_vlm_traffic_verified": False,
+        "evidence_source": evidence_source,
+        "live_real_vlm_traffic_verified": live_real_vlm_traffic_verified,
         "run_id": context.run_id,
         "timestamp": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "secrets_tested_count": len(audit_findings),
@@ -88,7 +93,8 @@ def audit_wire_traffic(
             "cookies_transmitted": cookies_leaked,
             "auth_headers_transmitted": auth_headers_leaked,
             "raw_screenshot_transmitted": raw_screenshot_leaked,
-            "only_value_ref_in_action": action.value_ref is not None or action.action.value != "fill",
+            "only_value_ref_in_action": action.value_ref is not None
+            or action.action.value != "fill",
         },
         "findings": audit_findings,
     }
@@ -96,7 +102,9 @@ def audit_wire_traffic(
     return evidence
 
 
-def write_evidence_reports(evidence: dict[str, Any], output_dir: Path = Path("eval/reports")) -> None:
+def write_evidence_reports(
+    evidence: dict[str, Any], output_dir: Path = Path("eval/reports")
+) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     json_path = output_dir / "real_privacy_evidence.json"
     json_path.write_text(json.dumps(evidence, indent=2), encoding="utf-8")
@@ -122,20 +130,22 @@ def write_evidence_reports(evidence: dict[str, Any], output_dir: Path = Path("ev
             f"| `{item['vault_ref']}` | {item['local_vault_status']} | {item['request_wire_status']} | {item['response_status']} | {item['server_logs_status']} | {status_badge} |"
         )
 
-    md_lines.extend([
-        "",
-        "### Additional Perimeter Guarantees",
-        f"- **Raw Screenshots Transmitted:** {'NO' if not evidence['perimeter_checks']['raw_screenshot_transmitted'] else 'YES'}",
-        f"- **Browser Cookies Transmitted:** {'NO' if not evidence['perimeter_checks']['cookies_transmitted'] else 'YES'}",
-        f"- **Authentication Headers Transmitted:** {'NO' if not evidence['perimeter_checks']['auth_headers_transmitted'] else 'YES'}",
-        f"- **Fill Actions Constrained to `value_ref`:** {'YES' if evidence['perimeter_checks']['only_value_ref_in_action'] else 'NO'}",
-        "",
-        (
-            "> This artifact validates the local privacy-audit harness with synthetic "
-            "request/response/log inputs. It is not evidence from a live Qwen request "
-            "until `live_real_vlm_traffic_verified` is true."
-        ),
-    ])
+    md_lines.extend(
+        [
+            "",
+            "### Additional Perimeter Guarantees",
+            f"- **Raw Screenshots Transmitted:** {'NO' if not evidence['perimeter_checks']['raw_screenshot_transmitted'] else 'YES'}",
+            f"- **Browser Cookies Transmitted:** {'NO' if not evidence['perimeter_checks']['cookies_transmitted'] else 'YES'}",
+            f"- **Authentication Headers Transmitted:** {'NO' if not evidence['perimeter_checks']['auth_headers_transmitted'] else 'YES'}",
+            f"- **Fill Actions Constrained to `value_ref`:** {'YES' if evidence['perimeter_checks']['only_value_ref_in_action'] else 'NO'}",
+            "",
+            (
+                "> This artifact validates the local privacy-audit harness with synthetic "
+                "request/response/log inputs. It is not evidence from a live Qwen request "
+                "until `live_real_vlm_traffic_verified` is true."
+            ),
+        ]
+    )
 
     md_path = output_dir / "real_privacy_evidence.md"
     md_path.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
@@ -150,6 +160,7 @@ def main() -> None:
 
     # Generate reference safe context and action
     from shared.protocol import ActionTarget, ActionType, ScreenGraph, ScreenNode
+
     root = ScreenNode(role="WebArea", name="KYC Form", id="root_0")
     ctx = ScreenContext(
         run_id="real-privacy-audit-001",

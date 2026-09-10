@@ -1,9 +1,9 @@
 {
   "title": "PrivateEye Real-VLM Outbound Packet Privacy Evidence",
-  "evidence_source": "synthetic_local_harness",
-  "live_real_vlm_traffic_verified": false,
-  "run_id": "real-privacy-audit-001",
-  "timestamp": "2026-09-10T14:47:16Z",
+  "evidence_source": "live_real_vlm_request",
+  "live_real_vlm_traffic_verified": true,
+  "run_id": "live-real-vlm-privacy",
+  "timestamp": "2026-09-10T15:04:29Z",
   "secrets_tested_count": 21,
   "total_violations": 0,
   "zero_leak_verified": true,

@@ -1,18 +1,34 @@
 {
-  "status": "SKIPPED",
-  "reason": "PRIVATEEYE_VLM_MODE is not real",
+  "status": "PASS",
+  "model": "qwen2.5vl:3b",
   "environment": {
     "platform": "Windows-11-10.0.26200-SP0"
   },
   "variants": {
     "screenshot_only": {
-      "status": "SKIPPED"
+      "status": "PASS",
+      "schema_valid": true,
+      "grounding_accuracy": null,
+      "workflow_success": null,
+      "latency_ms": 2015.0,
+      "action": "click"
     },
     "screenshot_graph": {
-      "status": "SKIPPED"
+      "status": "PASS",
+      "schema_valid": true,
+      "grounding_accuracy": null,
+      "workflow_success": null,
+      "latency_ms": 1930.26,
+      "action": "click"
     },
     "screenshot_graph_redactions": {
-      "status": "SKIPPED"
+      "status": "PASS",
+      "schema_valid": true,
+      "grounding_accuracy": null,
+      "workflow_success": null,
+      "latency_ms": 1992.09,
+      "action": "click"
     }
-  }
+  },
+  "note": "This canary measures response validity and latency; full grounding/workflow denominators require the real action runner."
 }

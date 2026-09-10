@@ -13,7 +13,7 @@ Phase 5A delivers an evidence-backed validation of PrivateEye across two paralle
 - **Operating System**: `Windows-11-10.0.26200-SP0` (`AMD64`)
 - **Python Runtime**: `Python 3.13.3`
 - **GPU Model**: `NVIDIA GeForce RTX 4060 Laptop GPU`
-- **VRAM Available**: `8188 MB` total (`7957 MB` free)
+- **VRAM Available**: `8188 MB` total (`3783 MB` free)
 - **Driver / CUDA**: Driver `581.86` | CUDA `13.0`
 - **WSL2 Availability**: `True` (Distros: `docker-desktop`)
 
@@ -67,11 +67,11 @@ Phase 5A delivers an evidence-backed validation of PrivateEye across two paralle
 
 | Workflow | Conclusion | Status | Branch | URL |
 | :--- | :---: | :---: | :---: | :--- |
+| **CI** | `failure` | `completed` | `main` | [View Run](https://github.com/krishvp10/private-eye/actions/runs/34493109210) |
+| **CodeQL** | `success` | `completed` | `main` | [View Run](https://github.com/krishvp10/private-eye/actions/runs/34493109196) |
+| **CodeQL** | `success` | `completed` | `main` | [View Run](https://github.com/krishvp10/private-eye/actions/runs/34492665339) |
+| **CI** | `failure` | `completed` | `main` | [View Run](https://github.com/krishvp10/private-eye/actions/runs/34492665293) |
 | **CI** | `failure` | `completed` | `main` | [View Run](https://github.com/krishvp10/private-eye/actions/runs/34490663072) |
-| **CodeQL** | `success` | `completed` | `main` | [View Run](https://github.com/krishvp10/private-eye/actions/runs/34490662938) |
-| **CI** | `failure` | `completed` | `dependabot/pip/httpx-gte-0.28.1` | [View Run](https://github.com/krishvp10/private-eye/actions/runs/34488970306) |
-| **CodeQL** | `success` | `completed` | `dependabot/pip/httpx-gte-0.28.1` | [View Run](https://github.com/krishvp10/private-eye/actions/runs/34488970255) |
-| **Dependency Review** | `failure` | `completed` | `dependabot/pip/httpx-gte-0.28.1` | [View Run](https://github.com/krishvp10/private-eye/actions/runs/34488970167) |
 
 ---
 

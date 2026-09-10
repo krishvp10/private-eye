@@ -4,6 +4,6 @@
 
 **Model:** qwen2.5vl:3b
 
-**Runs:** 1
+**Runs:** 5
 
 This report contains metadata only; raw prompts, screenshots, and secrets are intentionally excluded.
