@@ -8,7 +8,7 @@ python-dotenv>=1.0.1
 
 # Browser Automation & DOM Extraction
 playwright>=1.49.0
-pytest-playwright>=0.6.0
+pytest-playwright>=0.9.0
 
 # Vision & Image Processing
 pillow>=11.0.0
