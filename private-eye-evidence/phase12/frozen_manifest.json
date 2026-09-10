@@ -1,0 +1,35 @@
+{
+  "release_tag": "v1.0-RC-FROZEN",
+  "phase": "Phase 12 (Final Statistical Audit, Demo Hardening & Hackathon Submission Freeze)",
+  "baseline_commit": "5d697dc996d2235a273884bf35e4c1b943d9c4b7",
+  "baseline_commit_short": "5d697dc",
+  "timestamp_utc": "2026-09-10T19:56:00Z",
+  "production_directories_status": "FROZEN_AND_UNTOUCHED",
+  "production_directories": [
+    "client/",
+    "server/",
+    "privacy/",
+    "shared/"
+  ],
+  "frozen_model_architecture": {
+    "model_backbone": "Qwen2.5-VL-3B",
+    "runtime_api": "Ollama OpenAI-compatible API",
+    "default_visual_resolution": "768px (adaptive escalation to 1024px for ambiguous crops)",
+    "temperature": 0.0,
+    "candidate_k": 5,
+    "selective_crop_verifier": true,
+    "verifier_trigger_margin": 0.15,
+    "recovery_strategy": "Fresh reasoning with explicit progress-state DOM re-observation",
+    "blind_retries": false
+  },
+  "frozen_security_governance": {
+    "local_privacy_boundary": "Enabled (Regex + NER + local vault)",
+    "raw_secrets_transmitted": 0,
+    "sensitive_value_resolution": "Local value_ref only (client memory dereference)",
+    "local_policy_engine": "Enabled (OWASP ACS 2026 Gating)",
+    "fail_closed_mode": "Strict Fail-Closed (banned silent mock fallback)",
+    "emergency_kill_switch": "Enabled (Measured local dispatch-path latency: 0.043 ms in controlled test)",
+    "action_provenance": "Enabled (Structured causal audit chain)"
+  },
+  "handoff_verdict": "READY WITH DOCUMENTED LIMITATIONS"
+}

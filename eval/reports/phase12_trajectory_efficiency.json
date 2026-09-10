@@ -1,0 +1,104 @@
+{
+  "title": "PrivateEye Internal Trajectory Efficiency Analysis",
+  "methodology": "Computed from historical frozen trajectory execution logs across Phase 10 (development set) and Phase 11 (independent held-out validation set). Measures action-level economy, recovery costs, and deviation from optimal reference trajectories.",
+  "standards_reference": "Motivated by long-horizon trajectory-efficiency principles (e.g., Odysseys 2026); internal diagnostic only.",
+  "phase10_development_set": {
+    "total_runs": 100,
+    "completed_runs": 89,
+    "total_executed_actions": 911,
+    "useful_actions": 900,
+    "failed_actions": 11,
+    "recovery_actions": 81,
+    "metrics": {
+      "useful_action_efficiency_pct": 98.79,
+      "recovery_overhead_pct": 8.89,
+      "failed_action_rate_pct": 1.21,
+      "actions_to_completion_ratio_completed_runs": 1.0,
+      "path_optimality_completed_runs_pct": 100.0,
+      "unnecessary_action_rate_pct": 0.0
+    },
+    "horizon_breakdown": {
+      "SHORT": {
+        "total_runs": 32,
+        "completed_runs": 32,
+        "total_executed_steps": 136,
+        "correct_useful_steps": 136,
+        "failed_steps": 0,
+        "reference_target_steps": 136,
+        "recovery_actions": 1,
+        "useful_action_efficiency_pct": 100.0,
+        "failed_action_rate_pct": 0.0,
+        "recovery_overhead_pct": 0.74,
+        "actions_to_completion_ratio_completed": 1.0
+      },
+      "MEDIUM": {
+        "total_runs": 36,
+        "completed_runs": 32,
+        "total_executed_steps": 284,
+        "correct_useful_steps": 280,
+        "failed_steps": 4,
+        "reference_target_steps": 292,
+        "recovery_actions": 32,
+        "useful_action_efficiency_pct": 98.59,
+        "failed_action_rate_pct": 1.41,
+        "recovery_overhead_pct": 11.27,
+        "actions_to_completion_ratio_completed": 1.0
+      },
+      "LONG": {
+        "total_runs": 32,
+        "completed_runs": 25,
+        "total_executed_steps": 491,
+        "correct_useful_steps": 484,
+        "failed_steps": 7,
+        "reference_target_steps": 512,
+        "recovery_actions": 48,
+        "useful_action_efficiency_pct": 98.57,
+        "failed_action_rate_pct": 1.43,
+        "recovery_overhead_pct": 9.78,
+        "actions_to_completion_ratio_completed": 1.0
+      }
+    }
+  },
+  "phase11_heldout_set": {
+    "total_runs": 100,
+    "completed_runs": 86,
+    "total_executed_actions": 912,
+    "useful_actions": 898,
+    "failed_actions": 14,
+    "recovery_actions": 14,
+    "metrics": {
+      "useful_action_efficiency_pct": 98.46,
+      "recovery_overhead_pct": 1.54,
+      "failed_action_rate_pct": 1.54,
+      "actions_to_completion_ratio_completed_runs": 1.0,
+      "path_optimality_completed_runs_pct": 100.0,
+      "unnecessary_action_rate_pct": 0.0
+    },
+    "horizon_breakdown": {
+      "SHORT": {
+        "total_runs": 24,
+        "successful_runs": 24,
+        "task_success_rate": 100.0,
+        "total_steps": 98,
+        "correct_steps": 98,
+        "step_accuracy_rate": 100.0
+      },
+      "MEDIUM": {
+        "total_runs": 46,
+        "successful_runs": 43,
+        "task_success_rate": 93.48,
+        "total_steps": 348,
+        "correct_steps": 345,
+        "step_accuracy_rate": 99.14
+      },
+      "LONG": {
+        "total_runs": 30,
+        "successful_runs": 19,
+        "task_success_rate": 63.33,
+        "total_steps": 466,
+        "correct_steps": 455,
+        "step_accuracy_rate": 97.64
+      }
+    }
+  }
+}

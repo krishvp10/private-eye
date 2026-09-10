@@ -156,8 +156,9 @@ def generate_horizon_analysis() -> dict[str, Any]:
         (
             "> **Scientific Insight:** A central apparent paradox in browser agents is how an agent with **98.79% step accuracy** "
             "achieves **89.0% overall task completion** and **78.12% long-horizon task completion**. "
-            "Our mathematical and empirical horizon analysis proves that this is governed by Bernoulli step compounding: "
-            "$\\text{Survival}_{20} \\approx (0.9879)^{20} = 78.36\\%$, which matches our empirical measurement ($78.12\\%$) almost perfectly."
+            "The empirical 20-step survival rate (78.12%) closely matches the prediction of a simple independent-step Bernoulli compounding model "
+            "($\\text{Survival}_{20} \\approx (0.9879)^{20} = 78.36\\%$), making the observed degradation consistent with cumulative step-level failure "
+            "rather than cognitive model amnesia."
         ),
         "",
         "## 1. Step Window Survival & Hazard Rate Table",

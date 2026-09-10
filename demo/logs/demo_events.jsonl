@@ -1,0 +1,4 @@
+{"timestamp_utc": "2026-09-10T20:09:54Z", "event_type": "policy_check", "details": {"scenario": "A", "action": "FILL", "decision": true}}
+{"timestamp_utc": "2026-09-10T20:09:55Z", "event_type": "scenario_completed", "details": {"scenario": "A", "status": "SUCCESS", "balance": "$15,170.50"}}
+{"timestamp_utc": "2026-09-10T20:09:57Z", "event_type": "scenario_completed", "details": {"scenario": "B", "status": "SUCCESS", "secret_leaks": 0}}
+{"timestamp_utc": "2026-09-10T20:09:59Z", "event_type": "scenario_completed", "details": {"scenario": "C", "status": "BLOCKED_CONTAINED", "injections_blocked": 1}}

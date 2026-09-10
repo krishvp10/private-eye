@@ -1,0 +1,79 @@
+{
+  "title": "PrivateEye Cluster-Aware Bootstrap Sensitivity Analysis (Phase 12)",
+  "methodology": "Non-parametric cluster bootstrap resampling at workflow pattern level (B=10,000 iterations). Preserves within-workflow correlation between repetition 1 and repetition 2.",
+  "bootstrap_iterations": 10000,
+  "workflow_clusters_count": 50,
+  "total_evaluated_runs": 100,
+  "total_evaluated_steps": 912,
+  "metrics": {
+    "overall_task_success": {
+      "point_estimate_pct": 86.0,
+      "numerator": 86,
+      "denominator": 100,
+      "unclustered_wilson_ci_95": [
+        77.86,
+        91.47
+      ],
+      "cluster_bootstrap_ci_95": [
+        77.0,
+        93.0
+      ],
+      "bootstrap_mean_pct": 85.99,
+      "bootstrap_se": 4.06
+    },
+    "overall_step_accuracy": {
+      "point_estimate_pct": 98.46,
+      "numerator": 898,
+      "denominator": 912,
+      "unclustered_wilson_ci_95": [
+        97.44,
+        99.08
+      ],
+      "cluster_bootstrap_ci_95": [
+        97.72,
+        99.22
+      ],
+      "bootstrap_mean_pct": 98.48,
+      "bootstrap_se": 0.39
+    },
+    "short_horizon_task_success": {
+      "point_estimate_pct": 100.0,
+      "numerator": 24,
+      "denominator": 24,
+      "unclustered_wilson_ci_95": [
+        86.2,
+        100.0
+      ],
+      "cluster_bootstrap_ci_95": [
+        100.0,
+        100.0
+      ]
+    },
+    "medium_horizon_task_success": {
+      "point_estimate_pct": 93.48,
+      "numerator": 43,
+      "denominator": 46,
+      "unclustered_wilson_ci_95": [
+        82.5,
+        97.76
+      ],
+      "cluster_bootstrap_ci_95": [
+        85.71,
+        100.0
+      ]
+    },
+    "long_horizon_task_success": {
+      "point_estimate_pct": 63.33,
+      "numerator": 19,
+      "denominator": 30,
+      "unclustered_wilson_ci_95": [
+        45.51,
+        78.13
+      ],
+      "cluster_bootstrap_ci_95": [
+        41.67,
+        83.33
+      ]
+    }
+  }
+}

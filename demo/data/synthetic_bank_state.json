@@ -1,0 +1,33 @@
+{
+  "account_number": "ACC-987654321",
+  "account_holder": "Demo Synthetic User",
+  "current_balance_usd": 15420.5,
+  "last_transaction_id": "TXN-90812",
+  "pending_transfers": [],
+  "recent_transactions": [
+    {
+      "id": "TXN-90810",
+      "date": "2026-09-08",
+      "amount": 120.0,
+      "description": "Cloud Hosting",
+      "type": "DEBIT"
+    },
+    {
+      "id": "TXN-90811",
+      "date": "2026-09-09",
+      "amount": 3500.0,
+      "description": "Payroll Deposit",
+      "type": "CREDIT"
+    },
+    {
+      "id": "TXN-90812",
+      "date": "2026-09-10",
+      "amount": 45.2,
+      "description": "Coffee & Provisions",
+      "type": "DEBIT"
+    }
+  ],
+  "kyc_verified": false,
+  "kyc_submission_record": null,
+  "security_alerts": []
+}

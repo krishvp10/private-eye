@@ -37,6 +37,7 @@ def package_evidence_pack() -> None:
         "manifests",
         "release",
         "phase11",
+        "phase12",
         "presentation",
     ]
     for sub in subdirs:
@@ -60,33 +61,17 @@ def package_evidence_pack() -> None:
         # Reliability
         (
             REPORTS_DIR / "phase10_reliability.json",
-            EVIDENCE_DIR / "reliability" / "live_reliability_100.json",
+            EVIDENCE_DIR / "reliability" / "phase10_reliability_100.json",
         ),
         (
             REPORTS_DIR / "phase10_reliability.md",
-            EVIDENCE_DIR / "reliability" / "live_reliability_100.md",
+            EVIDENCE_DIR / "reliability" / "phase10_reliability_100.md",
         ),
         (
             REPORTS_DIR / "phase10_failure_replay.json",
-            EVIDENCE_DIR / "reliability" / "failure_replay.json",
-        ),
-        (
-            REPORTS_DIR / "phase9_repeated_reliability.json",
-            EVIDENCE_DIR / "reliability" / "repeated_reliability_90.json",
-        ),
-        (
-            REPORTS_DIR / "phase8_long_horizon.json",
-            EVIDENCE_DIR / "reliability" / "long_horizon_stress.json",
+            EVIDENCE_DIR / "reliability" / "failure_replay_forensics.json",
         ),
         # Security & Runtime Control
-        (
-            REPORTS_DIR / "phase10_compound_faults.json",
-            EVIDENCE_DIR / "security" / "compound_faults.json",
-        ),
-        (
-            REPORTS_DIR / "phase10_compound_faults.md",
-            EVIDENCE_DIR / "security" / "compound_faults.md",
-        ),
         (
             REPORTS_DIR / "phase10_runtime_control_audit.json",
             EVIDENCE_DIR / "security" / "runtime_control_audit.json",
@@ -94,6 +79,14 @@ def package_evidence_pack() -> None:
         (
             REPORTS_DIR / "phase10_runtime_control_audit.md",
             EVIDENCE_DIR / "security" / "runtime_control_audit.md",
+        ),
+        (
+            REPORTS_DIR / "phase10_compound_faults.json",
+            EVIDENCE_DIR / "security" / "compound_faults_10.json",
+        ),
+        (
+            REPORTS_DIR / "phase10_compound_faults.md",
+            EVIDENCE_DIR / "security" / "compound_faults_10.md",
         ),
         (
             REPORTS_DIR / "phase9_fault_injection.json",
@@ -192,6 +185,23 @@ def package_evidence_pack() -> None:
         (
             REPORTS_DIR / "phase11_metric_integrity.json",
             EVIDENCE_DIR / "phase11" / "metric_integrity.json",
+        ),
+        # Phase 12 Statistical Audit & Trajectory Efficiency
+        (
+            REPORTS_DIR / "phase12_frozen_manifest.json",
+            EVIDENCE_DIR / "phase12" / "frozen_manifest.json",
+        ),
+        (
+            REPORTS_DIR / "phase12_cluster_bootstrap.json",
+            EVIDENCE_DIR / "phase12" / "cluster_bootstrap.json",
+        ),
+        (
+            REPORTS_DIR / "phase12_horizon_sensitivity.json",
+            EVIDENCE_DIR / "phase12" / "horizon_sensitivity.json",
+        ),
+        (
+            REPORTS_DIR / "phase12_trajectory_efficiency.json",
+            EVIDENCE_DIR / "phase12" / "trajectory_efficiency.json",
         ),
     ]
 
