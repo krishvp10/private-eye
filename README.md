@@ -147,7 +147,7 @@ PrivateEye Phase 10 completed the final independent validation of the frozen `v1
 - **0 detected secret leaks** across all 11 boundaries and 21 synthetic credentials.
 
 ### 5. Emergency Kill Switch & Action Provenance (Phase 10.9 & 10.10)
-- Verified microsecond emergency stop (**0.043 ms**) halting execution before Playwright dispatch.
+- Measured local kill-switch dispatch-path latency: **0.043 ms** in controlled testing, halting execution before Playwright dispatch.
 - Granular action provenance answering *"Why did PrivateEye perform this action?"* for every step.
 
 ### 6. Official Evidence Pack (`private-eye-evidence/`)
