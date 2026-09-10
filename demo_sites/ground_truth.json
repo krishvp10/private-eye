@@ -1,0 +1,94 @@
+{
+  "version": "1.0",
+  "description": "Ground-truth sensitive PII annotations for PrivateEye KYC evaluation benchmark",
+  "pages": {
+    "/login": {
+      "elements": [
+        {
+          "id": "field_password",
+          "category": "password",
+          "selector": "#field_password",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "SuperSecretPass123!"
+        }
+      ]
+    },
+    "/kyc": {
+      "elements": [
+        {
+          "id": "field_face",
+          "category": "face",
+          "selector": "#field_face",
+          "type": "svg/image",
+          "sensitive": true,
+          "description": "Applicant biometric avatar"
+        },
+        {
+          "id": "field_name",
+          "category": "name",
+          "selector": "#field_name",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "Rahul Sharma"
+        },
+        {
+          "id": "field_email",
+          "category": "email",
+          "selector": "#field_email",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "rahul.sharma@example.com"
+        },
+        {
+          "id": "field_phone",
+          "category": "phone",
+          "selector": "#field_phone",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "9876543210"
+        },
+        {
+          "id": "field_aadhaar",
+          "category": "aadhaar",
+          "selector": "#field_aadhaar",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "4839 2176 5201"
+        },
+        {
+          "id": "field_pan",
+          "category": "pan",
+          "selector": "#field_pan",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "ABCDE1234F"
+        },
+        {
+          "id": "field_dob",
+          "category": "dob",
+          "selector": "#field_dob",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "1990-05-15"
+        },
+        {
+          "id": "field_pin",
+          "category": "password",
+          "selector": "#field_pin",
+          "type": "input",
+          "sensitive": true,
+          "ground_truth_pattern": "889241"
+        },
+        {
+          "id": "field_address",
+          "category": "address",
+          "selector": "#field_address",
+          "type": "textarea",
+          "sensitive": true,
+          "ground_truth_pattern": "42 Palm Grove Road, Indiranagar, Bengaluru 560038"
+        }
+      ]
+    }
+  }
+}

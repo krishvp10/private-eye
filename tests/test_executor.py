@@ -1,0 +1,91 @@
+"""
+Phase 7 Tests: Local Action Executor.
+Validates:
+1. Semantic action execution (click, fill, scroll).
+2. Local value_ref resolution against LocalVault.
+3. Strict rejection of malicious / non-whitelisted actions.
+4. ExecutionResult reporting.
+"""
+
+import pytest
+from playwright.async_api import async_playwright
+from client.executor.execute import ActionExecutor, ExecutorSecurityException
+from client.vault import LocalVault
+from shared.protocol import (
+    ActionTarget,
+    ActionType,
+    AgentAction,
+)
+from demo_sites.server import app
+import uvicorn
+import threading
+import time
+
+PORT = 9005
+BASE_URL = f"http://127.0.0.1:{PORT}"
+
+
+@pytest.fixture(scope="module", autouse=True)
+def run_demo_server():
+    config = uvicorn.Config(app, host="127.0.0.1", port=PORT, log_level="error")
+    server = uvicorn.Server(config)
+    thread = threading.Thread(target=server.run, daemon=True)
+    thread.start()
+    time.sleep(1.0)
+    yield
+    server.should_exit = True
+
+
+@pytest.mark.asyncio
+async def test_executor_fill_and_click():
+    vault = LocalVault({
+        "user_profile.name": "Custom Test User",
+        "user_profile.email": "test.user@custom.domain",
+    })
+    executor = ActionExecutor(vault=vault)
+
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+        await page.goto(f"{BASE_URL}/kyc")
+
+        # 1. Fill Name using value_ref
+        fill_action = AgentAction(
+            action=ActionType.FILL,
+            target=ActionTarget(element_id="field_name"),
+            value_ref="user_profile.name",
+        )
+        res1 = await executor.execute(page, fill_action, step=1)
+        assert res1.success is True
+
+        # Verify page actually received vault value locally
+        input_val = await page.input_value("#field_name")
+        assert input_val == "Custom Test User"
+
+        # 2. Click Cancel button
+        click_action = AgentAction(
+            action=ActionType.CLICK,
+            target=ActionTarget(element_id="btn_cancel"),
+        )
+        res2 = await executor.execute(page, click_action, step=2)
+        assert res2.success is True
+
+        await browser.close()
+
+
+@pytest.mark.asyncio
+async def test_executor_rejects_malicious_actions():
+    executor = ActionExecutor()
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+
+        # Reject invalid URL scheme
+        nav_action = AgentAction(
+            action=ActionType.NAVIGATE,
+            url="javascript:alert(1)",
+        )
+        with pytest.raises(ExecutorSecurityException):
+            await executor.execute(page, nav_action)
+
+        await browser.close()

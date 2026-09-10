@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Login — National Verification Service</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="brand-header">
+    <div class="brand-badge">NATIONAL VERIFICATION PORTAL</div>
+    <h1 class="portal-title">Identity Access Gateway</h1>
+    <p class="portal-subtitle">Secure single sign-on for document & KYC verification</p>
+  </div>
+
+  <main class="card" role="main">
+    <form id="form_login" action="/login" method="POST">
+      <div class="form-group" style="margin-bottom: 18px;">
+        <label for="field_username">Username or Registration ID</label>
+        <input 
+          type="text" 
+          id="field_username" 
+          name="username" 
+          autocomplete="username" 
+          required 
+          placeholder="e.g. rahul.sharma" 
+          aria-label="Username or Registration ID"
+          value="rahul.sharma"
+        >
+      </div>
+
+      <div class="form-group" style="margin-bottom: 24px;">
+        <label for="field_password">
+          Account Password
+          <span class="field-sensitive-tag">[CONFIDENTIAL]</span>
+        </label>
+        <input 
+          type="password" 
+          id="field_password" 
+          name="password" 
+          autocomplete="current-password" 
+          required 
+          placeholder="••••••••••••" 
+          aria-label="Account Password"
+          data-sensitive="true"
+          data-category="password"
+          value="SuperSecretPass123!"
+        >
+      </div>
+
+      <div class="actions-row">
+        <button type="submit" id="btn_login" class="btn btn-primary" role="button">
+          Sign In
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script src="/static/js/debug.js"></script>
+</body>
+</html>

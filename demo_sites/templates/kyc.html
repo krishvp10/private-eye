@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Verification (KYC) — National Identity Portal</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="brand-header">
+    <div class="brand-badge">FORM 16-A · MANDATORY KYC VERIFICATION</div>
+    <h1 class="portal-title">Individual Identity Certification</h1>
+    <p class="portal-subtitle">Provide your verified demographic and biometric information below</p>
+  </div>
+
+  <main class="card" role="main">
+    <form id="form_kyc" action="/kyc" method="POST">
+      
+      <!-- Biometric Profile Photo / Face -->
+      <div class="avatar-section form-full" style="margin-bottom: 20px;">
+        <svg 
+          class="avatar-preview" 
+          id="field_face" 
+          data-sensitive="true" 
+          data-category="face" 
+          role="img" 
+          aria-label="Applicant Biometric Face Capture"
+          viewBox="0 0 100 100" 
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <!-- Stylized synthetic portrait for face detection -->
+          <circle cx="50" cy="50" r="48" fill="#1e293b" stroke="#06b6d4" stroke-width="2"/>
+          <circle cx="50" cy="42" r="20" fill="#f87171"/>
+          <!-- Eyes -->
+          <circle cx="43" cy="39" r="3" fill="#0f172a"/>
+          <circle cx="57" cy="39" r="3" fill="#0f172a"/>
+          <!-- Smile -->
+          <path d="M 44 48 Q 50 54 56 48" stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <!-- Body -->
+          <path d="M 22 84 C 22 66, 78 66, 78 84 Z" fill="#38bdf8"/>
+        </svg>
+        <div class="avatar-info">
+          <span class="avatar-title">Biometric Facial Verification</span>
+          <span class="avatar-desc">Facial features are captured locally for instant liveness matching.</span>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <!-- Full Name -->
+        <div class="form-group form-full">
+          <label for="field_name">
+            Full Name (as on Government Records)
+            <span class="field-sensitive-tag">[PII: NAME]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_name" 
+            name="full_name" 
+            autocomplete="name" 
+            required 
+            aria-label="Full Name"
+            data-sensitive="true"
+            data-category="name"
+            value="Rahul Sharma"
+          >
+        </div>
+
+        <!-- Email Address -->
+        <div class="form-group">
+          <label for="field_email">
+            Email Address
+            <span class="field-sensitive-tag">[PII: EMAIL]</span>
+          </label>
+          <input 
+            type="email" 
+            id="field_email" 
+            name="email" 
+            autocomplete="email" 
+            required 
+            aria-label="Email Address"
+            data-sensitive="true"
+            data-category="email"
+            value="rahul.sharma@example.com"
+          >
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group">
+          <label for="field_phone">
+            Mobile Number (Linked to Aadhaar)
+            <span class="field-sensitive-tag">[PII: PHONE]</span>
+          </label>
+          <input 
+            type="tel" 
+            id="field_phone" 
+            name="phone" 
+            autocomplete="tel" 
+            required 
+            aria-label="Phone Number"
+            data-sensitive="true"
+            data-category="phone"
+            value="9876543210"
+          >
+        </div>
+
+        <!-- Aadhaar Number -->
+        <div class="form-group">
+          <label for="field_aadhaar">
+            Aadhaar Number (12 Digits)
+            <span class="field-sensitive-tag">[HIGHLY SENSITIVE: AADHAAR]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_aadhaar" 
+            name="aadhaar" 
+            pattern="[0-9\s]{12,14}" 
+            required 
+            aria-label="Aadhaar Number"
+            data-sensitive="true"
+            data-category="aadhaar"
+            value="4839 2176 5201"
+          >
+        </div>
+
+        <!-- PAN Number -->
+        <div class="form-group">
+          <label for="field_pan">
+            Permanent Account Number (PAN)
+            <span class="field-sensitive-tag">[HIGHLY SENSITIVE: PAN]</span>
+          </label>
+          <input 
+            type="text" 
+            id="field_pan" 
+            name="pan" 
+            pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}" 
+            required 
+            aria-label="PAN Number"
+            data-sensitive="true"
+            data-category="pan"
+            value="ABCDE1234F"
+          >
+        </div>
+
+        <!-- Date of Birth -->
+        <div class="form-group">
+          <label for="field_dob">
+            Date of Birth
+            <span class="field-sensitive-tag">[PII: DOB]</span>
+          </label>
+          <input 
+            type="date" 
+            id="field_dob" 
+            name="dob" 
+            autocomplete="bday" 
+            required 
+            aria-label="Date of Birth"
+            data-sensitive="true"
+            data-category="dob"
+            value="1990-05-15"
+          >
+        </div>
+
+        <!-- Authorization PIN / Password -->
+        <div class="form-group">
+          <label for="field_pin">
+            Security PIN / Secret Key
+            <span class="field-sensitive-tag">[CONFIDENTIAL: PIN]</span>
+          </label>
+          <input 
+            type="password" 
+            id="field_pin" 
+            name="pin" 
+            autocomplete="off" 
+            required 
+            aria-label="Security PIN"
+            data-sensitive="true"
+            data-category="password"
+            value="889241"
+          >
+        </div>
+
+        <!-- Residential Address -->
+        <div class="form-group form-full">
+          <label for="field_address">
+            Residential Address
+            <span class="field-sensitive-tag">[PII: ADDRESS]</span>
+          </label>
+          <textarea 
+            id="field_address" 
+            name="address" 
+            rows="2" 
+            autocomplete="street-address" 
+            required 
+            aria-label="Residential Address"
+            data-sensitive="true"
+            data-category="address"
+          >42 Palm Grove Road, Indiranagar, Bengaluru 560038</textarea>
+        </div>
+
+        <!-- Consent Checkbox -->
+        <div class="form-full">
+          <label class="checkbox-group" for="field_consent">
+            <input 
+              type="checkbox" 
+              id="field_consent" 
+              name="consent" 
+              required 
+              aria-label="Consent"
+              checked
+            >
+            <span>I hereby declare that the details furnished above are true and correct to the best of my knowledge and belief.</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="actions-row">
+        <button type="button" id="btn_cancel" class="btn btn-secondary" role="button">
+          Cancel
+        </button>
+        <button type="submit" id="btn_submit" class="btn btn-primary" role="button">
+          Submit Application
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <script src="/static/js/debug.js"></script>
+</body>
+</html>

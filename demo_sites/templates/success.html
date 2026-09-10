@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification Complete — National Identity Portal</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div class="brand-header">
+    <div class="brand-badge" style="background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.4); color: #10b981;">
+      APPLICATION APPROVED
+    </div>
+    <h1 class="portal-title">Identity Verification Successful</h1>
+    <p class="portal-subtitle">Your credentials have been securely registered with zero client data leakage.</p>
+  </div>
+
+  <main class="card" role="main" style="text-align: center;">
+    <div style="margin: 24px 0;">
+      <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto;">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+    </div>
+
+    <h2 id="success_heading" style="font-size: 1.3rem; margin-bottom: 8px;">KYC Certified</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 20px;">
+      Reference ID: <code style="color: var(--accent-cyan); font-weight: bold;">PE-KYC-994821-IND</code>
+    </p>
+
+    <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; text-align: left; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 24px;">
+      <div>✓ Aadhaar Demographic Match: Verified</div>
+      <div>✓ PAN Taxpayer Active: Verified</div>
+      <div>✓ Facial Liveness Match: Verified</div>
+      <div>✓ Zero Server PII Storage: Enforced</div>
+    </div>
+
+    <div class="actions-row" style="justify-content: center;">
+      <a href="/login" id="btn_return" class="btn btn-secondary" role="button" style="text-decoration: none;">
+        Return to Portal
+      </a>
+    </div>
+  </main>
+
+  <script src="/static/js/debug.js"></script>
+</body>
+</html>
