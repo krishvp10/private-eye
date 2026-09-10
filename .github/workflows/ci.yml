@@ -39,7 +39,7 @@ jobs:
             client/capture.py shared/protocol.py eval/context_ablation.py \
             eval/model_comparison.py eval/real_vlm_canary.py scripts/check_vlm.py
       - name: Full test suite
-        run: pytest -v --tb=short
+        run: pytest -v --tb=short -rfEs || (echo "=== FAILED TESTS DETAILS ===" && pytest --last-failed -vv --tb=long && exit 1)
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v7
