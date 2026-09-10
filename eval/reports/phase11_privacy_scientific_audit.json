@@ -1,0 +1,92 @@
+{
+  "title": "PrivateEye Scientific Privacy & PII Detection Audit",
+  "scope_notice": "0 detected secret leaks across tested boundaries and credentials under active failure conditions. Not a mathematical proof of universal privacy.",
+  "dimension_a_privacy_invariant": {
+    "total_representation_boundaries": 11,
+    "synthetic_credentials_tested": 21,
+    "active_failure_conditions_tested": 8,
+    "total_detected_leaks": 0,
+    "leak_prevention_rate_pct": 100.0,
+    "boundaries": [
+      {
+        "boundary": "1. Raw Screenshot",
+        "scanned_objects": 100,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "2. Redacted Image",
+        "scanned_objects": 100,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "3. ScreenGraph Export",
+        "scanned_objects": 100,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "4. Candidate Metadata",
+        "scanned_objects": 500,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "5. Marked Candidate Image",
+        "scanned_objects": 100,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "6. Selective Visual Crops",
+        "scanned_objects": 150,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "7. Planner Model Prompt",
+        "scanned_objects": 100,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "8. Verifier Model Prompt",
+        "scanned_objects": 100,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "9. Model Raw Response",
+        "scanned_objects": 100,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "10. Telemetry & Audit Logs",
+        "scanned_objects": 578,
+        "leaks_detected": 0,
+        "status": "PASS"
+      },
+      {
+        "boundary": "11. Action Provenance Chain",
+        "scanned_objects": 100,
+        "leaks_detected": 0,
+        "status": "PASS"
+      }
+    ]
+  },
+  "dimension_b_detector_quality": {
+    "evaluation_corpus_fields": 400,
+    "true_positives": 188,
+    "false_positives": 8,
+    "true_negatives": 192,
+    "false_negatives": 12,
+    "precision_pct": 95.92,
+    "recall_pct": 94.0,
+    "f1_score_pct": 94.95,
+    "false_positive_rate_pct": 4.0,
+    "false_negative_rate_pct": 6.0,
+    "architectural_insight": "Even when the local PII detector has a non-zero False Negative Rate (6.0%), the policy engine and local vault ensure that raw secrets are never passed into the planner prompt, because form fills strictly require symbolic value_ref tokens resolved in local Playwright memory."
+  }
+}

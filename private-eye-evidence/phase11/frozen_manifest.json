@@ -1,0 +1,57 @@
+{
+  "release_tag": "v1.0-RC",
+  "phase": "Phase 11 (Independent Scientific Validation & Freeze)",
+  "git_commit": "70f0e1b35b94078d5e0b39f1a8d8f55002c00dd8",
+  "git_commit_short": "70f0e1b",
+  "verdict": "READY WITH DOCUMENTED LIMITATIONS",
+  "system_configuration": {
+    "os": "Windows",
+    "os_release": "11",
+    "os_version": "10.0.26200",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "machine": "AMD64",
+    "python_version": "3.13.3"
+  },
+  "dependencies": {
+    "playwright": "1.62.0",
+    "fastapi": "0.141.1",
+    "pydantic": "2.13.5",
+    "httpx": "0.28.1",
+    "pillow": "12.3.0",
+    "pytest": "9.1.1",
+    "pytest_playwright": "0.9.0",
+    "opencv_python": "unknown"
+  },
+  "frozen_model_architecture": {
+    "model_backbone": "Qwen2.5-VL-3B",
+    "runtime_api": "Ollama OpenAI-compatible API",
+    "default_visual_resolution": "768px (adaptive escalation to 1024px for ambiguous crops)",
+    "temperature": 0.0,
+    "candidate_k": 5,
+    "selective_crop_verifier": true,
+    "verifier_trigger_margin": 0.15,
+    "recovery_strategy": "Fresh reasoning with explicit progress-state DOM re-observation",
+    "blind_retries": false
+  },
+  "frozen_security_and_governance": {
+    "local_privacy_boundary": "Enabled (Regex + PII NER + local vault)",
+    "raw_secrets_transmitted": 0,
+    "sensitive_value_resolution": "Local value_ref only (client memory dereference)",
+    "local_policy_engine": "Enabled (OWASP ACS 2026 alignment)",
+    "fail_closed_mode": "Strict Fail-Closed (banned silent mock fallback)",
+    "emergency_kill_switch": "Enabled (Measured local dispatch-path latency: 0.043 ms in controlled test)",
+    "action_provenance": "Enabled (Structured causal audit chain)"
+  },
+  "evaluation_corpora_versions": {
+    "phase10_live_reliability": "100 runs, 911 evaluated steps (89.0% task success, 98.79% step accuracy)",
+    "phase9_historical_benchmark": "90 runs, 810 evaluated steps (90.0% task success, 93.95% step accuracy)",
+    "tier1_atomic_grounding": "150 cases (88.67% target accuracy)",
+    "tier2_heldout_grounding": "200 cases (98.00% target accuracy)",
+    "tier3_redteam_grounding": "75 cases (76.36% groundable accuracy, 100.0% decoy safe abstention)",
+    "tier5_multidomain": "125 cases (98.40% post-condition pass)",
+    "compound_faults_harness": "10 scenarios (100.0% containment)",
+    "single_fault_harness": "20 scenarios (100.0% containment)",
+    "privacy_under_failure": "8 active conditions, 11 boundaries, 21 synthetic credentials (0 detected leaks)",
+    "osworld_diagnostic": "20 tasks (100.0% adapted diagnostic grounding/post-condition)"
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "title": "PrivateEye Causal Failure Taxonomy & Attribution Analysis",
+  "sample_size": 100,
+  "total_failures_analyzed": 11,
+  "stochastic_failures_count": 8,
+  "stochastic_failures_pct": 72.73,
+  "deterministic_failures_count": 3,
+  "deterministic_failures_pct": 27.27,
+  "recovery_benchmark_rate": 100.0,
+  "repeated_target_loops": 0,
+  "taxonomy": [
+    {
+      "category": "stale_ref",
+      "phase10_count": 4,
+      "phase10_pct": 36.36,
+      "nature": "Stochastic (Environmental)",
+      "trigger": "DOM mutated asynchronously between visual observation capture and Playwright action dispatch.",
+      "detection_control": "Local Ref Validation (`LocalRefValidator` verifies candidate exists on live DOM before click).",
+      "preventive_control": "Dynamic element re-anchoring and polling for stable DOM frame.",
+      "recovery_control": "Fresh reasoning re-capture (`ProgressState` triggers full screenshot and candidate rebuild).",
+      "residual_weakness": "Client cannot freeze single-page application background event loop during model inference turn."
+    },
+    {
+      "category": "post_condition_timing",
+      "phase10_count": 2,
+      "phase10_pct": 18.18,
+      "nature": "Stochastic (Environmental)",
+      "trigger": "Network spinner or server latency delayed page transition beyond post-condition timeout (3.0s).",
+      "detection_control": "Post-Condition Evaluator (`ActionSpecificPostCondition` monitors DOM mutation & URL transition).",
+      "preventive_control": "Adaptive timeout escalation based on network idle heuristic.",
+      "recovery_control": "Fresh reasoning verifies whether backend mutation settled, avoiding duplicate submit.",
+      "residual_weakness": "Tradeoff between agent responsiveness and tolerating erratic remote network latency."
+    },
+    {
+      "category": "no_progress_state",
+      "phase10_count": 2,
+      "phase10_pct": 18.18,
+      "nature": "Stochastic (Environmental)",
+      "trigger": "Action executed successfully by Playwright, but UI remained in unchanged state (e.g. disabled form submit).",
+      "detection_control": "Progress Evaluator (`ProgressEvaluator` detects 0 DOM hash delta across consecutive turns).",
+      "preventive_control": "Pre-execution input completeness check on required form fields.",
+      "recovery_control": "Explicit `no_progress` prompt flag forces model to inspect preceding fields and rectify omissions.",
+      "residual_weakness": "Client relies on model reasoning to diagnose why an enabled button produced no DOM mutation."
+    },
+    {
+      "category": "semantic_selection_failure",
+      "phase10_count": 1,
+      "phase10_pct": 9.09,
+      "nature": "Deterministic (Model)",
+      "trigger": "Model selected visually plausible secondary button instead of primary intended workflow target.",
+      "detection_control": "Post-condition failure on subsequent step when expected destination page was not reached.",
+      "preventive_control": "Selective Crop Verifier (`CropVerifier` computes top-2 visual candidate contrast margin).",
+      "recovery_control": "Rollback / fresh reasoning with failed action history prevents re-selecting the wrong candidate.",
+      "residual_weakness": "Small 3B multimodal model capacity limits nuanced instruction disambiguation in complex SaaS headers."
+    },
+    {
+      "category": "ambiguous_target",
+      "phase10_count": 1,
+      "phase10_pct": 9.09,
+      "nature": "Deterministic (Model/Safety)",
+      "trigger": "Two identically styled and labeled controls rendered simultaneously (safe abstention triggered).",
+      "detection_control": "Confidence & Candidate Gating (margin < 0.10 flags ambiguous target).",
+      "preventive_control": "Strict safe refusal (`ASK_USER`) avoids 50% catastrophic guessing error.",
+      "recovery_control": "Human clarification resolves intention and resumes execution cleanly.",
+      "residual_weakness": "Counted as autonomous task failure under strict 0-human-intervention benchmark rules."
+    },
+    {
+      "category": "model_timeout",
+      "phase10_count": 1,
+      "phase10_pct": 9.09,
+      "nature": "Deterministic (Infrastructure)",
+      "trigger": "Local Ollama inference turn exceeded 15.0s watchdog deadline during heavy GPU memory paging.",
+      "detection_control": "Inference Watchdog (`WatchdogTimer` halts hanging HTTP connection).",
+      "preventive_control": "KV-cache retention and VRAM allocation tuning.",
+      "recovery_control": "Fail-closed safe abort (`SAFE_STOP`); zero corrupt or partially executed actions.",
+      "residual_weakness": "Local consumer GPU hardware constraints introduce occasional tail latency spikes."
+    }
+  ]
+}

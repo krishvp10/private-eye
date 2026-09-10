@@ -36,6 +36,8 @@ def package_evidence_pack() -> None:
         "performance",
         "manifests",
         "release",
+        "phase11",
+        "presentation",
     ]
     for sub in subdirs:
         (EVIDENCE_DIR / sub).mkdir(parents=True, exist_ok=True)
@@ -158,6 +160,39 @@ def package_evidence_pack() -> None:
             EVIDENCE_DIR / "release" / "kill_switch_event.json",
         ),
         (DOCS_DIR / "RELEASE_NOTES.md", EVIDENCE_DIR / "release" / "release_notes.md"),
+        # Phase 11 Independent Validation & Scientific Evidence
+        (
+            REPORTS_DIR / "phase11_frozen_manifest.json",
+            EVIDENCE_DIR / "phase11" / "frozen_manifest.json",
+        ),
+        (
+            REPORTS_DIR / "phase11_independent_validation.json",
+            EVIDENCE_DIR / "phase11" / "independent_validation.json",
+        ),
+        (
+            REPORTS_DIR / "phase11_independent_validation_tasks.json",
+            EVIDENCE_DIR / "phase11" / "independent_validation_tasks.json",
+        ),
+        (
+            REPORTS_DIR / "phase11_confidence_intervals.json",
+            EVIDENCE_DIR / "phase11" / "confidence_intervals.json",
+        ),
+        (
+            REPORTS_DIR / "phase11_failure_analysis.json",
+            EVIDENCE_DIR / "phase11" / "failure_analysis.json",
+        ),
+        (
+            REPORTS_DIR / "phase11_horizon_analysis.json",
+            EVIDENCE_DIR / "phase11" / "horizon_analysis.json",
+        ),
+        (
+            REPORTS_DIR / "phase11_privacy_scientific_audit.json",
+            EVIDENCE_DIR / "phase11" / "privacy_scientific_audit.json",
+        ),
+        (
+            REPORTS_DIR / "phase11_metric_integrity.json",
+            EVIDENCE_DIR / "phase11" / "metric_integrity.json",
+        ),
     ]
 
     for src, dst in copy_map:

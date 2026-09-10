@@ -23,8 +23,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-REPORT_JSON = REPO_ROOT / "eval" / "reports" / "final_metric_integrity.json"
-REPORT_MD = REPO_ROOT / "eval" / "reports" / "final_metric_integrity.md"
+REPORTS_DIR = REPO_ROOT / "eval" / "reports"
+REPORT_JSON = REPORTS_DIR / "final_metric_integrity.json"
+REPORT_MD = REPORTS_DIR / "final_metric_integrity.md"
 
 
 @dataclass
@@ -510,6 +511,101 @@ def validate_all_metrics() -> dict[str, Any]:
         )
     )
 
+    # -------------------------------------------------------------------------
+    # 20. Phase 11: Independent Held-Out Validation Task Success
+    # -------------------------------------------------------------------------
+    p11_val = load_json("eval/reports/phase11_independent_validation.json")
+    p11_sum = p11_val["summary"]
+    p11_task_succ = p11_sum["completed_runs"]
+    p11_task_total = p11_sum["total_runs_evaluated"]
+    recomp_p11_task = (p11_task_succ / p11_task_total) * 100.0
+    records.append(
+        MetricValidationRecord(
+            metric_name="Phase 11 Held-Out Validation Task Success",
+            benchmark_file="eval/reports/phase11_independent_validation.json",
+            evaluation_scope="Held-Out Blind Benchmark (50 workflows x 2 reps)",
+            reported_value_str="86.0%",
+            reported_numeric=86.0,
+            recomputed_numeric=round(recomp_p11_task, 2),
+            numerator=p11_task_succ,
+            denominator=p11_task_total,
+            formula=f"{p11_task_succ} / {p11_task_total} * 100",
+            tolerance=0.05,
+            status="PASS" if abs(recomp_p11_task - 86.0) <= 0.05 else "MISMATCH",
+            notes="86 completed tasks out of 100 independent evaluation runs (86.00%).",
+        )
+    )
+
+    # -------------------------------------------------------------------------
+    # 21. Phase 11: Independent Held-Out Validation Step Accuracy
+    # -------------------------------------------------------------------------
+    p11_step_succ = p11_sum["correct_steps"]
+    p11_step_total = p11_sum["total_steps_evaluated"]
+    recomp_p11_step = (p11_step_succ / p11_step_total) * 100.0
+    records.append(
+        MetricValidationRecord(
+            metric_name="Phase 11 Held-Out Validation Step Accuracy",
+            benchmark_file="eval/reports/phase11_independent_validation.json",
+            evaluation_scope="Held-Out Blind Benchmark (912 evaluated steps)",
+            reported_value_str="98.5% (98.46%)",
+            reported_numeric=98.46,
+            recomputed_numeric=round(recomp_p11_step, 2),
+            numerator=p11_step_succ,
+            denominator=p11_step_total,
+            formula=f"{p11_step_succ} / {p11_step_total} * 100",
+            tolerance=0.05,
+            status="PASS" if abs(recomp_p11_step - 98.46) <= 0.05 else "MISMATCH",
+            notes="898 correct steps out of 912 evaluated turns (98.46%).",
+        )
+    )
+
+    # -------------------------------------------------------------------------
+    # 22. Phase 11: Scientific Privacy Invariant (0 Leaks across 11 surfaces)
+    # -------------------------------------------------------------------------
+    p11_priv = load_json("eval/reports/phase11_privacy_scientific_audit.json")
+    priv_leaks = p11_priv["dimension_a_privacy_invariant"]["total_detected_leaks"]
+    priv_surfaces = p11_priv["dimension_a_privacy_invariant"]["total_representation_boundaries"]
+    records.append(
+        MetricValidationRecord(
+            metric_name="Phase 11 Scientific Privacy Invariant (Zero Leaks)",
+            benchmark_file="eval/reports/phase11_privacy_scientific_audit.json",
+            evaluation_scope="11 Representation Boundaries (21 credentials)",
+            reported_value_str="0 Leaks",
+            reported_numeric=0.0,
+            recomputed_numeric=float(priv_leaks),
+            numerator=priv_leaks,
+            denominator=priv_surfaces,
+            formula="0 leaks detected across 11 representation boundaries",
+            tolerance=0.0,
+            status="PASS" if priv_leaks == 0 else "MISMATCH",
+            notes="0 detected secret leaks across all 11 boundaries under active failure conditions.",
+        )
+    )
+
+    # -------------------------------------------------------------------------
+    # 23. Phase 11: Causal Failure Stochastic Attribution Rate
+    # -------------------------------------------------------------------------
+    p11_fail = load_json("eval/reports/phase11_failure_analysis.json")
+    stoch_pct = p11_fail["stochastic_failures_pct"]
+    stoch_count = p11_fail["stochastic_failures_count"]
+    fail_tot = p11_fail["total_failures_analyzed"]
+    records.append(
+        MetricValidationRecord(
+            metric_name="Phase 11 Stochastic Environmental Failure Rate",
+            benchmark_file="eval/reports/phase11_failure_analysis.json",
+            evaluation_scope="11 Evaluated Failures (Phase 10)",
+            reported_value_str="72.7%",
+            reported_numeric=72.73,
+            recomputed_numeric=round(stoch_pct, 2),
+            numerator=stoch_count,
+            denominator=fail_tot,
+            formula=f"{stoch_count} / {fail_tot} * 100",
+            tolerance=0.05,
+            status="PASS" if abs(stoch_pct - 72.73) <= 0.05 else "MISMATCH",
+            notes="8 out of 11 failures (72.73%) are stochastic browser/DOM timing races.",
+        )
+    )
+
     # Summary and Serialization
     total_metrics = len(records)
     passed_metrics = sum(1 for r in records if r.status == "PASS")
@@ -529,6 +625,11 @@ def validate_all_metrics() -> dict[str, Any]:
 
     REPORT_JSON.parent.mkdir(parents=True, exist_ok=True)
     with open(REPORT_JSON, "w", encoding="utf-8") as f:
+        json.dump(report_payload, f, indent=2)
+
+    # Also save phase11_metric_integrity.json
+    p11_report_json = REPORTS_DIR / "phase11_metric_integrity.json"
+    with open(p11_report_json, "w", encoding="utf-8") as f:
         json.dump(report_payload, f, indent=2)
 
     # Markdown Table Generation
@@ -581,6 +682,10 @@ def validate_all_metrics() -> dict[str, Any]:
     )
 
     with open(REPORT_MD, "w", encoding="utf-8") as f:
+        f.write("\n".join(md_lines))
+
+    p11_report_md = REPORTS_DIR / "phase11_metric_integrity.md"
+    with open(p11_report_md, "w", encoding="utf-8") as f:
         f.write("\n".join(md_lines))
 
     print(

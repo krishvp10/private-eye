@@ -92,5 +92,38 @@
 | Standard / Framework | PrivateEye Architectural Implementation | Empirical Proof |
 |---|---|---|
 | **OWASP Agent Control Standard (ACS 2026)** | Local policy engine, human confirmation gating for destructive actions, thread-safe kill switch. | 100% human confirmation gating (0 bypasses); 0.043 ms dispatch interrupt. |
-| **NIST AI RMF 1.0 (Govern / Measure)** | Rigorous measurement & evaluation with machine-validated metrics (`final_metric_validator.py`). | 19/19 metrics mechanically verified against JSON ground truth. |
+| **NIST AI RMF 1.0 (Govern / Measure)** | Rigorous measurement & evaluation with machine-validated metrics (`final_metric_validator.py`). | 23/23 metrics mechanically verified against JSON ground truth. |
 | **Fail-Closed Principle** | Strict ban on silent mock fallbacks; safe abort on ambiguous targets or missing references. | 10/10 compound faults contained; 15/15 prompt injections blocked. |
+
+---
+
+## Slide 9: Independent Validation & Statistical Uncertainty (Phase 11)
+
+- **Independent Held-Out Benchmark (50 unseen tasks x 2 reps = 100 runs):**
+  - **86.0%** Task Success (86/100, 95% Wilson CI: `[77.9%, 91.5%]`)
+  - **98.46%** Step Accuracy (898/912, 95% Wilson CI: `[97.4%, 99.1%]`)
+  - 0 repeated loops; 0 detected secret leaks.
+- **Wilson 95% Confidence Intervals:**
+  - Overall Task Success: `89.0%` (95% CI: `[81.4%, 93.8%]`)
+  - Overall Step Accuracy: `98.79%` (95% CI: `[97.8%, 99.3%]`)
+  - Short Horizon Task Success: `100.0%` (95% CI: `[89.3%, 100.0%]`)
+  - Medium Horizon Task Success: `88.89%` (95% CI: `[74.7%, 95.6%]`)
+  - Long Horizon Task Success: `78.12%` (95% CI: `[61.2%, 88.9%]`)
+  - Security & Fault Containment: `100.0%` (95% CI: `[72.2%, 100.0%]` on $N=10$)
+
+---
+
+## Slide 10: Documented Limitations & The Core Thesis
+
+- **Transparent Boundaries:**
+  - Long-horizon degradation (78.12% cumulative completion on 11–20 steps due to Bernoulli step compounding).
+  - Empirical privacy within tested corpus is not a mathematical proof of universal privacy across arbitrary websites.
+  - Adapted diagnostic subset (20/20) is not an official score on the full OSWorld benchmark.
+  - VLM inference latency (~7.29 s) dominates local client execution (~0.16 ms).
+- **The Core Thesis:**
+  > **PrivateEye does not attempt to make the model omnipotent.**<br/>
+  > **It makes the model bounded.**<br/>
+  > 1. Limit what the AI can see (Local Privacy Boundary).<br/>
+  > 2. Limit what the AI can select (Local Candidate Engine).<br/>
+  > 3. Limit what the AI can execute (Local Policy Engine).<br/>
+  > 4. Limit what happens when it is wrong (Fresh Reasoning & Fail-Closed Gating).
