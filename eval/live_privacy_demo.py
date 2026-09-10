@@ -525,8 +525,9 @@ def main() -> None:
 
     md.extend([
         "\n## Scientific Conclusion",
-        "This flagship run proves the core PrivateEye thesis: an AI browser agent can operate reliably on realistic enterprise interfaces without exposing raw secrets to remote models. Values are securely resolved on the client via `value_ref`, ambiguous situations are handled through safe, explainable abstention, and transient failures recover autonomously through progress-aware fresh reasoning.",
+        "Under the evaluated configurations and test environments, PrivateEye demonstrated reliable privacy-preserving browser control, safe abstention, recovery from tested failures, and zero detected leakage of the tested synthetic secrets. Remaining limitations include finite live-workflow coverage, benchmark-specific evaluation, model dependence, and residual risk from untested browser/runtime environments.",
     ])
+
 
     with open(out_md, "w", encoding="utf-8") as f:
         f.write("\n".join(md))

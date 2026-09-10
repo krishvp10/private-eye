@@ -2,7 +2,7 @@
   "audit_name": "phase7_privacy_invariant_audit",
   "total_boundaries_audited": 11,
   "vault_secrets_audited": 21,
-  "scanned_report_files": 79,
+  "scanned_report_files": 87,
   "total_raw_secret_leaks": 0,
   "overall_status": "PASS",
   "boundaries": [

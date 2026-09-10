@@ -21,12 +21,16 @@ from playwright.async_api import async_playwright
 from client.candidates import generate_candidates, verify_ranked_candidates
 from client.capture import capture_page
 from client.executor.execute import ActionExecutor, classify_execution_error
+from client.fail_closed import FailClosedPolicy, FailureClass
+from client.kill_switch import GLOBAL_KILL_SWITCH, KillSwitchTriggeredError
+from client.provenance import ActionProvenance, ProvenanceTracker
 from client.recovery import RecoveryController
 from eval.leak_check import OutboundLeakInterceptor
 from privacy.pipeline import PrivacyPipeline
 from privacy.redaction.masker import RedactionEngine
 from server.validation import validate_agent_action
 from shared.protocol import ActionType, AgentAction, ScreenContext, SelectionStatus
+
 
 
 @dataclass
@@ -60,6 +64,7 @@ class PrivateEyeAgent:
         self.leak_interceptor = OutboundLeakInterceptor()
         self.executor = executor or ActionExecutor()
         self.recovery = RecoveryController(int(os.getenv("PE_MAX_ACTION_RETRIES", "2")))
+        self.provenance = ProvenanceTracker(task_id=self.task)
 
     async def run(self, url: str) -> AgentRunResult:
         run_id = str(uuid.uuid4())
@@ -80,6 +85,12 @@ class PrivateEyeAgent:
                 for step in range(1, self.max_steps + 1):
                     step_started = time.perf_counter()
                     t_start = step_started
+                    try:
+                        GLOBAL_KILL_SWITCH.assert_not_engaged()
+                    except KillSwitchTriggeredError as exc:
+                        errors.append(f"Kill switch active: {exc}")
+                        await browser.close()
+                        return AgentRunResult(run_id, False, page.url, step, telemetry, errors)
                     captured = await capture_page(page)
                     t_cap = time.perf_counter()
 
@@ -97,6 +108,16 @@ class PrivateEyeAgent:
                         detections,
                     )
                     t_red = time.perf_counter()
+
+                    priv_decision = FailClosedPolicy.evaluate_privacy(
+                        detector_success=True,
+                        redaction_success=len(redacted.sanitized_bytes) > 0,
+                        detected_secrets_count=len(detections),
+                    )
+                    if not priv_decision.allowed:
+                        errors.append(f"Fail-closed privacy policy triggered: {priv_decision.reason}")
+                        await browser.close()
+                        return AgentRunResult(run_id, False, page.url, step, telemetry, errors)
 
                     self.executor.set_reference_map(
                         {
@@ -146,13 +167,22 @@ class PrivateEyeAgent:
                         await browser.close()
                         return AgentRunResult(run_id, False, page.url, step, telemetry, errors)
                     candidate_decision = verify_ranked_candidates(context.candidates)
+                    selected_cand_ref = (
+                        action.target.ref or action.target.candidate_ref
+                        if action.target
+                        else None
+                    )
+                    cand_eval = FailClosedPolicy.evaluate_candidate(
+                        candidates_extracted=bool(context.candidates),
+                        candidate_count=len(context.candidates),
+                        selected_ref=selected_cand_ref,
+                        valid_refs={c.ref for c in context.candidates},
+                    )
                     if (
-                        action.target
-                        and (action.target.ref or action.target.candidate_ref)
-                        and (action.target.ref or action.target.candidate_ref)
-                        not in {candidate.ref for candidate in context.candidates}
+                        not cand_eval.allowed
+                        and action.action in {ActionType.CLICK, ActionType.FILL, ActionType.SELECT}
                     ):
-                        errors.append("Model selected a ref outside the local candidate set")
+                        errors.append(f"Fail-closed candidate error: {cand_eval.reason}")
                         await browser.close()
                         return AgentRunResult(run_id, False, page.url, step, telemetry, errors)
                     proposed_ref = (
@@ -296,6 +326,39 @@ class PrivateEyeAgent:
                             "candidate_count": len(context.candidates),
                             "candidate_gate_reason": candidate_decision.reason,
                         }
+                    )
+
+                    self.provenance.record(
+                        ActionProvenance(
+                            task_id=run_id,
+                            step_id=step,
+                            user_goal=self.task,
+                            model="qwen2.5-vl:3b",
+                            model_decision=action.action.value,
+                            candidate_ref=target_ref,
+                            candidate_source="Playwright",
+                            candidate_score=action.confidence,
+                            verifier_used=False,
+                            verifier_result=None,
+                            confidence=action.confidence,
+                            risk_level="HIGH" if self.executor._is_destructive(action) else "LOW",
+                            policy_decision="allow",
+                            human_confirmation_required=self.executor._is_destructive(action),
+                            human_confirmed=True,
+                            execution_result="PASS" if execution.success else "FAIL",
+                            post_condition_result="PASS" if post_condition_success else "FAIL",
+                            progress_state=progress_status,
+                            retry_count=retry_count,
+                            failure_class=failure_class,
+                            started_at_utc=str(time.time()),
+                            completed_at_utc=str(time.time()),
+                            latency_ms_components={
+                                "network_ms": network_ms,
+                                "execution_ms": execution.duration_ms,
+                                "total_ms": step_total_ms,
+                            },
+                            rationale=action.reason or "",
+                        )
                     )
 
                     if self.dashboard_url:

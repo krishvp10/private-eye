@@ -11,8 +11,8 @@
     "wrong_target_rate": 0.1133,
     "action_type_accuracy": 1.0,
     "post_condition_success": 0.8867,
-    "total_latency_ms": 11.47,
-    "latency_p50_ms": 0.08
+    "total_latency_ms": 10.71,
+    "latency_p50_ms": 0.07
   },
   "breakdown_by_category": {
     "duplicate_buttons": {

@@ -1,6 +1,6 @@
-# PrivateEye Demo & Benchmark Runbook
+# PrivateEye Demo & Benchmark Runbook (Phase 9 Release Candidate)
 
-## Flagship Live Privacy & Safety Demo (Phase 8 Final)
+## 1. Flagship Live Privacy & Safety Demo
 
 To run the flagship end-to-end verification demonstrating client-side PII masking, `value_ref` resolution, explainable human-in-the-loop abstention, failure recovery, and an 11-boundary privacy invariant audit:
 
@@ -14,7 +14,7 @@ Outputs:
 
 ---
 
-## Interactive Local Portal & Supervisor Launch
+## 2. Interactive Local Portal & Cockpit Launch
 
 ```powershell
 python demo.py
@@ -29,13 +29,13 @@ python demo.py --domain patient
 python demo.py --domain sample_fixture
 ```
 
-Use `--no-browser` for headless CI smoke checks.
+Use `--no-browser` for headless CI smoke checks. Open [http://127.0.0.1:8080](http://127.0.0.1:8080) for side-by-side visual inspection of raw vs sanitized screens.
 
 ---
 
-## Configuration & Environment Overrides
+## 3. Configuration & Environment Overrides
 
-Safe defaults are read from `shared/config.py`. Override via environment variables without source edits:
+Safe defaults are read from `client/release_config.py` and `shared/config.py`. Override via environment variables without source edits:
 
 ```powershell
 $env:PRIVATEEYE_HOST="127.0.0.1"
@@ -48,72 +48,56 @@ To configure the multimodal reasoning backend:
 
 ```powershell
 $env:PRIVATEEYE_VLM_MODE="mock"
-# or PRIVATEEYE_VLM_MODE="real" when an Ollama / vLLM endpoint is running
+# or PRIVATEEYE_VLM_MODE="real" when an Ollama endpoint (qwen2.5-vl:3b) is running
 ```
 
 ---
 
-## Phase 8 Evaluation & Benchmark Suite
+## 4. Phase 9 Production Hardening & Reliability Suite
 
-To reproduce all Phase 8 evaluations across real-world web benchmarks, long-horizon workflows, safety policies, threat modeling, and performance profiling:
+To reproduce all Phase 9 evaluations across metric audits, fault injections, repeated reliability, and selective autonomy curves:
 
-### 1. Metric Provenance Audit & Adapted Diagnostic Relabeling (Phase 8.1 & 8.16)
+### 1. Metric Provenance Audit & Latency Decoupling (Phase 9.1 & 9.16)
 ```powershell
-python eval/freeze_and_audit_phase8.py
+python eval/freeze_and_audit_phase9.py
 ```
 - Audits all headline claims against complete denominators.
-- Formally downgrades external diagnostic evaluations to `PRIVATEEYE ADAPTED DIAGNOSTIC`.
-- Output: `eval/reports/phase8_metric_audit.json` and `.md`.
+- Explicitly separates Tier 5 hybrid evaluation (0.16 ms) from Live Qwen E2E (7.29 s p50).
+- Binds all metrics to an immutable RunManifest.
+- Output: `eval/reports/phase9_metric_audit.json` and `.md`.
 
-### 2. Real-World Multi-Domain Web Benchmark (Tier 5, 125 tasks)
+### 2. Runtime Fault-Injection Suite (Phase 9.7, 20 Scenarios)
 ```powershell
-python eval/realweb_benchmark.py
+python eval/fault_injection_benchmark.py
 ```
-- Evaluates 125 realistic web tasks across 25 distinct commercial web interfaces.
-- Tracks 5 hierarchical success levels (L1 action, L2 target, L3 execution, L4 post-condition, L5 task progress).
-- Output: `eval/reports/phase8_realweb_benchmark.json` and `.md`.
+- Evaluates 20 controlled failure scenarios (timeouts, crashes, DOM mutations, detector failures, unknown refs).
+- Verifies the fail-closed invariant: 100% safe containment, zero silent mock fallbacks.
+- Output: `eval/reports/phase9_fault_injection.json` and `.md`.
 
-### 3. Long-Horizon Reliability Benchmark (270 steps)
+### 3. Repeated Live Reliability & Long-Horizon Curve (Phase 9.8 & 9.9, 90 runs)
 ```powershell
-python eval/long_horizon_benchmark.py
+python eval/repeated_reliability_benchmark.py
 ```
-- Evaluates Short (3–5 steps), Medium (6–10 steps), and Long (11–20+ steps) workflows.
-- Measures step accuracy, task completion, and loop rates.
-- Output: `eval/reports/phase8_long_horizon.json` and `.md`.
+- Evaluates 30 workflows across 3 independent repetitions (90 full runs, 810 steps).
+- Measures 3-run consistency (73.3%), cumulative survival curves, and loop rate (0.0%).
+- Output: `eval/reports/phase9_repeated_reliability.json` and `.md`.
 
-### 4. State & Memory Ablation Benchmark
+### 4. Selective Autonomy Tradeoff Curve (Phase 9.10)
 ```powershell
-python eval/state_memory_ablation.py
+python eval/selective_autonomy_curve.py
 ```
-- Compares S0 (Memoryless) vs S1 (No Action History) vs S2 (No Progress State) vs S3 (Full Progress-Aware).
-- Output: `eval/reports/phase8_state_memory_ablation.json` and `.md`.
+- Generates the coverage-vs-safety Pareto curve across 5 confidence operating policies.
+- Validates the frozen PrivateEye v1.0-RC release point (97.5% autonomy, 0.0% wrong execution).
+- Output: `eval/reports/phase9_selective_autonomy.json` and `.md`.
 
-### 5. Explainable Human Abstention Quality Benchmark
+### 5. Phase 9 Hardening Unit Tests (Kill Switch, Manifest, Fail-Closed)
 ```powershell
-python eval/abstention_quality_benchmark.py
+pytest tests/test_phase9_hardening.py -v
 ```
-- Evaluates 137 test cases (100 clear, 25 ambiguous, 12 disabled).
-- Generates "Why did I refuse?" UX explanations with 0 secret leaks.
-- Output: `eval/reports/phase8_abstention_quality.json` and `.md`.
-
-### 6. Expanded Prompt Injection Security Benchmark (15 Vectors)
-```powershell
-python eval/prompt_injection_expanded.py
-```
-- Tests 15 diverse webpage prompt injection vectors (hidden text, system prompt spoofing, malicious labels).
-- Output: `eval/reports/phase8_prompt_injection.json` and `.md`.
-
-### 7. Full Pipeline Latency Profiler (Phase 8.14)
-```powershell
-python eval/performance_profile.py
-```
-- Measures sub-millisecond latencies across 10 distinct pipeline stages (capture, detection, redaction, ranking, planner, verifier, policy, execution, post-condition).
-- Calculates p50 and p95 and identifies the dominant latency source.
-- Output: `eval/reports/phase8_performance_profile.json` and `.md`.
 
 ---
 
-## What to Inspect in the Flagship Demo
+## 5. What to Inspect in the Flagship Demo
 
 1. **Local PII Redaction:** Form inputs containing PAN, passwords, and credit cards are visually masked before screenshot serialization.
 2. **Sanitized Remote Wire Context:** Outbound network payloads audited by `OutboundLeakInterceptor` show zero raw secrets.
@@ -121,9 +105,10 @@ python eval/performance_profile.py
 4. **Explainable Refusal UX:** Faced with twin identical buttons, the agent safely abstains and prompts the user for clarification.
 5. **Fresh-Reasoning Recovery:** Transient stale reference errors trigger recovery with fresh DOM snapshots.
 6. **11-Boundary Invariant Audit:** Confirms zero leaked secrets across all application boundaries and reports.
+7. **Emergency Kill Switch:** Agent can be halted immediately at any step, preventing subsequent browser dispatch.
 
 ---
 
-## Shutdown
+## 6. Shutdown
 
 Press `Ctrl+C` in the running terminal. The supervisor terminates all background subprocesses cleanly.
