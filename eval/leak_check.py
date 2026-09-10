@@ -5,6 +5,7 @@ and scans them for raw PII strings or credentials from the local vault.
 Blocks network transmission immediately if any leak is detected.
 """
 
+import re
 
 from client.vault import LocalVault
 from privacy.detectors.regex import PATTERNS
@@ -34,12 +35,17 @@ class OutboundLeakInterceptor:
             if len(secret) > 4 and secret in payload_text:
                 violations.append(f"Direct raw secret exposed in payload: '{secret[:3]}***'")
 
-        # Check 2: Formatted Aadhaar match in payload
-        aadhaar_matches = PATTERNS[PATTERNS.keys().__iter__().__next__()].findall(payload_text)
+        # Check 2: High-confidence regex patterns in textual fields.
+        # Exclude base64 image data to prevent false-positive collisions
+        # between text patterns (such as DOB \d{2}/\d{2} or 12-digit Aadhaar) and random
+        # characters in base64 binary image encoding.
+        text_for_regex = re.sub(r'"image_b64"\s*:\s*"[^"]*"', '"image_b64": ""', payload_text)
         for cat, regex in PATTERNS.items():
-            matches = regex.findall(payload_text)
+            matches = regex.findall(text_for_regex)
             if matches:
-                violations.append(f"Unsanitized pattern '{cat.value}' detected in payload: {len(matches)} occurrence(s)")
+                violations.append(
+                    f"Unsanitized pattern '{cat.value}' detected in payload: {len(matches)} occurrence(s)"
+                )
 
         return violations
 
@@ -67,9 +73,7 @@ class OutboundLeakInterceptor:
             "checked_components": list(components),
             "violation_count": len(violations),
             "violations": [
-                violation.split("'", 1)[0] + "'***'"
-                if "'" in violation
-                else violation
+                violation.split("'", 1)[0] + "'***'" if "'" in violation else violation
                 for violation in violations
             ],
         }

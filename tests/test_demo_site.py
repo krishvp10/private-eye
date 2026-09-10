@@ -8,7 +8,6 @@ Validates that the synthetic KYC demo web application:
 """
 
 import json
-import socket
 import threading
 import time
 from pathlib import Path
@@ -18,14 +17,9 @@ import uvicorn
 from playwright.async_api import async_playwright
 
 from demo_sites.server import app
+from tests.conftest import allocate_port
 
-
-def get_free_port() -> int:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(("127.0.0.1", 0))
-        return int(s.getsockname()[1])
-
-PORT = get_free_port()
+PORT = allocate_port()
 BASE_URL = f"http://127.0.0.1:{PORT}"
 GROUND_TRUTH_FILE = Path(__file__).parent.parent / "demo_sites" / "ground_truth.json"
 
@@ -73,7 +67,9 @@ async def test_kyc_full_navigation_flow():
             is_sensitive = await locator.get_attribute("data-sensitive")
             assert is_sensitive == "true", f"Element #{elem_id} missing data-sensitive='true'"
             category = await locator.get_attribute("data-category")
-            assert category == item["category"], f"Element #{elem_id} category mismatch: {category} vs {item['category']}"
+            assert category == item["category"], (
+                f"Element #{elem_id} category mismatch: {category} vs {item['category']}"
+            )
 
         # Check consent checkbox
         consent_checkbox = page.locator("#field_consent")
