@@ -5,9 +5,11 @@ Enforces strict action whitelisting, local vault value resolution,
 destructive action gating, and retry recovery.
 """
 
+import inspect
+import os
 import time
 import logging
-from typing import Optional
+from typing import Any, Awaitable, Callable, Dict, Optional
 from playwright.async_api import Locator, Page
 from shared.protocol import (
     ActionType,
@@ -33,12 +35,20 @@ class ActionExecutor:
         self,
         vault: Optional[LocalVault] = None,
         confirm_destructive: bool = False,
+        require_confirmation: Optional[bool] = None,
+        confirmation_handler: Optional[Callable[[AgentAction], bool | Awaitable[bool]]] = None,
         timeout_ms: int = 5000,
     ) -> None:
         self.vault = vault or LocalVault()
         self.confirm_destructive = confirm_destructive
+        self.require_confirmation = (
+            require_confirmation
+            if require_confirmation is not None
+            else os.getenv("PE_CONFIRM_ACTIONS", "false").lower() == "true"
+        )
+        self.confirmation_handler = confirmation_handler
         self.timeout_ms = timeout_ms
-        self._ref_map = {}
+        self._ref_map: Dict[str, Dict[str, Any]] = {}
 
     async def execute(self, page: Page, action: AgentAction, step: int = 1) -> ExecutionResult:
         """Validate and execute action against the active Playwright page."""
@@ -92,12 +102,28 @@ class ActionExecutor:
             )
 
         # 5. Resolve Semantic Locator
-        locator = self._resolve_locator(page, action)
+        try:
+            locator = await self._resolve_locator(page, action)
+        except ExecutorSecurityException as exc:
+            return ExecutionResult(
+                step=step,
+                action=action.action,
+                success=False,
+                duration_ms=round((time.perf_counter() - start_time) * 1000, 2),
+                error_message=str(exc),
+            )
 
         # 6. Destructive Action Confirmation Gate
         if action.action == ActionType.CLICK and self._is_destructive(action):
-            if self.confirm_destructive:
-                logger.warning("Destructive action '%s' requires confirmation. Auto-approved in test profile.", action.target)
+            approved = await self._confirm(action)
+            if not approved:
+                return ExecutionResult(
+                    step=step,
+                    action=action.action,
+                    success=False,
+                    duration_ms=round((time.perf_counter() - start_time) * 1000, 2),
+                    error_message="confirmation_required",
+                )
 
         # 7. Execute Click or Fill
         try:
@@ -141,7 +167,7 @@ class ActionExecutor:
                 error_message=str(e),
             )
 
-    def _resolve_locator(self, page: Page, action: AgentAction) -> Locator:
+    async def _resolve_locator(self, page: Page, action: AgentAction) -> Locator:
         """Resolve Playwright locator from semantic target metadata."""
         if not action.target:
             raise ExecutorSecurityException(f"Action '{action.action}' requires a valid target.")
@@ -151,10 +177,20 @@ class ActionExecutor:
         if t.ref:
             if not self._ref_map:
                 raise ExecutorSecurityException("Unknown element ref; capture mapping is unavailable.")
-            element_id = self._ref_map.get(t.ref)
-            if not element_id:
+            record = self._ref_map.get(t.ref)
+            if not record:
                 raise ExecutorSecurityException(f"Unknown element ref: {t.ref}")
-            return page.locator(f"#{element_id}")
+            locator = page.locator(f"#{record['element_id']}")
+            if not await locator.is_visible():
+                raise ExecutorSecurityException(f"reference_not_visible:{t.ref}")
+            expected_name = record.get("name")
+            if expected_name:
+                actual_name = await locator.get_attribute("aria-label") or ""
+                if not actual_name:
+                    actual_name = await locator.inner_text()
+                if actual_name.strip() != expected_name.strip():
+                    raise ExecutorSecurityException(f"reference_name_mismatch:{t.ref}")
+            return locator
 
         # Priority 1: ID selector
         if t.element_id:
@@ -175,9 +211,24 @@ class ActionExecutor:
 
         raise ExecutorSecurityException(f"Unable to resolve locator for target: {t.model_dump()}")
 
-    def set_reference_map(self, mapping: dict[str, str]) -> None:
+    async def _confirm(self, action: AgentAction) -> bool:
+        if not self.require_confirmation:
+            return True
+        if self.confirmation_handler is None:
+            return False
+        decision = self.confirmation_handler(action)
+        if inspect.isawaitable(decision):
+            return bool(await decision)
+        return bool(decision)
+
+    def set_reference_map(self, mapping: dict[str, str | Dict[str, Any]]) -> None:
         """Install the current capture's safe ref -> local DOM id mapping."""
-        self._ref_map = dict(mapping)
+        self._ref_map = {}
+        for ref, value in mapping.items():
+            if isinstance(value, str):
+                self._ref_map[ref] = {"element_id": value}
+            else:
+                self._ref_map[ref] = dict(value)
 
     def _is_destructive(self, action: AgentAction) -> bool:
         """Check if action target indicates destructive operation (submit, pay, delete, send)."""

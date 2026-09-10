@@ -89,3 +89,44 @@ async def test_executor_rejects_malicious_actions():
             await executor.execute(page, nav_action)
 
         await browser.close()
+
+
+@pytest.mark.asyncio
+async def test_executor_requires_confirmation_for_destructive_action():
+    executor = ActionExecutor(require_confirmation=True)
+    action = AgentAction(
+        action=ActionType.CLICK,
+        target=ActionTarget(element_id="btn_submit", name="Submit Application"),
+    )
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+        await page.goto(f"{BASE_URL}/kyc")
+        result = await executor.execute(page, action, step=1)
+        assert result.success is False
+        assert result.error_message == "confirmation_required"
+        await browser.close()
+
+
+@pytest.mark.asyncio
+async def test_executor_reference_metadata_must_match_current_page():
+    executor = ActionExecutor()
+    executor.set_reference_map({
+        "e1": {
+            "element_id": "btn_cancel",
+            "role": "button",
+            "name": "Not Cancel",
+        }
+    })
+    action = AgentAction(
+        action=ActionType.CLICK,
+        target=ActionTarget(ref="e1"),
+    )
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)
+        page = await browser.new_page()
+        await page.goto(f"{BASE_URL}/kyc")
+        result = await executor.execute(page, action, step=1)
+        assert result.success is False
+        assert "reference_name_mismatch" in (result.error_message or "")
+        await browser.close()

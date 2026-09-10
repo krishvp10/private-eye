@@ -80,7 +80,11 @@ class PrivateEyeAgent:
                         detections,
                     )
                     self.executor.set_reference_map({
-                        node.ref: node.id
+                        node.ref: {
+                            "element_id": node.id,
+                            "role": node.role,
+                            "name": node.name or "",
+                        }
                         for node in redacted.sanitized_graph.root.children
                         if node.ref
                     })
@@ -108,15 +112,21 @@ class PrivateEyeAgent:
                     network_ms = (time.perf_counter() - network_started) * 1000
 
                     execution = await self.executor.execute(page, action, step=step)
+                    target_ref = action.target.ref if action.target else None
                     telemetry.append(
                         {
                             "step": step,
                             "url": page.url,
+                            "action_type": action.action.value,
+                            "target_ref": target_ref,
                             "detections": len(detections),
                             "redactions": len(redacted.redaction_map.redactions),
+                            "payload_bytes": len(payload.encode("utf-8")),
                             "network_ms": round(network_ms, 2),
                             "execution_ms": execution.duration_ms,
                             "total_ms": round((time.perf_counter() - step_started) * 1000, 2),
+                            "retry_count": 0,
+                            "result": "success" if execution.success else "failure",
                         }
                     )
                     if not execution.success:

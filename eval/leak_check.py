@@ -51,3 +51,26 @@ class OutboundLeakInterceptor:
             raise SecurityLeakException(
                 f"CRITICAL SECURITY LEAK INTERCEPTED! Transmission aborted. Violations: {violations}"
             )
+
+    def inspect_request(self, url: str, headers: dict, body: bytes) -> dict:
+        """Return a privacy-safe, machine-readable inspection report."""
+        components = {
+            "url": url,
+            "headers": str(headers),
+            "body": body.decode("utf-8", errors="replace"),
+        }
+        violations = []
+        for name, value in components.items():
+            found = self.inspect_payload(value)
+            violations.extend(f"{name}: {violation}" for violation in found)
+        return {
+            "safe": not violations,
+            "checked_components": list(components),
+            "violation_count": len(violations),
+            "violations": [
+                violation.split("'", 1)[0] + "'***'"
+                if "'" in violation
+                else violation
+                for violation in violations
+            ],
+        }
