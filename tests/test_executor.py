@@ -7,7 +7,6 @@ Validates:
 4. ExecutionResult reporting.
 """
 
-import socket
 import threading
 import time
 
@@ -23,15 +22,10 @@ from shared.protocol import (
     ActionType,
     AgentAction,
 )
+from tests.conftest import allocate_port
 
 
-def _get_free_port() -> int:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(("127.0.0.1", 0))
-        return int(s.getsockname()[1])
-
-
-PORT = _get_free_port()
+PORT = allocate_port()
 BASE_URL = f"http://127.0.0.1:{PORT}"
 
 

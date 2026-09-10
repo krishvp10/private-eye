@@ -10,7 +10,6 @@ Validates the complete autonomous browser agent loop:
 7. Strict verification: ZERO raw PII leaked across the wire or in server logs.
 """
 
-import socket
 import threading
 import time
 
@@ -22,16 +21,11 @@ from client.vault import LocalVault
 from demo_sites.server import app as demo_app
 from server.api import RUN_AUDIT_LOGS
 from server.api import app as server_app
+from tests.conftest import allocate_port
 
 
-def _get_free_port() -> int:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(("127.0.0.1", 0))
-        return int(s.getsockname()[1])
-
-
-DEMO_PORT = _get_free_port()
-SERVER_PORT = _get_free_port()
+DEMO_PORT = allocate_port()
+SERVER_PORT = allocate_port()
 DEMO_URL = f"http://127.0.0.1:{DEMO_PORT}"
 SERVER_URL = f"http://127.0.0.1:{SERVER_PORT}"
 

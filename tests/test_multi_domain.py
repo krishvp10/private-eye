@@ -4,7 +4,6 @@ Validates PrivateEye across Banking/Checkout and Healthcare/Patient portals.
 Ensures zero raw card numbers, CVVs, UHIDs, or clinical prescriptions ever leak.
 """
 
-import socket
 import threading
 import time
 from pathlib import Path
@@ -21,15 +20,10 @@ from privacy.pipeline import PrivacyPipeline
 from privacy.redaction.masker import RedactionEngine
 from server.mock_vlm import MockVLM
 from shared.protocol import ScreenContext
+from tests.conftest import allocate_port
 
 
-def get_free_port() -> int:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(("127.0.0.1", 0))
-        return int(s.getsockname()[1])
-
-
-PORT = get_free_port()
+PORT = allocate_port()
 BASE_URL = f"http://127.0.0.1:{PORT}"
 GROUND_TRUTH_FILE = Path(__file__).parent.parent / "demo_sites" / "ground_truth.json"
 

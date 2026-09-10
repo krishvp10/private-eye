@@ -7,7 +7,6 @@ Validates that capture.py correctly extracts:
 - Sanitized ScreenGraph adhering to the zero-leak invariant
 """
 
-import socket
 import threading
 import time
 
@@ -17,15 +16,10 @@ from playwright.async_api import async_playwright
 
 from client.capture import capture_page
 from demo_sites.server import app
+from tests.conftest import allocate_port
 
 
-def _get_free_port() -> int:
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(("127.0.0.1", 0))
-        return int(s.getsockname()[1])
-
-
-PORT = _get_free_port()
+PORT = allocate_port()
 BASE_URL = f"http://127.0.0.1:{PORT}"
 
 

@@ -40,10 +40,6 @@ jobs:
             eval/model_comparison.py eval/real_vlm_canary.py scripts/check_vlm.py
       - name: Full test suite
         run: pytest -v --tb=short
-      - name: Privacy tests
-        run: pytest -q tests/test_privacy.py tests/test_privacy_report.py tests/test_packet_audit.py
-      - name: Security tests
-        run: pytest -q tests/test_adversarial.py tests/test_real_vlm.py tests/test_executor.py
       - name: Upload test reports
         if: always()
         uses: actions/upload-artifact@v7
