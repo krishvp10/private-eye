@@ -1,0 +1,412 @@
+{
+  "evaluation_title": "PRIVATEEYE DIAGNOSTIC EVALUATION",
+  "official_disclaimer": "Diagnostic evaluation subset only; NOT an official leaderboard result.",
+  "sample_size": 50,
+  "overall_diagnostic_accuracy_pct": 100.0,
+  "screenspot_subset_accuracy_pct": 100.0,
+  "mind2web_subset_accuracy_pct": 100.0,
+  "latency_p50_ms": 0.07,
+  "latency_p95_ms": 0.13,
+  "case_logs": [
+    {
+      "case_id": "ext_screenspot_001",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_1",
+      "selected_ref": "e_cat_1",
+      "correct": true,
+      "latency_ms": 0.47
+    },
+    {
+      "case_id": "ext_screenspot_002",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_2",
+      "selected_ref": "e_cat_2",
+      "correct": true,
+      "latency_ms": 0.12
+    },
+    {
+      "case_id": "ext_screenspot_003",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_3",
+      "selected_ref": "e_cat_3",
+      "correct": true,
+      "latency_ms": 0.09
+    },
+    {
+      "case_id": "ext_screenspot_004",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_4",
+      "selected_ref": "e_cat_4",
+      "correct": true,
+      "latency_ms": 0.08
+    },
+    {
+      "case_id": "ext_screenspot_005",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_5",
+      "selected_ref": "e_cat_5",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_006",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_6",
+      "selected_ref": "e_cat_6",
+      "correct": true,
+      "latency_ms": 0.11
+    },
+    {
+      "case_id": "ext_screenspot_007",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_7",
+      "selected_ref": "e_cat_7",
+      "correct": true,
+      "latency_ms": 0.13
+    },
+    {
+      "case_id": "ext_screenspot_008",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_8",
+      "selected_ref": "e_cat_8",
+      "correct": true,
+      "latency_ms": 0.09
+    },
+    {
+      "case_id": "ext_screenspot_009",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_9",
+      "selected_ref": "e_cat_9",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_010",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_10",
+      "selected_ref": "e_cat_10",
+      "correct": true,
+      "latency_ms": 0.08
+    },
+    {
+      "case_id": "ext_screenspot_011",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_11",
+      "selected_ref": "e_cat_11",
+      "correct": true,
+      "latency_ms": 0.08
+    },
+    {
+      "case_id": "ext_screenspot_012",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_12",
+      "selected_ref": "e_cat_12",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_013",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_13",
+      "selected_ref": "e_cat_13",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_014",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_14",
+      "selected_ref": "e_cat_14",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_015",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_15",
+      "selected_ref": "e_cat_15",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_016",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_16",
+      "selected_ref": "e_cat_16",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_017",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_17",
+      "selected_ref": "e_cat_17",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_018",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_18",
+      "selected_ref": "e_cat_18",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_019",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_19",
+      "selected_ref": "e_cat_19",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_020",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_20",
+      "selected_ref": "e_cat_20",
+      "correct": true,
+      "latency_ms": 0.1
+    },
+    {
+      "case_id": "ext_screenspot_021",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_21",
+      "selected_ref": "e_cat_21",
+      "correct": true,
+      "latency_ms": 0.08
+    },
+    {
+      "case_id": "ext_screenspot_022",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_22",
+      "selected_ref": "e_cat_22",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_023",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_23",
+      "selected_ref": "e_cat_23",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_024",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_24",
+      "selected_ref": "e_cat_24",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_screenspot_025",
+      "source": "ScreenSpot-Pro Diagnostic Format",
+      "expected_ref": "e_cat_25",
+      "selected_ref": "e_cat_25",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_001",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_1",
+      "selected_ref": "e_m2w_txt_1",
+      "correct": true,
+      "latency_ms": 0.09
+    },
+    {
+      "case_id": "ext_mind2web_002",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_2",
+      "selected_ref": "e_m2w_txt_2",
+      "correct": true,
+      "latency_ms": 0.08
+    },
+    {
+      "case_id": "ext_mind2web_003",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_3",
+      "selected_ref": "e_m2w_txt_3",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_004",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_4",
+      "selected_ref": "e_m2w_txt_4",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_005",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_5",
+      "selected_ref": "e_m2w_txt_5",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_006",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_6",
+      "selected_ref": "e_m2w_txt_6",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_007",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_7",
+      "selected_ref": "e_m2w_txt_7",
+      "correct": true,
+      "latency_ms": 0.11
+    },
+    {
+      "case_id": "ext_mind2web_008",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_8",
+      "selected_ref": "e_m2w_txt_8",
+      "correct": true,
+      "latency_ms": 0.13
+    },
+    {
+      "case_id": "ext_mind2web_009",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_9",
+      "selected_ref": "e_m2w_txt_9",
+      "correct": true,
+      "latency_ms": 0.11
+    },
+    {
+      "case_id": "ext_mind2web_010",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_10",
+      "selected_ref": "e_m2w_txt_10",
+      "correct": true,
+      "latency_ms": 0.11
+    },
+    {
+      "case_id": "ext_mind2web_011",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_11",
+      "selected_ref": "e_m2w_txt_11",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_012",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_12",
+      "selected_ref": "e_m2w_txt_12",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_013",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_13",
+      "selected_ref": "e_m2w_txt_13",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_014",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_14",
+      "selected_ref": "e_m2w_txt_14",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_015",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_15",
+      "selected_ref": "e_m2w_txt_15",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_016",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_16",
+      "selected_ref": "e_m2w_txt_16",
+      "correct": true,
+      "latency_ms": 0.06
+    },
+    {
+      "case_id": "ext_mind2web_017",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_17",
+      "selected_ref": "e_m2w_txt_17",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_018",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_18",
+      "selected_ref": "e_m2w_txt_18",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_019",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_19",
+      "selected_ref": "e_m2w_txt_19",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_020",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_20",
+      "selected_ref": "e_m2w_txt_20",
+      "correct": true,
+      "latency_ms": 0.09
+    },
+    {
+      "case_id": "ext_mind2web_021",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_21",
+      "selected_ref": "e_m2w_txt_21",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_022",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_22",
+      "selected_ref": "e_m2w_txt_22",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_023",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_23",
+      "selected_ref": "e_m2w_txt_23",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_024",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_24",
+      "selected_ref": "e_m2w_txt_24",
+      "correct": true,
+      "latency_ms": 0.07
+    },
+    {
+      "case_id": "ext_mind2web_025",
+      "source": "Mind2Web Multimodal Diagnostic Format",
+      "expected_ref": "e_m2w_txt_25",
+      "selected_ref": "e_m2w_txt_25",
+      "correct": true,
+      "latency_ms": 0.07
+    }
+  ]
+}

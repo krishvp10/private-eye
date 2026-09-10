@@ -1,0 +1,95 @@
+{
+  "status": "COMPLETE",
+  "failure_source": "eval/reports/phase6_live_smoke.json",
+  "observed_model_target": "e10",
+  "observed_model_action": "click",
+  "observed_schema_valid": true,
+  "observed_execution_success": true,
+  "observed_post_condition_in_previous_report": true,
+  "recomputed_post_condition_interpretation": "no_state_progress",
+  "e10_identity": {
+    "role": "textbox",
+    "name": "Username or Registration ID",
+    "id": "field_username",
+    "ref": "e10",
+    "bbox": [
+      333.0,
+      378.0,
+      614.0,
+      39.0
+    ],
+    "sensitive": false,
+    "field_type": "text",
+    "visible": true,
+    "enabled": true,
+    "children": []
+  },
+  "candidate_set": [
+    {
+      "ref": "e10",
+      "role": "textbox",
+      "name": "Username or Registration ID",
+      "sensitive": false,
+      "visible": true,
+      "enabled": true,
+      "bbox": [
+        333.0,
+        378.0,
+        614.0,
+        39.0
+      ],
+      "rank_score": 0.5525
+    },
+    {
+      "ref": "e13",
+      "role": "textbox",
+      "name": "[REDACTED FIELD]",
+      "sensitive": true,
+      "visible": true,
+      "enabled": true,
+      "bbox": [
+        333.0,
+        459.0,
+        614.0,
+        39.0
+      ],
+      "rank_score": 0.468
+    },
+    {
+      "ref": "e15",
+      "role": "button",
+      "name": "Sign In",
+      "sensitive": false,
+      "visible": true,
+      "enabled": true,
+      "bbox": [
+        852.0,
+        539.0,
+        95.0,
+        37.0
+      ],
+      "rank_score": 0.4024
+    }
+  ],
+  "local_top_candidate": "e10",
+  "hypothesis_classification": {
+    "candidate_ambiguity": "possible",
+    "prompt_context_failure": "likely",
+    "visual_semantic_mismatch": "not isolated",
+    "state_progress_blindness": "confirmed_by_repeated_target",
+    "model_generation_failure": "possible"
+  },
+  "findings": [
+    "e10 is the Username or Registration ID textbox, not the Sign In button.",
+    "The broad task text makes the local ranker prefer a textbox by lexical similarity.",
+    "The model repeatedly selected the same executable ref after the page did not advance.",
+    "The previous smoke report marked post-condition success despite no page transition; this was a telemetry weakness.",
+    "The existing retry path lacked explicit previous-action/no-progress context in the model prompt."
+  ],
+  "next_experiments": [
+    "Pass explicit previous action and no-progress state.",
+    "Reject repeated unchanged actions instead of executing them indefinitely.",
+    "Compare top-k metadata with visual markers and candidate crops.",
+    "Measure VLM selection separately from local candidate ranking."
+  ]
+}

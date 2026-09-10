@@ -1,8 +1,10 @@
 # Phase 6 — Grounding 2.0 + Verification
 
-## Status: COMPLETED ✅
+## Status: COMPLETED WITH MEASURED LIMITATIONS
 
-All 12 stages of Phase 6 have been designed, implemented, tested, and empirically benchmarked.
+The local candidate architecture and deterministic benchmark are implemented and
+tested. Live Qwen grounding remains a separate measured failure surface; the
+local benchmark must not be interpreted as VLM accuracy.
 
 ---
 
@@ -11,7 +13,9 @@ All 12 stages of Phase 6 have been designed, implemented, tested, and empiricall
 Phase 6 addresses the real-model grounding bottleneck by implementing a hybrid grounding architecture:
 - **Local Playwright/ARIA Candidate Engine**: Extracts privacy-safe, executable elements.
 - **Deterministic Explainable Ranker**: Uses token overlap, role compatibility, exact matching, and geometry to rank top candidates.
-- **Visual & Semantic Verifier**: Disambiguates near-tied elements using localized, privacy-redacted screenshot crops.
+- **Visual & Semantic Verifier**: Provides bounded local disambiguation using
+  localized, privacy-redacted screenshot crops; a live VLM verifier evaluation
+  remains pending.
 - **VLM Candidate Selection**: Remote model selects `candidate_ref` over sanitized context.
 - **Action-Specific Post-Conditions**: Validates observable UI/state changes.
 - **Fresh Re-reasoning Recovery**: Re-captures, re-detects, and re-queries the model upon failure.
@@ -37,7 +41,7 @@ Phase 6 addresses the real-model grounding bottleneck by implementing a hybrid g
 
 ## 3. Key Measured Metrics
 
-- **Target Accuracy (Top-1):** **88.7%** (up from 16.7% baseline)
+- **Target Accuracy (Top-1):** **88.7%** on the deterministic local corpus
 - **Top-3 Recall:** **100.0%**
 - **Top-5 Recall:** **100.0%**
 - **Wrong Target Rate:** **11.3%**
@@ -46,4 +50,6 @@ Phase 6 addresses the real-model grounding bottleneck by implementing a hybrid g
 - **Evaluation Latency:** **16.8 ms** (~0.11 ms/case)
 - **Zero Privacy Leaks:** Verified across 21 synthetic vault secrets.
 
-Detailed results, failure taxonomies, and comparison tables are documented in [`private-eye-docs/PHASE6_REPORT.md`](file:///c:/Users/krish/OneDrive/Desktop/BROWSER-AGENT/private-eye-docs/PHASE6_REPORT.md).
+Detailed local results are documented in
+`eval/reports/atomic_grounding_benchmark.md`. Live Qwen failure evidence is
+documented in `eval/reports/phase6_live_smoke.md`.

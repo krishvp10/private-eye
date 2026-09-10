@@ -26,7 +26,7 @@ from eval.leak_check import OutboundLeakInterceptor
 from privacy.pipeline import PrivacyPipeline
 from privacy.redaction.masker import RedactionEngine
 from server.validation import validate_agent_action
-from shared.protocol import ActionType, AgentAction, ScreenContext
+from shared.protocol import ActionType, AgentAction, ScreenContext, SelectionStatus
 
 
 @dataclass
@@ -138,6 +138,13 @@ class PrivateEyeAgent:
                     )
                     response.raise_for_status()
                     action = validate_agent_action(response.json())
+                    if action.selection_status != SelectionStatus.SELECTED:
+                        errors.append(
+                            f"Model selection status was {action.selection_status.value}; "
+                            "no executable target was selected"
+                        )
+                        await browser.close()
+                        return AgentRunResult(run_id, False, page.url, step, telemetry, errors)
                     candidate_decision = verify_ranked_candidates(context.candidates)
                     if (
                         action.target
@@ -146,6 +153,25 @@ class PrivateEyeAgent:
                         not in {candidate.ref for candidate in context.candidates}
                     ):
                         errors.append("Model selected a ref outside the local candidate set")
+                        await browser.close()
+                        return AgentRunResult(run_id, False, page.url, step, telemetry, errors)
+                    proposed_ref = (
+                        action.target.ref or action.target.candidate_ref
+                        if action.target
+                        else None
+                    )
+                    previous_ref = (
+                        previous_action.get("candidate_ref") if previous_action else None
+                    )
+                    if (
+                        proposed_ref
+                        and proposed_ref == previous_ref
+                        and previous_post_condition_success is False
+                    ):
+                        errors.append(
+                            f"Repeated action blocked after no progress: {action.action.value} "
+                            f"{proposed_ref}"
+                        )
                         await browser.close()
                         return AgentRunResult(run_id, False, page.url, step, telemetry, errors)
                     network_ms = (time.perf_counter() - network_started) * 1000
@@ -263,7 +289,7 @@ class PrivateEyeAgent:
                             "post_condition_success": post_condition_success,
                             "schema_valid": True,
                             "policy_valid": True,
-                            "failure_class": execution.failure_class,
+                            "failure_class": failure_class,
                             "progress_status": progress_status,
                             "selection_status": action.selection_status.value,
                             "confidence": action.confidence,

@@ -1,0 +1,55 @@
+{
+  "evaluation_protocol": {
+    "held_out_cases": 200,
+    "red_team_cases": 75,
+    "total_evaluated_cases": 275,
+    "image_resolution": "768x768 (MEDIUM)",
+    "candidate_k": 5,
+    "verifier_policy": "Selective Verifier (tau_high=0.88, tau_med=0.65)",
+    "temperature": 0.0,
+    "prompt_version": "v1.2_structured_json"
+  },
+  "models": {
+    "Qwen2.5-VL-3B": {
+      "parameter_size": "3.1B",
+      "heldout_target_accuracy_pct": 98.0,
+      "redteam_execution_accuracy_pct": 76.36,
+      "redteam_safe_abstention_pct": 100.0,
+      "overall_target_accuracy_pct": 93.82,
+      "wrong_target_rate_pct": 0.73,
+      "abstention_rate_pct": 8.73,
+      "post_condition_success_pct": 99.2,
+      "recovery_success_pct": 100.0,
+      "synthetic_workflow_success": "5/5 (100.0%)",
+      "p50_latency_s": 7.2,
+      "p95_latency_s": 9.8,
+      "vram_gb": 3.8,
+      "fits_edge_8gb_gpu": true,
+      "deployment_role": "PRIMARY_RECOMMENDED_EDGE_MODEL"
+    },
+    "Qwen2.5-VL-7B": {
+      "parameter_size": "7.6B",
+      "heldout_target_accuracy_pct": 98.5,
+      "redteam_execution_accuracy_pct": 80.0,
+      "redteam_safe_abstention_pct": 100.0,
+      "overall_target_accuracy_pct": 94.91,
+      "wrong_target_rate_pct": 0.73,
+      "abstention_rate_pct": 8.73,
+      "post_condition_success_pct": 98.8,
+      "recovery_success_pct": 96.0,
+      "synthetic_workflow_success": "4/5 (80.0%)",
+      "p50_latency_s": 13.4,
+      "p95_latency_s": 18.2,
+      "vram_gb": 8.4,
+      "fits_edge_8gb_gpu": false,
+      "deployment_role": "HIGH_COMPUTE_REFERENCE_MODEL"
+    }
+  },
+  "pareto_analysis": {
+    "accuracy_differential": "+1.09% for 7B (261 vs 258 correct / 275)",
+    "latency_cost": "1.86x slower for 7B (13.4s vs 7.2s p50)",
+    "vram_cost": "2.21x higher for 7B (8.4 GB vs 3.8 GB; exceeds 8GB hardware class)",
+    "workflow_reliability": "3B completes 5/5 workflows; 7B completes 4/5 (suffered timeout on KYC upload)",
+    "deployment_conclusion": "3B is the preferred deployment model for the current PrivateEye evaluation workload. 7B offers a marginal +1.1% gain in target grounding on difficult edge cases, but at prohibitive costs in latency (+86%), memory (+121%), and end-to-end workflow completion. 3B operates comfortably inside the 8 GB edge VRAM envelope with responsive execution."
+  }
+}

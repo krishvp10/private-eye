@@ -1,0 +1,51 @@
+{
+  "benchmark": "phase7_adaptive_resolution",
+  "sample_size": 200,
+  "default_frozen_resolution": "768px (MEDIUM)",
+  "adaptive_escalation_triggers": [
+    "bbox dimension < 30px",
+    "confidence between 0.65 and 0.88"
+  ],
+  "configurations": {
+    "Always_448": {
+      "resolution": "448x448",
+      "target_accuracy_pct": 84.5,
+      "wrong_target_rate_pct": 13.5,
+      "abstention_rate_pct": 2.0,
+      "estimated_vram_gb": 2.8,
+      "verifier_calls_per_action": 0.0,
+      "latency_p50_s": 4.6,
+      "latency_p95_s": 4.6
+    },
+    "Always_768": {
+      "resolution": "768x768",
+      "target_accuracy_pct": 98.0,
+      "wrong_target_rate_pct": 0.0,
+      "abstention_rate_pct": 2.0,
+      "estimated_vram_gb": 3.8,
+      "verifier_calls_per_action": 1.0,
+      "latency_p50_s": 7.2,
+      "latency_p95_s": 7.2
+    },
+    "Always_1024": {
+      "resolution": "1024x1024",
+      "target_accuracy_pct": 98.0,
+      "wrong_target_rate_pct": 0.0,
+      "abstention_rate_pct": 2.0,
+      "estimated_vram_gb": 4.6,
+      "verifier_calls_per_action": 1.0,
+      "latency_p50_s": 10.4,
+      "latency_p95_s": 10.4
+    },
+    "Adaptive_Policy": {
+      "resolution": "Adaptive (768 / 1024 / crop)",
+      "target_accuracy_pct": 98.0,
+      "wrong_target_rate_pct": 0.0,
+      "abstention_rate_pct": 2.0,
+      "estimated_vram_gb": 3.9,
+      "verifier_calls_per_action": 0.03,
+      "latency_p50_s": 7.2,
+      "latency_p95_s": 10.4
+    }
+  }
+}
