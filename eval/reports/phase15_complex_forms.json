@@ -1,0 +1,54 @@
+{
+  "benchmark": "Phase 15 Complex Form Parsing & Execution",
+  "ps_requirement": "PS 26171: Complex forms (multi-field, multi-section, conditional, recovery)",
+  "summary": {
+    "total_form_scenarios": 4,
+    "total_fields_evaluated": 20,
+    "field_identification_accuracy": "95.0%",
+    "field_grounding_accuracy": "95.0%",
+    "correct_fill_rate": "95.0%",
+    "validation_recovery_rate": "100.0%",
+    "task_completion_rate": "100.0%",
+    "sensitive_value_isolation_rate": "100.0%",
+    "detected_leaks": 0,
+    "mean_scenario_latency_ms": 1.68
+  },
+  "scenario_breakdown": [
+    {
+      "form_id": "FORM_01_MULTI_SECTION_ONBOARDING",
+      "name": "Multi-Section KYC & Onboarding Form",
+      "fields_count": 7,
+      "identified": 7,
+      "grounded": 7,
+      "completed": true,
+      "latency_ms": 4.14
+    },
+    {
+      "form_id": "FORM_02_CONDITIONAL_DEPENDENCY",
+      "name": "Conditional Tax & Business Registration Form",
+      "fields_count": 4,
+      "identified": 4,
+      "grounded": 4,
+      "completed": true,
+      "latency_ms": 0.96
+    },
+    {
+      "form_id": "FORM_03_VALIDATION_ERROR_RECOVERY",
+      "name": "Strict Banking Portal with Inline Validation Recovery",
+      "fields_count": 4,
+      "identified": 3,
+      "grounded": 3,
+      "completed": true,
+      "latency_ms": 0.43
+    },
+    {
+      "form_id": "FORM_04_SENSITIVE_MASKED_PORTAL",
+      "name": "High-Assurance Credential Entry with Value-Ref Isolation",
+      "fields_count": 5,
+      "identified": 5,
+      "grounded": 5,
+      "completed": true,
+      "latency_ms": 1.21
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "benchmark": "Phase 15 Wire-Level Privacy Probe",
+  "summary": {
+    "total_requests_probed": 2,
+    "total_wire_bytes_probed": 30355,
+    "raw_secrets_exposed_on_wire": 0,
+    "normalized_secrets_exposed_on_wire": 0,
+    "screengraph_leaks_on_wire": 0,
+    "recovery_context_leaks_on_wire": 0,
+    "visual_pixel_leaks_on_wire": 0,
+    "wire_privacy_enforcement": "100% Zero-Leak Verified"
+  },
+  "audit_logs": [
+    {
+      "scenario": "KYC_Financial_Form",
+      "url": "https://secure.bank.local/kyc/step1",
+      "wire_bytes": 15229,
+      "wire_text_leaks": [],
+      "graph_leaks": [],
+      "recovery_leaks": [],
+      "masked_bbox_checks": [
+        {
+          "element_id": "pan_input",
+          "category": "pan",
+          "bbox": [
+            50,
+            80,
+            260,
+            36
+          ],
+          "mean_brightness": 44.48,
+          "is_masked": true
+        },
+        {
+          "element_id": "aadhaar_input",
+          "category": "aadhaar",
+          "bbox": [
+            50,
+            140,
+            260,
+            36
+          ],
+          "mean_brightness": 26.54,
+          "is_masked": true
+        }
+      ],
+      "all_pixel_masks_verified": true
+    },
+    {
+      "scenario": "Payment_Checkout_Form",
+      "url": "https://secure.pay.local/checkout",
+      "wire_bytes": 15126,
+      "wire_text_leaks": [],
+      "graph_leaks": [],
+      "recovery_leaks": [],
+      "masked_bbox_checks": [
+        {
+          "element_id": "card_input",
+          "category": "card",
+          "bbox": [
+            40,
+            90,
+            280,
+            36
+          ],
+          "mean_brightness": 26.51,
+          "is_masked": true
+        },
+        {
+          "element_id": "pwd_input",
+          "category": "password",
+          "bbox": [
+            40,
+            150,
+            120,
+            36
+          ],
+          "mean_brightness": 1.01,
+          "is_masked": true
+        }
+      ],
+      "all_pixel_masks_verified": true
+    }
+  ]
+}

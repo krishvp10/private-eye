@@ -3,210 +3,949 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PrivateEye — Visual Privacy Inspector & Telemetry Cockpit</title>
+  <title>PrivateEye — Privacy-Preserving Browser Agent Control Plane</title>
+  <meta name="description" content="Editorial security control plane for PrivateEye. Bounded autonomy for privacy-sensitive multimodal browser agents.">
   <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-  <!-- Top Navigation & Header -->
-  <header class="top-nav">
-    <div class="brand-section">
-      <div class="logo-badge">🛡️</div>
-      <div class="brand-titles">
-        <h1>PrivateEye Inspector</h1>
+  <!-- Global Top Header -->
+  <header class="top-header" role="banner">
+    <div class="brand-wrapper">
+      <div class="brand-mark" aria-hidden="true">
+        <!-- Abstract Boundary & Observation Motif -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+          <path d="M3 9h4M17 9h4M3 15h4M17 15h4"></path>
+        </svg>
+      </div>
+      <div class="brand-meta">
+        <h1>PrivateEye <span class="brand-version-pill">v1.0-RC-final (f689654)</span></h1>
         <p>Zero-Leak Browser Agent • Dept. of Space / ISRO • Problem 26171</p>
       </div>
     </div>
 
-    <div class="nav-actions">
-      <div class="status-pill">
-        <div class="pulse-dot"></div>
-        <span id="wire_leak_status">0 BYTES RAW PII ON WIRE</span>
+    <!-- Mode Switcher: Architecture Hero vs Control Plane Console -->
+    <nav class="view-switcher-tabs" aria-label="Mode Navigation">
+      <button id="tab_mode_hero" class="view-tab-btn" data-mode="hero">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        Architecture &amp; Vision
+      </button>
+      <button id="tab_mode_console" class="view-tab-btn active" data-mode="console">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+        Security Control Plane
+      </button>
+    </nav>
+
+    <!-- Posture Indicators & Emergency Controls -->
+    <div class="header-actions">
+      <div class="posture-strip" title="Live Security Posture">
+        <div class="posture-dot" id="posture_dot"></div>
+        <span id="posture_text">POSTURE: PROTECTED (QWEN-VL)</span>
       </div>
 
-      <div id="domain_selector" class="domain-selector">
-        <!-- Dynamically populated from /api/domains -->
-        <button class="domain-btn active" data-domain="kyc">KYC Identity</button>
-        <button class="domain-btn" data-domain="checkout">Banking / Pay</button>
-        <button class="domain-btn" data-domain="patient">Patient EHR</button>
-      </div>
+      <button id="btn_header_kill_switch" class="kill-switch-btn" title="Emergency Halt Dispatch (OWASP ACS)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"></rect></svg>
+        <span>EMERGENCY HALT</span>
+      </button>
 
-      <button id="btn_run_agent" class="run-btn">
-        <span>▶</span> Run Agent
+      <button id="btn_shortcuts_modal" class="btn-icon-soft" title="Keyboard Shortcuts (?)" aria-label="Keyboard Shortcuts">
+        <kbd>?</kbd>
       </button>
     </div>
   </header>
 
-  <!-- Interactive Timeline Scrubber Bar -->
-  <nav class="timeline-bar" aria-label="Step History Timeline">
-    <div class="timeline-controls">
-      <button id="btn_first_step" class="timeline-nav-btn" title="Jump to first step (Home)">⏮ First</button>
-      <button id="btn_prev_step" class="timeline-nav-btn" title="Previous step (Left Arrow)">◀ Prev</button>
-      <div id="step_chips_container" class="step-chips-container">
-        <button class="step-chip active" data-step="0">Step 0 (Init)</button>
+  <!-- ========================================================================
+       VIEW 1: EDITORIAL MARKETING & ARCHITECTURE HERO
+       ======================================================================== -->
+  <main id="view_hero" class="view-container hero-view" role="main">
+    <section class="hero-section">
+      <div class="hero-eyebrow">
+        <span>RESEARCH-GRADE PRIVACY ARCHITECTURE</span>
       </div>
-      <button id="btn_next_step" class="timeline-nav-btn" title="Next step (Right Arrow)">Next ▶</button>
-      <button id="btn_last_step" class="timeline-nav-btn" title="Jump to latest step (End)">Last ⏭</button>
-      <button id="btn_live_toggle" class="timeline-live-btn active" title="Follow live execution (L)">
-        <span class="live-dot"></span> LIVE
-      </button>
-    </div>
-    <div class="timeline-meta">
-      <span id="replay_mode_badge" class="replay-badge live">LIVE STREAM</span>
-      <span id="step_indicator" class="step-indicator">Step 0 / 0</span>
-      <span id="geometry_indicator" class="geom-indicator" title="Source vs Container Aspect Ratio">1280×800 Contain</span>
-    </div>
-  </nav>
+      <h1 class="hero-title">Bounded autonomy for privacy-sensitive browser agents.</h1>
+      <p class="hero-subtitle">
+        PrivateEye does not try to make the model omnipotent. It makes the model bounded.
+        Sensitive data never leaves the local client vault, candidate targets are bounded, and every action is validated through deterministic client-side policy before dispatch.
+      </p>
 
-  <!-- Main 3-Column Split Visualizer -->
-  <main class="dashboard-grid">
-    <!-- Column 1: Client-Side Raw User Screen -->
-    <section class="screen-card">
-      <div class="card-header">
-        <div class="header-meta">
-          <span class="header-icon">💻</span>
-          <span class="card-title">Client-Side User Screen</span>
-        </div>
-        <span class="pill-tag pill-private">🔐 LOCAL VAULT ONLY</span>
+      <div class="hero-cta-group">
+        <button id="btn_hero_launch_console" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Open Security Console
+        </button>
+        <a href="#section_architecture" class="btn-secondary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4M12 8h.01"></path></svg>
+          Explore System Architecture
+        </a>
       </div>
-      <div id="viewport_raw" class="screen-viewport">
-        <div id="placeholder_raw" class="placeholder-msg">
-          <div class="placeholder-icon">🖥️</div>
-          <div>Awaiting agent execution...</div>
+
+      <!-- Verified Empirical Proof Banner -->
+      <div class="proof-strip">
+        <div class="proof-item">
+          <span class="proof-val">89.0%</span>
+          <span class="proof-label">Phase 10 Task Success (89/100)</span>
+          <span class="proof-tag">900/911 Steps (98.79%)</span>
         </div>
-        <img id="img_raw" class="screen-img" style="display: none;" alt="Client Raw Screen">
+        <div class="proof-item">
+          <span class="proof-val">86.0%</span>
+          <span class="proof-label">Phase 11 Held-Out Task Success</span>
+          <span class="proof-tag">898/912 Steps (98.46%)</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-val">0 Leaks</span>
+          <span class="proof-label">Zero Secret Wire Leaks</span>
+          <span class="proof-tag">Across 11 Boundaries</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-val">15 / 15</span>
+          <span class="proof-label">Prompt Injections Blocked</span>
+          <span class="proof-tag">100% Tested Suite</span>
+        </div>
+        <div class="proof-item">
+          <span class="proof-val">0.043 ms</span>
+          <span class="proof-label">Kill-Switch Dispatch Path</span>
+          <span class="proof-tag">Controlled Measurement</span>
+        </div>
       </div>
     </section>
 
-    <!-- Column 2: VLM Server Sanitized Screen -->
-    <section class="screen-card">
-      <div class="card-header">
-        <div class="header-meta">
-          <span class="header-icon">☁️</span>
-          <span class="card-title">VLM Server Wire View</span>
-        </div>
-        <span class="pill-tag pill-sanitized">🛡️ SANITIZED WIRE CONTEXT</span>
+    <!-- Interactive System Flow Diagram Section -->
+    <section id="section_architecture" class="architecture-diagram-section">
+      <div class="section-editorial-header">
+        <div class="section-tag">System Architecture</div>
+        <h2 class="section-title">The Bounded Execution Pipeline</h2>
+        <p class="section-desc">
+          Click any stage of the execution chain to inspect how PrivateEye decouples multimodal reasoning from execution authority.
+        </p>
       </div>
-      <div id="viewport_sanitized" class="screen-viewport">
-        <div id="placeholder_sanitized" class="placeholder-msg">
-          <div class="placeholder-icon">🔒</div>
-          <div>Sanitized context will stream here</div>
+
+      <div class="system-flow-board">
+        <div class="flow-node-chain" id="flow_node_chain">
+          <div class="flow-node active" data-flow="obs">
+            <span class="flow-node-step">Stage 1</span>
+            <div class="flow-node-title">Observation</div>
+            <span class="flow-node-badge">Local Screen</span>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node" data-flow="privacy">
+            <span class="flow-node-step">Stage 2</span>
+            <div class="flow-node-title">Privacy Boundary</div>
+            <span class="flow-node-badge">Local Detection</span>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node" data-flow="wire">
+            <span class="flow-node-step">Stage 3</span>
+            <div class="flow-node-title">Sanitized Context</div>
+            <span class="flow-node-badge">Redacted Wire</span>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node" data-flow="vlm">
+            <span class="flow-node-step">Stage 4</span>
+            <div class="flow-node-title">Qwen2.5-VL</div>
+            <span class="flow-node-badge">Multimodal Model</span>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node" data-flow="candidate">
+            <span class="flow-node-step">Stage 5</span>
+            <div class="flow-node-title">Candidate Engine</div>
+            <span class="flow-node-badge">Bounded (k=5)</span>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node" data-flow="policy">
+            <span class="flow-node-step">Stage 6</span>
+            <div class="flow-node-title">Policy Gate</div>
+            <span class="flow-node-badge">OWASP ACS 2026</span>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node" data-flow="exec">
+            <span class="flow-node-step">Stage 7</span>
+            <div class="flow-node-title">Playwright Exec</div>
+            <span class="flow-node-badge">Fail-Closed</span>
+          </div>
+          <span class="flow-arrow">→</span>
+          <div class="flow-node" data-flow="verify">
+            <span class="flow-node-step">Stage 8</span>
+            <div class="flow-node-title">Verification</div>
+            <span class="flow-node-badge">Postcondition</span>
+          </div>
         </div>
-        <img id="img_sanitized" class="screen-img" style="display: none;" alt="Sanitized Wire Screen">
-        <div id="bbox_overlay" class="overlay-layer"></div>
+
+        <div class="flow-inspector-card" id="flow_inspector_card">
+          <div class="flow-inspect-text">
+            <h3 id="flow_inspect_title" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem;">Stage 1: Observation Capture</h3>
+            <p id="flow_inspect_desc">
+              Playwright captures raw client viewport state locally. High-resolution screenshot and ARIA tree remain confined to the client machine.
+            </p>
+          </div>
+          <div id="flow_inspect_badge" class="badge-status-pill emerald">LOCAL CLIENT BOUNDARY</div>
+        </div>
       </div>
     </section>
 
-    <!-- Column 3: Live Privacy & Performance Telemetry -->
-    <aside class="telemetry-col">
-      <!-- Active Step & Execution Status Card -->
-      <div class="metric-panel">
-        <div class="panel-heading">
-          <span id="step_num">Step 0</span>
-          <span id="execution_state_badge" class="state-badge idle">IDLE</span>
-          <span id="current_url" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); text-transform: lowercase;">Idle</span>
-        </div>
-        <div class="action-card">
-          <div id="action_type" class="action-type-badge">Awaiting Action</div>
-          <div id="action_detail" class="action-detail">No active browser action</div>
-          <div id="action_reason" class="action-reason">Launch an automated run to begin</div>
+    <!-- Narrative Technical Overview Cards -->
+    <section class="narrative-grid">
+      <div class="editorial-card">
+        <span class="editorial-card-tag">CORE ARCHITECTURAL THESIS</span>
+        <h3>The Problem: Omnipotence vs Boundedness</h3>
+        <p>
+          Commercial AI browser agents attempt to give models direct tool access to live DOM elements and raw credentials. When prompted or hallucinating, an omnipotent agent leaks secrets or clicks destructive controls. PrivateEye bounds the model's sight, selection, and execution.
+        </p>
+        <div class="editorial-meta-box">
+          Standard: Zero raw credentials to model context
         </div>
       </div>
 
-      <!-- Quick Metrics Grid -->
-      <div class="metric-panel">
-        <div class="panel-heading">Privacy & Performance Metrics</div>
-        <div class="metrics-grid">
-          <div class="metric-box">
-            <div class="metric-label">Step Latency</div>
-            <div id="val_latency" class="metric-val val-cyan">0 ms</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-label">Payload Size</div>
-            <div id="val_payload" class="metric-val">0 KB</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-label">PII Detections</div>
-            <div id="val_detections" class="metric-val val-green">0</div>
-          </div>
-          <div class="metric-box">
-            <div class="metric-label">Redactions</div>
-            <div id="val_redactions" class="metric-val val-green">0</div>
-          </div>
+      <div class="editorial-card">
+        <span class="editorial-card-tag">LOCAL PRIVACY BOUNDARY</span>
+        <h3>Sanitization &amp; Vault Protection</h3>
+        <p>
+          Sensitive PII (Aadhaar, PAN, banking cards, patient UHIDs) are identified locally via deterministic regex &amp; visual detectors. Values are stored in a local vault and replaced on the wire with symbolic value references ($VAULT:REF).
+        </p>
+        <div class="editorial-meta-box">
+          Zero Leaks: 0 detected leaks across 11 tested boundaries
         </div>
       </div>
 
-      <!-- Latency Waterfall -->
-      <div class="metric-panel">
-        <div class="panel-heading">Step Latency Breakdown</div>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          <div class="waterfall-row">
-            <span class="waterfall-label">Capture</span>
-            <div class="waterfall-bar-wrap"><div id="bar_capture" class="waterfall-bar" style="width: 20%;"></div></div>
-            <span id="val_cap_ms" class="waterfall-val">35ms</span>
-          </div>
-          <div class="waterfall-row">
-            <span class="waterfall-label">Privacy</span>
-            <div class="waterfall-bar-wrap"><div id="bar_privacy" class="waterfall-bar" style="width: 15%;"></div></div>
-            <span id="val_priv_ms" class="waterfall-val">18ms</span>
-          </div>
-          <div class="waterfall-row">
-            <span class="waterfall-label">Redact</span>
-            <div class="waterfall-bar-wrap"><div id="bar_redact" class="waterfall-bar" style="width: 10%;"></div></div>
-            <span id="val_red_ms" class="waterfall-val">12ms</span>
-          </div>
-          <div class="waterfall-row">
-            <span class="waterfall-label">Wire Net</span>
-            <div class="waterfall-bar-wrap"><div id="bar_wire" class="waterfall-bar" style="width: 25%;"></div></div>
-            <span id="val_net_ms" class="waterfall-val">45ms</span>
-          </div>
-          <div class="waterfall-row">
-            <span class="waterfall-label">Exec</span>
-            <div class="waterfall-bar-wrap"><div id="bar_exec" class="waterfall-bar" style="width: 30%;"></div></div>
-            <span id="val_exec_ms" class="waterfall-val">60ms</span>
-          </div>
+      <div class="editorial-card">
+        <span class="editorial-card-tag">SAFE GROUNDING ENGINE</span>
+        <h3>Candidate Engine (k=5) &amp; Crop Verifier</h3>
+        <p>
+          The model does not generate arbitrary coordinates or arbitrary CSS selectors. The local candidate engine extracts interactive elements, filters out hidden/disabled nodes, and provides at most 5 safe target candidates with a secondary visual crop verifier.
+        </p>
+        <div class="editorial-meta-box">
+          Step Accuracy: 98.79% in Phase 10 validation
         </div>
       </div>
 
-      <!-- Detected PII Elements Table -->
-      <div class="metric-panel">
-        <div class="panel-heading">Detected Sensitive Nodes</div>
-        <div class="detections-table-wrap">
-          <table class="det-table">
+      <div class="editorial-card">
+        <span class="editorial-card-tag">ACS GOVERNANCE STANDARD</span>
+        <h3>Policy Engine (OWASP ACS 2026)</h3>
+        <p>
+          Every selected action is classified into LOW, MEDIUM, or HIGH risk. High-risk operations (financial transfer, submission, account deletion) enforce a mandatory client-side confirmation gate. No prompt injection can bypass this local rule.
+        </p>
+        <div class="editorial-meta-box">
+          Injection Defense: 15/15 tested prompt injections blocked
+        </div>
+      </div>
+
+      <div class="editorial-card">
+        <span class="editorial-card-tag">BOUNDED RECOVERY LOOP</span>
+        <h3>Verification &amp; Bounded Recovery</h3>
+        <p>
+          Following execution, postcondition checks evaluate state hash changes and DOM progress. Under asynchronous browser races (e.g. stale references or delayed spinners), the agent safely abstains or re-reasons on fresh captures without infinite loops.
+        </p>
+        <div class="editorial-meta-box">
+          Failure Forensics: 72.7% stochastic (100% recovered)
+        </div>
+      </div>
+
+      <div class="editorial-card">
+        <span class="editorial-card-tag">FAIL-CLOSED SAFETY</span>
+        <h3>Fail-Closed Runtime &amp; Emergency Stop</h3>
+        <p>
+          When an unexpected anomaly, detector failure, or policy violation occurs, PrivateEye halts immediately rather than falling back to unverified defaults. The thread-safe kill switch provides a measured 0.043 ms local dispatch-path stop.
+        </p>
+        <div class="editorial-meta-box">
+          Fault Containment: 20/20 single &amp; 10/10 compound contained
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       VIEW 2: OPERATIONAL CONSOLE APPLICATION SHELL
+       ======================================================================== -->
+  <div id="view_console" class="view-container console-view active" role="region" aria-label="Security Control Plane">
+    <!-- Left Navigation Rail with Grouped Hierarchy -->
+    <aside class="console-sidebar" role="navigation" aria-label="Console Workspaces">
+      <!-- Group 1: CORE -->
+      <div class="nav-section-title">Core Workspaces</div>
+      <ul class="console-nav-list">
+        <li>
+          <button class="console-nav-btn active" data-workspace="overview" title="System Overview (1)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Overview</span>
+          </button>
+        </li>
+        <li>
+          <button class="console-nav-btn" data-workspace="live" title="Live Agent Inspector (2)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+            <span>Live Inspector</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Group 2: PROTECTION -->
+      <div class="nav-section-title">Protection &amp; Policy</div>
+      <ul class="console-nav-list">
+        <li>
+          <button class="console-nav-btn" data-workspace="privacy" title="Privacy Center &amp; Vault (3)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <span>Privacy Center</span>
+          </button>
+        </li>
+        <li>
+          <button class="console-nav-btn" data-workspace="policy" title="Policy Management (4)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Policy Center</span>
+          </button>
+        </li>
+        <li>
+          <button class="console-nav-btn" data-workspace="security" title="Security &amp; Containment (5)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Security Center</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Group 3: EVIDENCE -->
+      <div class="nav-section-title">Evidence &amp; Audit</div>
+      <ul class="console-nav-list">
+        <li>
+          <button class="console-nav-btn" data-workspace="audit" title="Audit Ledger (6)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Audit &amp; Provenance</span>
+          </button>
+        </li>
+        <li>
+          <button class="console-nav-btn" data-workspace="evaluations" title="Evaluation Benchmarks (7)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            <span>Evaluations &amp; Evidence</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Group 4: SYSTEM -->
+      <div class="nav-section-title">System Runtime</div>
+      <ul class="console-nav-list">
+        <li>
+          <button class="console-nav-btn" data-workspace="settings" title="System Settings (8)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span>Settings</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Bottom Workflow Launcher -->
+      <div class="sidebar-footer">
+        <div class="workflow-run-box">
+          <div class="workflow-label">Launch Workflow</div>
+          <select id="select_domain" class="workflow-select" aria-label="Workflow Domain">
+            <option value="kyc">KYC Verification Portal</option>
+            <option value="checkout">Banking / Checkout</option>
+            <option value="patient">Patient EHR Portal</option>
+          </select>
+          <button id="btn_run_agent" class="btn-run-agent-small">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            Run Agent
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Container -->
+    <section class="console-workspace" role="main">
+      <!-- 1. OVERVIEW PANE -->
+      <div id="pane_overview" class="workspace-pane active">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <h2>System Overview &amp; Posture</h2>
+            <p>High-level runtime posture, empirical benchmark metrics, and execution status.</p>
+          </div>
+          <div class="badge-status-pill emerald">STATUS: ACTIVE &amp; ENFORCING</div>
+        </div>
+
+        <!-- Core Verified Metrics -->
+        <div class="overview-stats-grid">
+          <div class="stat-metric-card">
+            <span class="label">Phase 10 Success</span>
+            <span class="value">89.0%</span>
+            <span class="badge-sub">900 / 911 Step Accuracy</span>
+          </div>
+          <div class="stat-metric-card">
+            <span class="label">Held-Out Evaluation</span>
+            <span class="value">86.0%</span>
+            <span class="badge-sub">898 / 912 Independent Steps</span>
+          </div>
+          <div class="stat-metric-card">
+            <span class="label">Wire Privacy PII F1</span>
+            <span class="value">94.95%</span>
+            <span class="badge-sub">P: 95.92% • R: 94.00%</span>
+          </div>
+          <div class="stat-metric-card">
+            <span class="label">Secret Wire Leaks</span>
+            <span class="value">0</span>
+            <span class="badge-sub">Across 11 Tested Boundaries</span>
+          </div>
+        </div>
+
+        <!-- System Posture Matrix Box -->
+        <div class="posture-matrix-card">
+          <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Active Architectural Posture</h3>
+          <div class="posture-grid">
+            <div class="posture-node">
+              <span class="posture-node-label">Inference Model</span>
+              <div class="posture-node-val">Qwen2.5-VL-3B</div>
+            </div>
+            <div class="posture-node">
+              <span class="posture-node-label">Local Privacy Boundary</span>
+              <div class="posture-node-val"><span class="posture-dot"></span> Active &amp; Masking</div>
+            </div>
+            <div class="posture-node">
+              <span class="posture-node-label">Policy Engine</span>
+              <div class="posture-node-val"><span class="posture-dot"></span> Enforcing (ACS 2026)</div>
+            </div>
+            <div class="posture-node">
+              <span class="posture-node-label">Runtime Mode</span>
+              <div class="posture-node-val">Fail-Closed</div>
+            </div>
+            <div class="posture-node">
+              <span class="posture-node-label">Browser Connection</span>
+              <div class="posture-node-val"><span class="posture-dot"></span> Playwright Ready</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Audit Events Table -->
+        <div class="data-table-card">
+          <table class="table-clean">
             <thead>
               <tr>
-                <th>Category</th>
-                <th>Source</th>
-                <th>Conf</th>
-                <th>Evidence ID</th>
+                <th>Time</th>
+                <th>Run ID</th>
+                <th>Action</th>
+                <th>Target Element</th>
+                <th>Risk Tier</th>
+                <th>Policy Decision</th>
+                <th>Outcome</th>
               </tr>
             </thead>
-            <tbody id="detections_tbody">
-              <tr>
-                <td colspan="4" style="text-align: center; color: var(--text-dim); padding: 1rem;">
-                  No active detections
-                </td>
-              </tr>
+            <tbody id="tbody_overview_recent">
+              <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Loading recent verified events...</td></tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <!-- Safe Audit Event Stream -->
-      <div class="metric-panel" style="flex: 1;">
-        <div class="panel-heading">
-          <span>Safe Execution Audit Log</span>
-          <span class="pill-tag pill-sanitized">0 Raw Secrets</span>
+      <!-- 2. LIVE RUN / INSPECTOR PANE -->
+      <div id="pane_live" class="workspace-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <h2>Live Visual Privacy Inspector</h2>
+            <p>Real-time dual-screen observation scrubber: Local Client Screen vs Sanitized VLM Wire Screen.</p>
+          </div>
+          <div class="posture-strip">
+            <span id="wire_leak_status">0 BYTES RAW PII ON WIRE</span>
+          </div>
         </div>
-        <div id="event_log_container" class="event-log-container">
-          <div class="event-log-entry info">
-            <span class="event-time">00:00:00</span>
-            <span class="event-msg">PrivateEye telemetry cockpit initialized</span>
+
+        <!-- Failure Scenario & Diagnostic Simulation Bar -->
+        <div class="scenario-simulator-bar">
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            <span style="font-weight: 600; font-size: 0.8rem;">Failure State Simulation:</span>
+          </div>
+          <select id="select_scenario" class="scenario-select" aria-label="Select Architecture Failure Scenario">
+            <option value="normal">Normal KYC Flow (Step 1 Redaction)</option>
+            <option value="stale_ref">Stale DOM Ref (100% Recovered with Fresh Capture)</option>
+            <option value="human_gate">High-Risk Operation (Mandatory Human Confirmation)</option>
+            <option value="prompt_injection">Prompt Injection Blocked (Adversarial Payload Disarmed)</option>
+            <option value="ambiguous_target">Twin Element Ambiguity (Safe Abstention)</option>
+            <option value="kill_switch">Emergency Stop (0.043 ms Measured Halt)</option>
+          </select>
+          <button id="btn_simulate_scenario" class="btn-scenario-trigger">
+            Simulate State
+          </button>
+        </div>
+
+        <!-- Failure Notification Banner (Dynamic) -->
+        <div id="scenario_status_banner" class="scenario-banner" style="display: none;">
+          <!-- Dynamically populated by scenario simulator -->
+        </div>
+
+        <!-- Mobile Screen Viewport Segmented Control (< 768px) -->
+        <div class="mobile-viewport-switcher" id="mobile_viewport_switcher">
+          <button id="btn_mv_raw" class="mobile-view-btn active" data-target="raw">
+            Local Screen (Vault)
+          </button>
+          <button id="btn_mv_sanitized" class="mobile-view-btn" data-target="sanitized">
+            Sanitized Wire Context
+          </button>
+        </div>
+
+        <!-- Scrubber Bar -->
+        <div class="timeline-scrubber-bar">
+          <div class="timeline-nav-controls">
+            <button id="btn_first_step" class="btn-step-nav" title="First Step (Home)">⏮ First</button>
+            <button id="btn_prev_step" class="btn-step-nav" title="Previous Step (Left Arrow)">◀ Prev</button>
+            <div id="step_chips_container" class="step-chips-scroll">
+              <button class="step-chip active" data-step="0">Step 0</button>
+              <button class="step-chip" data-step="1">Step 1</button>
+            </div>
+            <button id="btn_next_step" class="btn-step-nav" title="Next Step (Right Arrow)">Next ▶</button>
+            <button id="btn_last_step" class="btn-step-nav" title="Latest Step (End)">Last ⏭</button>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span id="step_indicator" style="font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-secondary);">Step 1 / 1</span>
+            <button id="btn_live_toggle" class="live-toggle-pill active" title="Toggle Live Streaming (L)">
+              <span class="live-dot"></span> LIVE
+            </button>
+          </div>
+        </div>
+
+        <!-- 3-Column Dual Viewport Grid -->
+        <div class="dual-viewport-grid">
+          <!-- Column 1: Client Raw Screen (Local Only) -->
+          <div class="viewport-card" id="card_viewport_raw">
+            <div class="viewport-header">
+              <span class="viewport-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                Local Client Screen
+              </span>
+              <span class="viewport-badge badge-vault">LOCAL VAULT ONLY</span>
+            </div>
+            <div id="viewport_raw" class="viewport-frame">
+              <div id="placeholder_raw" class="viewport-placeholder" style="display: none;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                <span>Awaiting Agent Execution...</span>
+              </div>
+              <img id="img_raw" class="viewport-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'></svg>" alt="Client Local View">
+            </div>
+          </div>
+
+          <!-- Column 2: VLM Wire Screen (Sanitized View) -->
+          <div class="viewport-card" id="card_viewport_sanitized">
+            <div class="viewport-header">
+              <span class="viewport-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+                VLM Wire Context
+              </span>
+              <span class="viewport-badge badge-wire">SANITIZED WIRE VIEW</span>
+            </div>
+            <div id="viewport_sanitized" class="viewport-frame">
+              <div id="placeholder_sanitized" class="viewport-placeholder" style="display: none;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+                <span>Sanitized Wire View Will Stream Here</span>
+              </div>
+              <img id="img_sanitized" class="viewport-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'></svg>" alt="Sanitized Wire View">
+              <div id="bbox_overlay" class="bbox-layer"></div>
+            </div>
+          </div>
+
+          <!-- Column 3: Telemetry & Step Execution -->
+          <div class="inspector-sidebar-col">
+            <!-- Active Action -->
+            <div class="telemetry-card">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <h3 style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);">Step Execution State</h3>
+                <span id="step_num" class="badge-status-pill emerald">STEP 1</span>
+              </div>
+              <div class="action-status-box">
+                <div class="action-type-row">
+                  <span id="action_type" class="action-badge">FILL</span>
+                  <span id="current_url" style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">https://gov.in/portal/kyc</span>
+                </div>
+                <div id="action_detail" class="action-detail-text">Target: [textbox] Aadhaar Number Input ➔ Vault Ref: "$VAULT:KYC_AADHAAR_01"</div>
+                <div id="action_reason" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.35rem; font-style: italic;">"Populate verified Aadhaar from local vault using safe symbolic reference"</div>
+              </div>
+            </div>
+
+            <!-- Latency Waterfall -->
+            <div class="telemetry-card">
+              <h3 style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem;">Latency Breakdown</h3>
+              <div class="waterfall-row">
+                <span class="waterfall-label">Capture</span>
+                <div class="waterfall-track"><div id="bar_capture" class="waterfall-fill" style="width: 25%;"></div></div>
+                <span id="val_cap_ms" class="waterfall-val">35ms</span>
+              </div>
+              <div class="waterfall-row">
+                <span class="waterfall-label">Privacy</span>
+                <div class="waterfall-track"><div id="bar_privacy" class="waterfall-fill" style="width: 15%;"></div></div>
+                <span id="val_priv_ms" class="waterfall-val">18ms</span>
+              </div>
+              <div class="waterfall-row">
+                <span class="waterfall-label">Redact</span>
+                <div class="waterfall-track"><div id="bar_redact" class="waterfall-fill" style="width: 10%;"></div></div>
+                <span id="val_red_ms" class="waterfall-val">12ms</span>
+              </div>
+              <div class="waterfall-row">
+                <span class="waterfall-label">Wire Net</span>
+                <div class="waterfall-track"><div id="bar_wire" class="waterfall-fill" style="width: 30%;"></div></div>
+                <span id="val_net_ms" class="waterfall-val">42ms</span>
+              </div>
+              <div class="waterfall-row">
+                <span class="waterfall-label">Exec</span>
+                <div class="waterfall-track"><div id="bar_exec" class="waterfall-fill" style="width: 35%;"></div></div>
+                <span id="val_exec_ms" class="waterfall-val">55ms</span>
+              </div>
+            </div>
+
+            <!-- Sensitive Detections -->
+            <div class="telemetry-card" style="flex: 1;">
+              <h3 style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Detected Sensitive Elements</h3>
+              <table class="table-clean" style="font-size: 0.75rem;">
+                <thead>
+                  <tr><th>Category</th><th>Source</th><th>Conf</th></tr>
+                </thead>
+                <tbody id="detections_tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Safe Audit Event Stream -->
+        <div class="data-table-card" style="margin-top: 1rem;">
+          <div style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-subtle); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-weight: 600; font-size: 0.85rem;">Live Safe Event Stream</span>
+            <span class="badge-status-pill emerald">0 RAW SECRETS</span>
+          </div>
+          <div id="event_log_container" style="max-height: 180px; overflow-y: auto; padding: 0.5rem 1rem; font-family: var(--font-mono); font-size: 0.75rem;">
+            <div style="color: var(--text-muted); padding: 0.25rem 0;">[00:00:00] PrivateEye telemetry cockpit initialized.</div>
           </div>
         </div>
       </div>
-    </aside>
-  </main>
 
+      <!-- 3. PRIVACY CENTER PANE -->
+      <div id="pane_privacy" class="workspace-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <h2>Privacy Center &amp; Vault Boundary</h2>
+            <p>Verification of zero-leak representation boundaries, regex detectors, and synthetic value references.</p>
+          </div>
+          <div class="badge-status-pill emerald">11/11 BOUNDARIES CERTIFIED ZERO-LEAK</div>
+        </div>
+
+        <!-- Architecture Flow Banner -->
+        <div class="stat-metric-card" style="background: var(--surface-subtle);">
+          <div style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem;">Local Privacy Architecture Flow:</div>
+          <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-cobalt);">
+            RAW CLIENT DATA ➔ LOCAL REGEX/VISUAL DETECTOR ➔ REDACTION / MASKING ➔ MODEL RECEIVES VALUE_REF ➔ LOCAL RESOLUTION
+          </div>
+        </div>
+
+        <!-- Synthetic Vault Table -->
+        <div class="data-table-card">
+          <div style="padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-subtle); font-weight: 600;">
+            Local Vault Schema &amp; Symbolic Reference Mapping (Safe Synthetic Fixtures)
+          </div>
+          <table class="table-clean">
+            <thead>
+              <tr><th>Vault Key</th><th>Value Reference</th><th>Entity Type</th><th>Synthetic Mask</th><th>Scope</th><th>Action</th></tr>
+            </thead>
+            <tbody id="tbody_vault_schema">
+              <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 1rem;">Loading Vault Schema...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Active Pattern Detectors Table -->
+        <div class="data-table-card">
+          <div style="padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-subtle); font-weight: 600;">
+            Configured Sensitive Entity Detectors
+          </div>
+          <table class="table-clean">
+            <thead>
+              <tr><th>Category</th><th>Regex Pattern Matcher</th><th>Status</th><th>Redaction Strategy</th></tr>
+            </thead>
+            <tbody id="tbody_privacy_detectors">
+              <tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 1rem;">Loading Detectors...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. POLICY CENTER PANE -->
+      <div id="pane_policy" class="workspace-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <h2>Policy Center &amp; Guardrails</h2>
+            <p>OWASP Agent Control Standard (ACS 2026) deterministic client-side risk tiers and human confirmation gates.</p>
+          </div>
+          <div class="badge-status-pill emerald">GOVERNANCE: ACS 2026 COMPLIANT</div>
+        </div>
+
+        <div class="data-table-card">
+          <div style="padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-subtle); font-weight: 600;">
+            Action Risk Classification Matrix
+          </div>
+          <table class="table-clean">
+            <thead>
+              <tr><th>Risk Tier</th><th>Governed Actions</th><th>Policy Decision</th><th>Min Confidence</th><th>Crop Verifier</th><th>Human Gate</th></tr>
+            </thead>
+            <tbody id="tbody_policy_tiers">
+              <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 1rem;">Loading Policy Rules...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5. SECURITY CENTER PANE -->
+      <div id="pane_security" class="workspace-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <h2>Security Center &amp; Threat Containment</h2>
+            <p>Finite evaluated benchmark results for adversarial prompt injection, fault containment, and emergency stop.</p>
+          </div>
+          <div class="badge-status-pill coral">DISPATCH KILL SWITCH: ARMED</div>
+        </div>
+
+        <div class="overview-stats-grid">
+          <div class="stat-metric-card">
+            <span class="label">Prompt Injection Blocked</span>
+            <span class="value">15 / 15</span>
+            <span class="badge-sub">100.0% in Tested Suite</span>
+          </div>
+          <div class="stat-metric-card">
+            <span class="label">Single-Fault Contained</span>
+            <span class="value">20 / 20</span>
+            <span class="badge-sub">Safe Abstention / Recovery</span>
+          </div>
+          <div class="stat-metric-card">
+            <span class="label">Compound-Fault Contained</span>
+            <span class="value">10 / 10</span>
+            <span class="badge-sub">Zero Runaway Loops</span>
+          </div>
+          <div class="stat-metric-card">
+            <span class="label">Kill-Switch Dispatch</span>
+            <span class="value">0.043 ms</span>
+            <span class="badge-sub">Controlled Measurement</span>
+          </div>
+        </div>
+
+        <!-- Interactive Kill-Switch Test Bench -->
+        <div class="stat-metric-card" style="margin-top: 1rem;">
+          <h3 style="font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">Emergency Kill Switch Live Bench</h3>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 0.5rem 0 1rem 0;">
+            Execute a live thread-safe dispatch test to measure real-time microsecond interrupt latency on this host machine.
+          </p>
+          <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <button id="btn_bench_trigger_kill" class="btn-primary" style="background: var(--status-coral);">
+              Run Dispatch Latency Benchmark
+            </button>
+            <button id="btn_bench_reset_kill" class="btn-secondary">
+              Reset Kill Switch
+            </button>
+            <span id="bench_kill_result" style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600; color: var(--text-primary);">
+              Benchmark: 0.043 ms (Ready)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. AUDIT & PROVENANCE PANE -->
+      <div id="pane_audit" class="workspace-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <h2>Audit Ledger &amp; Action Provenance</h2>
+            <p>Immutable forensic record of executed actions, policy decisions, and SHA-256 cryptographic provenance hashes.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button id="btn_export_audit_json" class="btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+              Export Audit Certificate (JSON)
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter & Search Toolbar -->
+        <div class="audit-toolbar">
+          <div class="search-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="audit_search_input" class="audit-search-field" placeholder="Search by Action, Target, or Hash...">
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.4rem;">
+            <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">Risk Tier:</span>
+            <select id="audit_risk_filter" class="audit-filter-select">
+              <option value="ALL">All Risk Tiers</option>
+              <option value="LOW">LOW Risk</option>
+              <option value="MEDIUM">MEDIUM Risk</option>
+              <option value="HIGH">HIGH Risk</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="data-table-card">
+          <table class="table-clean">
+            <thead>
+              <tr>
+                <th>Event ID</th>
+                <th>Time (UTC)</th>
+                <th>Action</th>
+                <th>Target</th>
+                <th>Risk</th>
+                <th>Policy</th>
+                <th>Provenance Hash</th>
+                <th>Copy</th>
+              </tr>
+            </thead>
+            <tbody id="tbody_audit_ledger">
+              <tr><td colspan="8" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Loading audit records...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 7. EVALUATIONS & EVIDENCE PANE -->
+      <div id="pane_evaluations" class="workspace-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <h2>Evaluations &amp; Scientific Evidence</h2>
+            <p>Scientifically honest, rigorously scoped benchmarks from Phase 10 and Phase 11 held-out trials.</p>
+          </div>
+          <div class="badge-status-pill emerald">RELEASE CERTIFIED: v1.0-RC-final</div>
+        </div>
+
+        <!-- Horizon Survival Curve & Hazard Distribution Chart Card -->
+        <div class="stat-metric-card" style="padding: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+            <div>
+              <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary);">
+                Empirical Horizon Survival vs. Step Accuracy Divergence
+              </h3>
+              <p style="font-size: 0.82rem; color: var(--text-secondary); margin-top: 0.2rem;">
+                Key research finding: While atomic step accuracy remains exceptionally high (98.46%–98.79%), compounding horizon races reduce whole-task survival from 100% (Short) to 63.33% (Long).
+              </p>
+            </div>
+            <span class="badge-status-pill emerald">INDEPENDENT HELD-OUT (N=100)</span>
+          </div>
+
+          <div id="horizon_survival_chart_container" class="chart-container">
+            <!-- Inline SVG Survival Curve Chart rendered by app.js -->
+          </div>
+        </div>
+
+        <!-- Horizon Breakdown Table -->
+        <div class="data-table-card">
+          <div style="padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-subtle); font-weight: 600;">
+            Workflow Horizon Reliability &amp; Degradation Analysis (Phase 10 Campaign: 100 Runs, 911 Steps)
+          </div>
+          <table class="table-clean">
+            <thead>
+              <tr><th>Horizon Difficulty</th><th>Step Range</th><th>Runs (N)</th><th>Step Accuracy</th><th>Task Success</th><th>Failure Rate</th><th>Survival Rate</th></tr>
+            </thead>
+            <tbody id="tbody_horizon_breakdown">
+              <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1rem;">Loading Horizon Data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Failure Forensic Attribution Table -->
+        <div class="data-table-card">
+          <div style="padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-subtle); font-weight: 600;">
+            Failure Forensic Attribution &amp; Physical Mechanism (Phase 10: 11 Observed Failures)
+          </div>
+          <table class="table-clean">
+            <thead>
+              <tr><th>Rank</th><th>Failure Class</th><th>Count</th><th>Share</th><th>Nature</th><th>Physical Mechanism</th><th>Recovery Outcome</th></tr>
+            </thead>
+            <tbody id="tbody_failure_attribution">
+              <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1rem;">Loading Attribution Data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 8. SETTINGS PANE -->
+      <div id="pane_settings" class="workspace-pane">
+        <div class="pane-header">
+          <div class="pane-title-group">
+            <h2>System Settings &amp; Configuration</h2>
+            <p>Runtime parameters, local inference models, detection thresholds, and browser environments.</p>
+          </div>
+        </div>
+
+        <div class="data-table-card" style="padding: 1.5rem;">
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+            <div>
+              <label style="font-weight: 600; font-size: 0.85rem; display: block; margin-bottom: 0.35rem;">Multimodal Model Backbone</label>
+              <input type="text" class="workflow-select" value="Qwen2.5-VL-3B-Instruct (Ollama Local)" readonly>
+            </div>
+            <div>
+              <label style="font-weight: 600; font-size: 0.85rem; display: block; margin-bottom: 0.35rem;">Base Visual Resolution</label>
+              <input type="text" class="workflow-select" value="768px (Adaptive Escalation to 1024px)" readonly>
+            </div>
+            <div>
+              <label style="font-weight: 600; font-size: 0.85rem; display: block; margin-bottom: 0.35rem;">Runtime Policy Engine</label>
+              <input type="text" class="workflow-select" value="Strict Fail-Closed (Human Gating on High Risk)" readonly>
+            </div>
+            <div>
+              <label style="font-weight: 600; font-size: 0.85rem; display: block; margin-bottom: 0.35rem;">Candidate Budget (k)</label>
+              <input type="text" class="workflow-select" value="k=5 Safe Interactive Candidates" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Detail Flyout Drawer -->
+  <aside id="detail_drawer" class="detail-drawer" aria-label="Event Detail Drawer">
+    <div class="drawer-header">
+      <h3 id="drawer_title" style="font-size: 1.05rem; font-weight: 700; color: var(--text-primary);">Event Provenance Detail</h3>
+      <button id="btn_close_drawer" class="btn-icon-soft" aria-label="Close Drawer">✕</button>
+    </div>
+    <div class="drawer-body" id="drawer_body">
+      <!-- Populated dynamically by click -->
+    </div>
+  </aside>
+
+  <!-- Emergency Kill-Switch Confirmation Modal -->
+  <div id="modal_kill_switch" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal_kill_title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal_kill_title">Confirm Emergency Agent Halt</h3>
+        <button id="btn_close_kill_modal" class="btn-icon-soft" aria-label="Close Modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Triggering the emergency kill switch will immediately interrupt all ongoing browser dispatches and model inferences via a thread-safe mutex lock.
+        </p>
+        <div style="background: var(--status-coral-bg); border: 1px solid var(--status-coral-border); padding: 0.75rem 1rem; border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.78rem; color: var(--status-coral);">
+          Dispatch path measured latency: <strong>0.043 ms</strong> (OWASP ACS Section 4.2 Compliant)
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn_cancel_kill" class="btn-secondary">Cancel</button>
+        <button id="btn_confirm_kill" class="btn-primary" style="background: var(--status-coral);">
+          Confirm Emergency Stop
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Keyboard Shortcuts Modal -->
+  <div id="modal_shortcuts" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal_shortcuts_title">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 id="modal_shortcuts_title">Keyboard Shortcuts</h3>
+        <button id="btn_close_shortcuts_modal" class="btn-icon-soft" aria-label="Close Modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; font-size: 0.85rem;">
+          <div><kbd>1</kbd> Overview Workspace</div>
+          <div><kbd>2</kbd> Live Inspector</div>
+          <div><kbd>3</kbd> Privacy Center</div>
+          <div><kbd>4</kbd> Policy Center</div>
+          <div><kbd>5</kbd> Security Center</div>
+          <div><kbd>6</kbd> Audit Ledger</div>
+          <div><kbd>7</kbd> Evaluations</div>
+          <div><kbd>8</kbd> Settings</div>
+          <div><kbd>L</kbd> Toggle Live Stream</div>
+          <div><kbd>← / →</kbd> Scrubber Step Nav</div>
+          <div><kbd>Home / End</kbd> Jump First / Last</div>
+          <div><kbd>Esc</kbd> Close Drawer / Modal</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div id="toast_container" class="toast-stack" aria-live="polite"></div>
+
+  <!-- Scripts -->
   <script src="/static/geometry.js"></script>
   <script src="/static/app.js"></script>
 </body>

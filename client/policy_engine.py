@@ -14,7 +14,6 @@ Enforces:
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any
 
 from shared.protocol import ActionType, SafeCandidate
 
@@ -78,7 +77,7 @@ class LocalPolicyEngine:
                 return RiskClass.LOW
             return RiskClass.MEDIUM
 
-        if action in (ActionType.SCROLL, ActionType.NAVIGATE):
+        if action in (ActionType.SCROLL, ActionType.NAVIGATE, ActionType.DONE):
             return RiskClass.LOW
 
         return RiskClass.MEDIUM

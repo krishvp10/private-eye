@@ -1,0 +1,125 @@
+{
+  "benchmark": "Phase 15 Privacy Boundary Audit",
+  "tested_vectors": [
+    {
+      "vector": "Unicode_ZWSP_PAN",
+      "raw_secret": "AB***4F",
+      "normalized_clean": true,
+      "detected": true,
+      "category": "regex_unicode_normalization"
+    },
+    {
+      "vector": "Unicode_ZWJ_PAN",
+      "raw_secret": "AB***4F",
+      "normalized_clean": true,
+      "detected": true,
+      "category": "regex_unicode_normalization"
+    },
+    {
+      "vector": "Unicode_BOM_PAN",
+      "raw_secret": "AB***4F",
+      "normalized_clean": true,
+      "detected": true,
+      "category": "regex_unicode_normalization"
+    },
+    {
+      "vector": "Separated_Hyphen_PAN",
+      "text": "ABCDE-1234-F",
+      "detected": true,
+      "category": "regex_separators"
+    },
+    {
+      "vector": "Separated_Dot_PAN",
+      "text": "ABCDE.1234.F",
+      "detected": true,
+      "category": "regex_separators"
+    },
+    {
+      "vector": "Separated_Space_PAN",
+      "text": "ABCDE 1234 F",
+      "detected": true,
+      "category": "regex_separators"
+    },
+    {
+      "vector": "DOM_Attribute_input_1",
+      "element": {
+        "id": "input_1",
+        "tag": "input",
+        "placeholder": "Enter your 10-digit PAN number",
+        "bbox": [
+          10,
+          10,
+          200,
+          30
+        ]
+      },
+      "detected": true,
+      "category": "dom_heuristics"
+    },
+    {
+      "vector": "DOM_Attribute_input_2",
+      "element": {
+        "id": "input_2",
+        "tag": "input",
+        "autocomplete": "cc-number",
+        "bbox": [
+          10,
+          50,
+          200,
+          30
+        ]
+      },
+      "detected": true,
+      "category": "dom_heuristics"
+    },
+    {
+      "vector": "DOM_Attribute_input_3",
+      "element": {
+        "id": "input_3",
+        "tag": "input",
+        "autocomplete": "current-password",
+        "bbox": [
+          10,
+          90,
+          200,
+          30
+        ]
+      },
+      "detected": true,
+      "category": "dom_heuristics"
+    },
+    {
+      "vector": "DOM_Attribute_input_4",
+      "element": {
+        "id": "input_4",
+        "tag": "input",
+        "aria-label": "Patient Aadhaar Card",
+        "bbox": [
+          10,
+          130,
+          200,
+          30
+        ]
+      },
+      "detected": true,
+      "category": "dom_heuristics"
+    },
+    {
+      "vector": "Visual_Pixel_Masking",
+      "sample_pixel_redacted_region": [
+        31,
+        42,
+        60
+      ],
+      "is_masked_dark": true,
+      "category": "pixel_redaction"
+    }
+  ],
+  "summary": {
+    "total_tests": 14,
+    "all_passed": true,
+    "visual_pixel_escape_closed": true,
+    "unicode_obfuscation_trapped": true,
+    "image_b64_inspection_active": true
+  }
+}

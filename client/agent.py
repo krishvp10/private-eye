@@ -21,8 +21,9 @@ from playwright.async_api import async_playwright
 from client.candidates import generate_candidates, verify_ranked_candidates
 from client.capture import capture_page
 from client.executor.execute import ActionExecutor, classify_execution_error
-from client.fail_closed import FailClosedPolicy, FailureClass
+from client.fail_closed import FailClosedPolicy
 from client.kill_switch import GLOBAL_KILL_SWITCH, KillSwitchTriggeredError
+from client.policy_engine import LocalPolicyEngine
 from client.provenance import ActionProvenance, ProvenanceTracker
 from client.recovery import RecoveryController
 from eval.leak_check import OutboundLeakInterceptor
@@ -30,7 +31,6 @@ from privacy.pipeline import PrivacyPipeline
 from privacy.redaction.masker import RedactionEngine
 from server.validation import validate_agent_action
 from shared.protocol import ActionType, AgentAction, ScreenContext, SelectionStatus
-
 
 
 @dataclass
@@ -53,6 +53,7 @@ class PrivateEyeAgent:
         max_steps: int = 24,
         task: str = "Complete the KYC verification form",
         executor: ActionExecutor | None = None,
+        policy_engine: LocalPolicyEngine | None = None,
     ) -> None:
         self.server_url = server_url.rstrip("/")
         dash = dashboard_url or os.environ.get("PRIVATEEYE_DASHBOARD_URL")
@@ -62,6 +63,7 @@ class PrivateEyeAgent:
         self.pipeline = PrivacyPipeline()
         self.redactor = RedactionEngine()
         self.leak_interceptor = OutboundLeakInterceptor()
+        self.policy_engine = policy_engine or LocalPolicyEngine()
         self.executor = executor or ActionExecutor()
         self.recovery = RecoveryController(int(os.getenv("PE_MAX_ACTION_RETRIES", "2")))
         self.provenance = ProvenanceTracker(task_id=self.task)
@@ -183,6 +185,35 @@ class PrivateEyeAgent:
                         and action.action in {ActionType.CLICK, ActionType.FILL, ActionType.SELECT}
                     ):
                         errors.append(f"Fail-closed candidate error: {cand_eval.reason}")
+                        await browser.close()
+                        return AgentRunResult(run_id, False, page.url, step, telemetry, errors)
+
+                    # Authoritative Local Policy Engine Gate
+                    selected_candidate = next(
+                        (c for c in context.candidates if c.ref == selected_cand_ref),
+                        None,
+                    )
+                    confidence_to_eval = (
+                        action.confidence
+                        if action.confidence is not None
+                        else (
+                            1.0
+                            if action.action == ActionType.DONE
+                            else (0.95 if not candidate_decision.ambiguous else candidate_decision.confidence)
+                        )
+                    )
+                    policy_decision = self.policy_engine.evaluate_policy(
+                        action=action.action,
+                        confidence=confidence_to_eval,
+                        candidate=selected_candidate,
+                        task=self.task,
+                        value_ref=action.value_ref,
+                        verifier_passed=not candidate_decision.ambiguous,
+                    )
+                    if not policy_decision.action_permitted:
+                        errors.append(
+                            f"Fail-closed policy engine blocked action: {policy_decision.reason}"
+                        )
                         await browser.close()
                         return AgentRunResult(run_id, False, page.url, step, telemetry, errors)
                     proposed_ref = (

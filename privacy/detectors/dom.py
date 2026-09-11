@@ -62,7 +62,10 @@ class DOMDetector:
             is_sensitive = bool(el.get("sensitive", False))
 
             detected_cat: DetectionCategory | None = None
-            confidence = 0.85
+            placeholder = (el.get("placeholder") or "").lower()
+            autocomplete = (el.get("autocomplete") or "").lower()
+            aria_label = (el.get("aria-label") or el.get("aria_label") or "").lower()
+            element_text = f"{name_label} {element_id.lower()} {placeholder} {autocomplete} {aria_label}"
 
             # Rule 1: Explicit category attribute
             if category_attr:
@@ -72,22 +75,27 @@ class DOMDetector:
                 except ValueError:
                     pass
 
-            # Rule 2: Password field type
-            if not detected_cat and field_type == "password":
+            # Rule 2: Password field type or autocomplete
+            if not detected_cat and (field_type == "password" or "password" in autocomplete):
                 detected_cat = DetectionCategory.PASSWORD
                 confidence = 0.99
 
-            # Rule 3: Label keyword matching
+            # Rule 2b: Autocomplete exact map
+            if not detected_cat and autocomplete in AUTOCOMPLETE_MAP:
+                detected_cat = AUTOCOMPLETE_MAP[autocomplete]
+                confidence = 0.95
+
+            # Rule 3: Label keyword matching across all element attributes
             if not detected_cat:
                 for cat, keywords in LABEL_CATEGORY_KEYWORDS.items():
-                    if any(kw in name_label or kw in element_id.lower() for kw in keywords):
+                    if any(kw in element_text for kw in keywords):
                         detected_cat = cat
                         confidence = 0.92
                         break
 
             # Rule 4: Generic sensitive tag
             if not detected_cat and is_sensitive:
-                detected_cat = DetectionCategory.PASSWORD if "pass" in name_label else DetectionCategory.NAME
+                detected_cat = DetectionCategory.PASSWORD if "pass" in element_text else DetectionCategory.NAME
                 confidence = 0.85
 
             if detected_cat:

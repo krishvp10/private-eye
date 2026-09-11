@@ -5,6 +5,7 @@ Aadhaar, PAN, Phone, Email, DOB, and Credit Cards.
 """
 
 import re
+import unicodedata
 from typing import Any
 
 from shared.protocol import (
@@ -13,6 +14,25 @@ from shared.protocol import (
     DetectionCategory,
     DetectionSource,
 )
+
+INVISIBLE_CHARS = re.compile(
+    r"[\u200b\u200c\u200d\u200e\u200f\ufeff\u00ad\u2060\u2061\u2062\u2063\u2064]"
+)
+
+
+UNICODE_ESCAPE_CHARS = re.compile(
+    r"\\u(?:200[b-fB-F]|206[0-4]|feff|00ad)", re.IGNORECASE
+)
+
+
+def normalize_text_for_privacy(text: str) -> str:
+    """Normalize Unicode and strip zero-width and invisible control characters."""
+    if not text:
+        return ""
+    normalized = unicodedata.normalize("NFKD", text)
+    cleaned = INVISIBLE_CHARS.sub("", normalized)
+    return UNICODE_ESCAPE_CHARS.sub("", cleaned)
+
 
 # Regex specifications
 PATTERNS = {
@@ -51,10 +71,14 @@ class RegexDetector:
 
             bounding_box = BoundingBox.from_list(bbox_coords)
             element_id = el.get("id", "unknown")
-            text_to_scan = f"{el.get('name', '')} {el.get('id', '')}"
+            raw_text = (
+                f"{el.get('name', '')} {el.get('id', '')} "
+                f"{el.get('placeholder', '')} {el.get('value', '')} {el.get('text', '')}"
+            )
+            text_to_scan = normalize_text_for_privacy(raw_text)
 
             for category, regex in PATTERNS.items():
-                if regex.search(text_to_scan):
+                if regex.search(text_to_scan) or regex.search(raw_text):
                     detections.append(
                         Detection(
                             category=category,
@@ -71,8 +95,9 @@ class RegexDetector:
     def detect_in_text(self, text: str, bounding_box: BoundingBox) -> list[Detection]:
         """Detect PII in visible prose when no element-level box is available."""
         detections: list[Detection] = []
+        norm_text = normalize_text_for_privacy(text)
         for category, regex in PATTERNS.items():
-            if regex.search(text):
+            if regex.search(text) or regex.search(norm_text):
                 detections.append(
                     Detection(
                         category=category,
@@ -88,11 +113,25 @@ class RegexDetector:
     def scan_raw_text(self, text: str) -> list[dict[str, Any]]:
         """Identify matches in unstructured text strings."""
         matches = []
+        norm_text = normalize_text_for_privacy(text)
+        seen_spans = set()
         for category, regex in PATTERNS.items():
             for m in regex.finditer(text):
+                span = m.span()
                 matches.append({
                     "category": category,
-                    "matched_span": m.span(),
+                    "matched_span": span,
                     "category_name": category.value,
                 })
+                seen_spans.add((category, span))
+            if norm_text != text:
+                for m in regex.finditer(norm_text):
+                    span = m.span()
+                    if (category, span) not in seen_spans:
+                        matches.append({
+                            "category": category,
+                            "matched_span": span,
+                            "category_name": category.value,
+                        })
+                        seen_spans.add((category, span))
         return matches
