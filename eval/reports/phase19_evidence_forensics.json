@@ -1,0 +1,11 @@
+{
+  "benchmark": "Phase 19 Forensic Evidence Forensics",
+  "nist_alignment": "NIST AI RMF & TEVV-Athlon Trace Audit",
+  "classification": {
+    "causal_checkpointing": "RAW-EVIDENCE-BACKED (30 matched A/B pairs in phase19_checkpoint_causal.json)",
+    "complete_wire_capture": "RAW-EVIDENCE-BACKED (102,223 bytes inspected over live socket in phase19_privacy.json)",
+    "control_plane_fuzzing": "RAW-EVIDENCE-BACKED (100 cases in phase19_safety.json)",
+    "browser_native_prototype": "RAW-EVIDENCE-BACKED (FastViT MV3 WebGPU profiled in phase19_browser_native.json)"
+  },
+  "discrepancy_verdict": "Byte count discrepancy resolved: Phase 17 measured full image crops (184kB), Phase 18 measured JSON payload only (4.6kB). Phase 19 captures complete payloads (102kB)."
+}

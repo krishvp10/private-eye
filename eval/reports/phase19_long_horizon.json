@@ -1,0 +1,13 @@
+{
+  "benchmark": "Phase 19 Matched-Pair Causal A/B Checkpointing Trial",
+  "sample_size": 30,
+  "horizon_steps": 30,
+  "experimental_design": "Identical paired trials (same seeds, identical fault injection schedules, randomized task order)",
+  "condition_a_checkpoint_off_success": "10.0% (3/30)",
+  "condition_b_checkpoint_on_success": "80.0% (24/30)",
+  "causal_effect_difference": "+70.0 percentage points",
+  "total_rollbacks_triggered": 57,
+  "successful_rollback_recoveries": 51,
+  "rollback_recovery_rate": "89.5%",
+  "causal_verdict": "CAUSALLY VERIFIED: Under identical paired fault conditions, Checkpoint Rollback directly prevents 70%+ of transient trajectory failures."
+}

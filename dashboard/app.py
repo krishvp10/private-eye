@@ -9,7 +9,9 @@ Features:
 """
 
 import asyncio
+import base64
 import json
+import logging
 import os
 import subprocess
 import sys
@@ -21,14 +23,77 @@ from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel, ConfigDict, Field
 
 from demo_sites.site_loader import registry
 from shared.config import config
+
+logger = logging.getLogger("private_eye_dashboard")
 
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 
 app = FastAPI(title="PrivateEye Visual Privacy Dashboard")
+
+# Security Headers Middleware
+@app.middleware("http")
+async def add_security_headers(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    response.headers["Content-Security-Policy"] = (
+        "default-src 'self'; "
+        "img-src 'self' data:; "
+        "style-src 'self' 'unsafe-inline'; "
+        "font-src 'self' data:; "
+        "connect-src 'self'; "
+        "script-src 'self' 'unsafe-inline';"
+    )
+    return response
+
+# Safe Minimal Exception Handler (avoids path/stack leakage)
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error("Unhandled error on %s: %s", request.url.path, exc, exc_info=True)
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "An internal error occurred. Execution halted safely."},
+    )
+
+# Strict Schema Contracts
+class StepPayload(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    step: int = Field(..., ge=0, le=10000, strict=True, description="Monotonically non-negative execution step")
+    run_id: str | None = Field(None, max_length=128)
+    status: str | None = Field(None, max_length=64)
+    task: str | None = Field(None, max_length=2048)
+    url: str | None = Field(None, max_length=4096)
+    raw_image_b64: str | None = Field(None, max_length=15_000_000)
+    sanitized_image_b64: str | None = Field(None, max_length=15_000_000)
+    action: dict[str, Any] | None = None
+    detections: list[Any] | None = None
+    redactions: list[Any] | None = None
+    metrics: dict[str, Any] | None = None
+    history: list[Any] | None = None
+    total_steps: int | None = Field(None, ge=0, le=10000)
+    available_steps: list[int] | None = None
+
+
+class TriggerPayload(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    domain: str = Field(default="kyc", min_length=1, max_length=64)
+    port: int = Field(default=config.PORT_PORTAL, ge=1, le=65535, strict=True)
+
+
+class KillSwitchPayload(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    reason: str = Field(default="Operator emergency manual halt", min_length=1, max_length=500)
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -37,8 +102,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-import base64
 
 # Base64 SVG Fixtures for deterministic demonstration
 _RAW_SVG = """<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="800" viewBox="0 0 1280 800">
@@ -100,6 +163,8 @@ step_subscribers: list[asyncio.Queue] = []
 step_history: dict[int, dict[str, Any]] = {}
 
 demo_step_0: dict[str, Any] = {
+    "is_live": False,
+    "data_source": "STATIC_DEMO",
     "status": "ready",
     "step": 0,
     "total_steps": 2,
@@ -125,6 +190,8 @@ demo_step_0: dict[str, Any] = {
 }
 
 demo_step_1: dict[str, Any] = {
+    "is_live": False,
+    "data_source": "STATIC_DEMO",
     "status": "running",
     "step": 1,
     "total_steps": 2,
@@ -249,21 +316,26 @@ async def get_history_step(step_num: int):
 
 
 @app.post("/api/step")
-async def post_step(payload: dict[str, Any]):
-    """Receives a step snapshot broadcast from PrivateEyeAgent."""
+async def post_step(payload: StepPayload):
+    """Receives a step snapshot broadcast from PrivateEyeAgent with strict schema enforcement."""
     global latest_step_state
-    step = int(payload.get("step", 0))
+    step = payload.step
+    data_dict = payload.model_dump(exclude_none=True)
 
-    # Store full snapshot in immutable step history
-    step_history[step] = dict(payload)
+    # Authoritative server-side provenance & security metadata (client cannot spoof)
+    data_dict["is_live"] = True
+    data_dict["data_source"] = "LIVE_AGENT_SESSION"
 
-    latest_step_state.update(payload)
+    # Store validated snapshot in step history
+    step_history[step] = dict(data_dict)
+
+    latest_step_state.update(data_dict)
     latest_step_state["status"] = "running"
     latest_step_state["total_steps"] = len(step_history)
     latest_step_state["available_steps"] = sorted(list(step_history.keys()))
 
     # Broadcast to all active SSE subscribers
-    data_str = json.dumps(payload)
+    data_str = json.dumps(data_dict)
     dead_subscribers = []
     for q in step_subscribers:
         try:
@@ -302,12 +374,12 @@ async def events_stream(request: Request):
 
 
 @app.post("/api/trigger")
-async def trigger_run(payload: dict[str, Any] | None = None):
+async def trigger_run(payload: TriggerPayload | None = None):
     """Launch a background agent run for interactive demonstrations."""
     global step_history
-    params = payload or {}
-    domain = params.get("domain", "kyc")
-    portal_port = params.get("port", config.PORT_PORTAL)
+    params = payload or TriggerPayload()
+    domain = params.domain
+    portal_port = params.port
 
     # --- Security: allowlist validation ---
     # domain must be a known registered site ID; reject path traversal, shell injection, etc.
@@ -540,10 +612,10 @@ async def get_security():
 
 
 @app.post("/api/kill-switch")
-async def trigger_kill_switch(payload: dict[str, Any] | None = None):
+async def trigger_kill_switch(payload: KillSwitchPayload | None = None):
     """Trigger emergency kill switch with measured dispatch-path latency."""
-    params = payload or {}
-    reason = params.get("reason", "Operator emergency manual halt")
+    params = payload or KillSwitchPayload()
+    reason = params.reason
     
     t0 = time.perf_counter()
     event = GLOBAL_KILL_SWITCH.trigger(reason=reason, triggered_by="operator")

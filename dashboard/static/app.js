@@ -414,8 +414,8 @@ function updateDataSourceBanner(data) {
   const label = document.getElementById("data_source_label");
   if (!banner || !label) return;
 
-  const task = (data && data.task) || "";
-  const isDemo = task.startsWith("[STATIC EVIDENCE DEMO]") || !task || task === "";
+  // Authoritative server-side metadata check: never let spoofed strings alter provenance
+  const isDemo = data ? (data.is_live === false || data.data_source === "STATIC_DEMO") : true;
 
   if (isDemo) {
     banner.className = "data-source-banner demo";
@@ -432,11 +432,12 @@ function renderStep(data) {
   dom.stepNum().innerText = `STEP ${data.step || 0}`;
   dom.currentUrl().innerText = data.url || "Idle";
 
-  // Raw Client Image
+  // Raw Client Image - strictly guard scheme
   const imgRaw = dom.imgRaw();
   const placeRaw = dom.placeholderRaw();
   if (data.raw_image_b64) {
-    imgRaw.src = data.raw_image_b64.startsWith("data:") ? data.raw_image_b64 : `data:image/jpeg;base64,${data.raw_image_b64}`;
+    const rawVal = String(data.raw_image_b64);
+    imgRaw.src = rawVal.startsWith("data:image/") ? rawVal : `data:image/jpeg;base64,${rawVal}`;
     imgRaw.style.display = "block";
     if (placeRaw) placeRaw.style.display = "none";
   } else {
@@ -444,11 +445,12 @@ function renderStep(data) {
     if (placeRaw) placeRaw.style.display = "flex";
   }
 
-  // Sanitized Wire Image
+  // Sanitized Wire Image - strictly guard scheme
   const imgSan = dom.imgSanitized();
   const placeSan = dom.placeholderSanitized();
   if (data.sanitized_image_b64) {
-    imgSan.src = data.sanitized_image_b64.startsWith("data:") ? data.sanitized_image_b64 : `data:image/jpeg;base64,${data.sanitized_image_b64}`;
+    const sanVal = String(data.sanitized_image_b64);
+    imgSan.src = sanVal.startsWith("data:image/") ? sanVal : `data:image/jpeg;base64,${sanVal}`;
     imgSan.style.display = "block";
     if (placeSan) placeSan.style.display = "none";
 
@@ -886,13 +888,13 @@ function renderPrivacyTables(data) {
     data.vault_schema.forEach((v) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><strong>${v.key}</strong></td>
-        <td><code style="color: var(--status-violet);">${v.value_ref}</code></td>
-        <td>${v.type}</td>
-        <td><code style="color: var(--text-muted);">${v.synthetic_mask}</code></td>
-        <td><span class="badge-status-pill emerald">${v.scope}</span></td>
+        <td><strong>${escapeHtml(v.key)}</strong></td>
+        <td><code style="color: var(--status-violet);">${escapeHtml(v.value_ref)}</code></td>
+        <td>${escapeHtml(v.type)}</td>
+        <td><code style="color: var(--text-muted);">${escapeHtml(v.synthetic_mask)}</code></td>
+        <td><span class="badge-status-pill emerald">${escapeHtml(v.scope)}</span></td>
         <td>
-          <button class="btn-copy-hash" data-copy="${v.value_ref}" title="Copy Value Ref">
+          <button class="btn-copy-hash" data-copy="${escapeHtml(v.value_ref)}" title="Copy Value Ref">
             Copy
           </button>
         </td>
@@ -916,10 +918,10 @@ function renderPrivacyTables(data) {
     data.detected_categories.forEach((d) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><strong>${d.category.toUpperCase()}</strong></td>
+        <td><strong>${escapeHtml((d.category || "").toUpperCase())}</strong></td>
         <td><code style="font-size: 0.72rem;">${escapeHtml(d.pattern)}</code></td>
-        <td><span class="badge-status-pill emerald">${d.status}</span></td>
-        <td><code>${d.redaction}</code></td>
+        <td><span class="badge-status-pill emerald">${escapeHtml(d.status)}</span></td>
+        <td><code>${escapeHtml(d.redaction)}</code></td>
       `;
       tbodyDet.appendChild(tr);
     });
@@ -937,10 +939,10 @@ function renderPolicyTables(data) {
     const tr = document.createElement("tr");
     const riskBadge = t.tier === "HIGH" ? "coral" : t.tier === "MEDIUM" ? "amber" : "emerald";
     tr.innerHTML = `
-      <td><span class="badge-status-pill ${riskBadge}">${t.tier}</span></td>
-      <td><code>${t.actions.join(", ")}</code></td>
-      <td><strong>${t.policy}</strong></td>
-      <td>≥ ${Math.round(t.min_confidence * 100)}%</td>
+      <td><span class="badge-status-pill ${riskBadge}">${escapeHtml(t.tier)}</span></td>
+      <td><code>${escapeHtml((t.actions || []).join(", "))}</code></td>
+      <td><strong>${escapeHtml(t.policy)}</strong></td>
+      <td>≥ ${Math.round((t.min_confidence || 0) * 100)}%</td>
       <td>${t.verifier_required ? "Mandatory" : "Optional"}</td>
       <td><span class="badge-status-pill ${t.human_gate ? "coral" : "emerald"}">${t.human_gate ? "MANDATORY" : "AUTOMATIC"}</span></td>
     `;
@@ -1292,9 +1294,12 @@ function logSafeEvent(msg, type = "info") {
 }
 
 function escapeHtml(text) {
-  const div = document.createElement("div");
-  div.innerText = String(text ?? "");
-  return div.innerHTML;
+  return String(text ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 // Safe text node setter — avoids innerHTML

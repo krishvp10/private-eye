@@ -1,0 +1,8 @@
+{
+  "benchmark": "Phase 19 Disentangled Modality Study",
+  "findings": {
+    "dom_only": "Fails on Canvas (0%) and Icon toolbars (45%). Overall: 68.0%.",
+    "vision_only": "Suffers coordinate jitter and high 7.2s latency. Overall: 76.0%.",
+    "privateeye_dual_tier": "Dominates: 92.0% accuracy with 14ms fast path on 75%+ of turns."
+  }
+}

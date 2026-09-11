@@ -42,7 +42,11 @@ class StandardValueRef(str, Enum):
     FIXTURE_KEY = "user_profile.fixture_key"
 
 
+import re
+
 ALLOWED_NAMESPACES: set[str] = {"user_profile", "auth", "payment", "health"}
+KEY_PATTERN = re.compile(r"^[a-zA-Z0-9_]{1,64}$")
+FORBIDDEN_KEYS: set[str] = {"__proto__", "constructor", "prototype"}
 
 
 def is_valid_value_ref(value_ref: str) -> bool:
@@ -55,7 +59,9 @@ def is_valid_value_ref(value_ref: str) -> bool:
     namespace, key = parts
     if namespace not in ALLOWED_NAMESPACES:
         return False
-    if len(key) < 1 or any(c in key for c in [" ", "\t", "\n", ";", "<", ">"]):
+    if not KEY_PATTERN.fullmatch(key):
+        return False
+    if key.lower() in FORBIDDEN_KEYS:
         return False
     return True
 

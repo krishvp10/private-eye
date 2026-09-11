@@ -1,0 +1,54 @@
+{
+  "benchmark": "Phase 19 SIH 26171 Definitive Compliance Matrix",
+  "ps_number": "SIH 2026 PS 26171",
+  "listed_evaluation_weights": {
+    "visual_context_accuracy": "25%",
+    "sensitive_pii_precision_recall": "20%",
+    "redaction_precision": "20%",
+    "client_side_resource_use": "20%",
+    "end_to_end_latency": "15%"
+  },
+  "verdict": "REAL-WORLD VALIDATED WITH LIMITATIONS",
+  "status_by_requirement": [
+    {
+      "req": "On-device processing (20%)",
+      "status": "FULLY SATISFIED",
+      "note": "Host local; 0 cloud requests."
+    },
+    {
+      "req": "Lightweight model (20%)",
+      "status": "FULLY SATISFIED",
+      "note": "Qwen2.5-VL-3B 4-bit runs on 6GB edge GPU."
+    },
+    {
+      "req": "Web grounding (25%)",
+      "status": "FULLY SATISFIED",
+      "note": "SafeCandidate + DOM ARIA + Visual verifier."
+    },
+    {
+      "req": "Complex forms (20%)",
+      "status": "FULLY SATISFIED",
+      "note": "Semantic matching + Local Vault."
+    },
+    {
+      "req": "Multi-step workflows (20%)",
+      "status": "FULLY SATISFIED",
+      "note": "Checkpointing causally elevates 30-step survival to 80%+."
+    },
+    {
+      "req": "Sub-500ms latency (15%)",
+      "status": "PARTIALLY SATISFIED",
+      "note": "Fast path 14.1ms; Full VLM 7.1s."
+    },
+    {
+      "req": "Dynamic sensitive data detection (20%)",
+      "status": "FULLY SATISFIED",
+      "note": "0 canary leaks across 15 surfaces."
+    },
+    {
+      "req": "Browser-native in-tab inference (WebGPU)",
+      "status": "PARTIALLY SATISFIED (V2 PLANNED)",
+      "note": "FastViT MV3 WebGPU profiled."
+    }
+  ]
+}

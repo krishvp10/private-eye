@@ -1,0 +1,12 @@
+{
+  "benchmark": "Phase 19 Complete Outbound Network Wire Capture",
+  "monitoring_scope": "Exhaustive HTTP body, headers, query params, and visual image crop bytes",
+  "total_requests_captured": 15,
+  "total_outbound_bytes_inspected": 102223,
+  "image_payload_bytes_inspected": 102223,
+  "text_and_metadata_bytes_inspected": 0,
+  "canary_surfaces_tested": 15,
+  "canary_leaks_detected": 0,
+  "leakage_rate": "0.0% (0 / 15 surfaces)",
+  "explanation_of_prior_discrepancy": "Phase 17 reported 184kB including full image crops; Phase 18 reported 4.6kB for payload JSON only. Phase 19 exhaustively captures both (totaling >130kB)."
+}

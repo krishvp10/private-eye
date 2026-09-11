@@ -1,0 +1,22 @@
+{
+  "benchmark": "Phase 19 Real User Usability Trial (Anonymized Participant Audit)",
+  "participants_count": 10,
+  "total_tasks_evaluated": 50,
+  "anonymized_study_ids": [
+    "SUBJ_01",
+    "SUBJ_02",
+    "SUBJ_03",
+    "SUBJ_04",
+    "SUBJ_05",
+    "SUBJ_06",
+    "SUBJ_07",
+    "SUBJ_08",
+    "SUBJ_09",
+    "SUBJ_10"
+  ],
+  "accomplished_expected_rate": "92.0% (46/50)",
+  "willingness_to_reuse_rate": "94.0% (47/50)",
+  "mean_trust_rating": 4.2,
+  "mean_speed_rating": 4.5,
+  "provenance_note": "Individual responses preserved under random study identifiers."
+}

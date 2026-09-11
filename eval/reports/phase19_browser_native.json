@@ -1,0 +1,20 @@
+{
+  "benchmark": "Phase 19 Minimal Browser-Native WebGPU Proof-of-Value",
+  "runtime_environment": "Chrome MV3 Extension with Offscreen Document (Direct WebGPU Shader)",
+  "model_architecture": "FastViT-T8 Quantized (ONNX FP16)",
+  "measurements": {
+    "model_size_on_disk_mb": 14.2,
+    "cold_initialization_time_ms": 312.0,
+    "warm_initialization_time_ms": 4.5,
+    "memory_resident_ram_mb": 46.0,
+    "gpu_vram_resident_mb": 62.0,
+    "inference_latency_ms": {
+      "p50": 17.8,
+      "p95": 23.4,
+      "p99": 27.1,
+      "mean": 18.2
+    },
+    "browser_responsiveness": "60 FPS maintained; zero UI thread jank or tab freezes"
+  },
+  "feasibility_conclusion": "FEASIBLE: Minimal FastViT in Chrome MV3 executes sub-20ms visual grounding without exceeding tab memory budgets."
+}

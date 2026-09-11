@@ -14,6 +14,7 @@ from typing import Any, cast
 
 from playwright.async_api import Locator, Page
 
+from client.kill_switch import GLOBAL_KILL_SWITCH
 from client.vault import LocalVault
 from shared.protocol import (
     ActionType,
@@ -69,6 +70,9 @@ class ActionExecutor:
     async def execute(self, page: Page, action: AgentAction, step: int = 1) -> ExecutionResult:
         """Validate and execute action against the active Playwright page."""
         start_time = time.perf_counter()
+
+        # 0. Fail-closed check: verify emergency kill switch is disarmed
+        GLOBAL_KILL_SWITCH.assert_not_engaged()
 
         # 1. Whitelist validation
         if action.action.value not in self.ALLOWED_ACTIONS:

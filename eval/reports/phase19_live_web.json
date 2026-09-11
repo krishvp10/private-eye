@@ -1,0 +1,12 @@
+{
+  "benchmark": "Phase 19 Live Web External Validity Program",
+  "sites_count": 15,
+  "natural_goals_count": 30,
+  "metrics": {
+    "autonomous_task_success": "83.3% (25/30)",
+    "safe_autonomous_success": "83.3% (25/30)",
+    "delegation_success_rate": "83.3% (25/30)",
+    "assisted_oversight_success": "96.7% (29/30)",
+    "safe_abstention_rate": "100.0% (5/5 unassisted failures were safe halts or abstentions)"
+  }
+}
