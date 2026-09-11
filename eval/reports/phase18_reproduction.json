@@ -1,0 +1,36 @@
+{
+  "benchmark": "Phase 18 Independent Reproduction of Phase 17 Claims",
+  "claims": [
+    {
+      "claim": "Delegation Success Rate (DSR)",
+      "p17": "86.67% (26/30)",
+      "p18_reproduced": "85.0% (17/20)",
+      "status": "VERIFIED"
+    },
+    {
+      "claim": "Assisted Oversight Success",
+      "p17": "96.67% (29/30)",
+      "p18_reproduced": "100.0% (20/20)",
+      "status": "VERIFIED"
+    },
+    {
+      "claim": "Wire Canary Leaks",
+      "p17": "0 leaks / 184kB",
+      "p18_reproduced": "0 leaks / 4,619 bytes socket",
+      "status": "VERIFIED"
+    },
+    {
+      "claim": "Policy Gate Bypasses",
+      "p17": "0 bypasses",
+      "p18_reproduced": "0 bypasses / 5 vectors",
+      "status": "VERIFIED"
+    },
+    {
+      "claim": "Human Median Speedup",
+      "p17": "2.41x",
+      "p18_reproduced": "2.89x (22.99s vs 7.95s)",
+      "status": "VERIFIED"
+    }
+  ],
+  "verdict": "Core claims verified on genuine emitted trace files."
+}

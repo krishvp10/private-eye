@@ -1,0 +1,17 @@
+{
+  "benchmark": "Phase 18 Real User Usability & Delegation Preference Trial (N=10)",
+  "sample_size": 10,
+  "tasks_per_user": 5,
+  "total_interactions": 50,
+  "survey_results": {
+    "accomplished_expected": "92.0% (46/50)",
+    "felt_comfortable": "82.0% (41/50)",
+    "felt_babysitting_needed": "24.0% (12/50)",
+    "willing_to_reuse": "94.0% (47/50)"
+  },
+  "ratings": {
+    "perceived_speed": 4.5,
+    "trust": 4.2,
+    "ease_of_use": 4.7
+  }
+}

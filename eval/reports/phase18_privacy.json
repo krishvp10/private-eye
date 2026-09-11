@@ -1,0 +1,24 @@
+{
+  "benchmark": "Phase 18 Physical TCP Wire Socket Probe",
+  "surfaces_tested_count": 15,
+  "total_bytes_inspected": 4619,
+  "canary_leaks_detected": 0,
+  "leak_rate": "0.0% (0 / 15)",
+  "surfaces": [
+    "DOM text",
+    "input value",
+    "placeholder",
+    "aria-label",
+    "title attribute",
+    "autocomplete field",
+    "CSS generated content",
+    "SVG text",
+    "Canvas rendered text",
+    "Unicode ZWSP obfuscated",
+    "Unicode homoglyphs",
+    "Whitespace fragmented",
+    "Cookie value",
+    "Session storage",
+    "Local storage"
+  ]
+}

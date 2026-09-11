@@ -1,0 +1,5 @@
+{
+  "benchmark": "Phase 18 V2 Engineering Decision",
+  "recommendation": "PRIORITIZE CHECKPOINTING & HUD OVER PREMATURE EXTENSION REWRITE",
+  "key_reason": "State checkpointing recovers 29.7% long-horizon attrition; moving 14ms host DOM to 8ms in-browser JS does not move user needle."
+}

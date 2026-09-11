@@ -1,0 +1,18 @@
+{
+  "benchmark": "Phase 18 Modality Generalization",
+  "regimes": {
+    "dom_only": {
+      "accuracy": "68.0%",
+      "latency_ms": 12.5
+    },
+    "screenshot_only": {
+      "accuracy": "76.0%",
+      "latency_ms": 7240.0
+    },
+    "dual_tier_privateeye": {
+      "accuracy": "92.0%",
+      "latency_ms": 14.1,
+      "p50_turn_ms": 128.5
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "benchmark": "Phase 18 Generalization Across Site Pools",
+  "pools": {
+    "dev_sites": {
+      "tasks": 7,
+      "success_rate": "100.0% (7/7)"
+    },
+    "held_out_sites": {
+      "tasks": 6,
+      "success_rate": "100.0% (6/6)"
+    },
+    "user_selected_adversarial": {
+      "tasks": 7,
+      "success_rate": "57.1% (4/7 autonomous, 3 safe abstentions)"
+    }
+  },
+  "overall_dsr": "85.0% (17/20)"
+}

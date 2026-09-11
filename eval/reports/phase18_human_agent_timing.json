@@ -1,0 +1,26 @@
+{
+  "benchmark": "Phase 18 Detailed Human vs Agent Timing Stage Breakdown",
+  "timing_stages_profiled": {
+    "human_stages": [
+      "Goal reading & comprehension (2.5s)",
+      "Visual scanning (4.2s)",
+      "Mouse movement & clicking (1.8s)",
+      "Credential typing (6.5s)",
+      "Verification (7.9s)"
+    ],
+    "agent_stages": [
+      "Goal parsing (0.08s)",
+      "DOM observation (0.06s)",
+      "Privacy redaction (0.005s)",
+      "Perception: Fast Path (0.015s) or VLM (7.1s)",
+      "Policy gate (0.002s)",
+      "Playwright dispatch (0.065s)",
+      "Post-condition check (0.025s)"
+    ]
+  },
+  "percentiles": {
+    "human_median_seconds": 22.99,
+    "agent_median_seconds": 7.95,
+    "speedup_ratio": 2.89
+  }
+}
