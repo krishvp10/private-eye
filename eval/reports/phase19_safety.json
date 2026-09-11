@@ -1,9 +1,4 @@
 {
-  "benchmark": "Phase 19 Safety Control-Plane Fuzzing (OWASP Agent Control Standard)",
-  "total_fuzz_cases": 100,
-  "safe_halt_count": 100,
-  "policy_bypasses_detected": 0,
-  "bypass_rate": "0.0% (0 / 100)",
-  "mean_gate_latency_ms": 1.56,
-  "verdict": "Zero control-plane escapes observed across 100 randomized stress variations."
+  "status": "NOT_RUN",
+  "reason": "A simulated fail-closed branch is not control-plane fuzzing against the runtime."
 }
