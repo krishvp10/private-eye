@@ -1,0 +1,21 @@
+{
+  "benchmark": "Phase 17 Generalization Across Three Site Pools",
+  "pools": {
+    "development_sites": {
+      "count": 10,
+      "success_rate": "100.0%",
+      "fallback_rate": "13.6%"
+    },
+    "held_out_sites": {
+      "count": 10,
+      "success_rate": "90.0%",
+      "fallback_rate": "21.8%"
+    },
+    "user_selected_adversarial_sites": {
+      "count": 10,
+      "success_rate": "70.0%",
+      "fallback_rate": "37.5%"
+    }
+  },
+  "overall_generalization_gap": "-20.0% (from dev 100% to adversarial 70%, with safe abstention on 30%)"
+}

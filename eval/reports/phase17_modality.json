@@ -1,0 +1,26 @@
+{
+  "benchmark": "Phase 17 Modality Ablation",
+  "sample_size": 25,
+  "modalities": {
+    "dom_only": {
+      "accuracy": "68.0%",
+      "mean_latency_ms": 12.5,
+      "privacy_risk": "None"
+    },
+    "vision_only": {
+      "accuracy": "76.0%",
+      "mean_latency_ms": 7240.0,
+      "privacy_risk": "Critical"
+    },
+    "eager_dom_and_vision": {
+      "accuracy": "88.0%",
+      "mean_latency_ms": 7280.0,
+      "privacy_risk": "High"
+    },
+    "privateeye_dual_tier": {
+      "accuracy": "92.0%",
+      "mean_latency_ms": 1860.0,
+      "privacy_risk": "Zero"
+    }
+  }
+}

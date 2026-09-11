@@ -390,6 +390,9 @@ function handleIncomingStep(data, isRealtime) {
     renderStep(data);
   }
 
+  // Update data source indicator based on task field
+  updateDataSourceBanner(data);
+
   if (isRealtime && step > 0) {
     const detCount = (data.detections || []).length;
     const redCount = (data.redactions || []).length;
@@ -403,6 +406,23 @@ function handleIncomingStep(data, isRealtime) {
     if (data.action && data.action.action === "done") {
       logSafeEvent(`Workflow completed successfully (0 leaks verified)`, "success");
     }
+  }
+}
+
+function updateDataSourceBanner(data) {
+  const banner = document.getElementById("data_source_banner");
+  const label = document.getElementById("data_source_label");
+  if (!banner || !label) return;
+
+  const task = (data && data.task) || "";
+  const isDemo = task.startsWith("[STATIC EVIDENCE DEMO]") || !task || task === "";
+
+  if (isDemo) {
+    banner.className = "data-source-banner demo";
+    label.textContent = "DATA SOURCE: STATIC EVIDENCE DEMO — Not a live agent session";
+  } else {
+    banner.className = "data-source-banner live";
+    label.textContent = "DATA SOURCE: LIVE AGENT SESSION — Real-time Playwright execution";
   }
 }
 
@@ -717,13 +737,13 @@ function renderEvidenceTables(data) {
     data.horizon_breakdown.forEach((h) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><strong>${h.tier}</strong></td>
-        <td><code>${h.steps}</code></td>
-        <td>${h.runs}</td>
-        <td><strong>${h.step_acc.toFixed(2)}%</strong></td>
-        <td><strong>${h.task_succ.toFixed(2)}%</strong></td>
-        <td>${h.fail_rate.toFixed(1)}%</td>
-        <td><span class="badge-status-pill emerald">${h.survival.toFixed(1)}%</span></td>
+        <td><strong>${escapeHtml(h.tier)}</strong></td>
+        <td><code>${escapeHtml(h.steps)}</code></td>
+        <td>${Number(h.runs)}</td>
+        <td><strong>${Number(h.step_acc).toFixed(2)}%</strong></td>
+        <td><strong>${Number(h.task_succ).toFixed(2)}%</strong></td>
+        <td>${Number(h.fail_rate).toFixed(1)}%</td>
+        <td><span class="badge-status-pill emerald">${Number(h.survival).toFixed(1)}%</span></td>
       `;
       tbodyHoriz.appendChild(tr);
     });
@@ -737,13 +757,13 @@ function renderEvidenceTables(data) {
       const tr = document.createElement("tr");
       const natureBadge = f.nature === "Stochastic" ? "emerald" : "amber";
       tr.innerHTML = `
-        <td>#${f.rank}</td>
-        <td><code>${f.class_name}</code></td>
-        <td>${f.count}</td>
-        <td><strong>${f.pct}%</strong></td>
-        <td><span class="badge-status-pill ${natureBadge}">${f.nature}</span></td>
-        <td style="color: var(--text-secondary);">${f.mechanism}</td>
-        <td><span class="badge-status-pill emerald">${f.recovery}</span></td>
+        <td>#${Number(f.rank)}</td>
+        <td><code>${escapeHtml(f.class_name)}</code></td>
+        <td>${Number(f.count)}</td>
+        <td><strong>${Number(f.pct)}%</strong></td>
+        <td><span class="badge-status-pill ${natureBadge}">${escapeHtml(f.nature)}</span></td>
+        <td style="color: var(--text-secondary);">${escapeHtml(f.mechanism)}</td>
+        <td><span class="badge-status-pill emerald">${escapeHtml(f.recovery)}</span></td>
       `;
       tbodyAttr.appendChild(tr);
     });
@@ -762,14 +782,15 @@ function renderAuditTables(data) {
     records.slice(0, 5).forEach((rec) => {
       const tr = document.createElement("tr");
       const riskClass = rec.risk === "HIGH" ? "coral" : rec.risk === "MEDIUM" ? "amber" : "emerald";
+      // Use escapeHtml on all server-supplied fields before injection into innerHTML
       tr.innerHTML = `
-        <td style="font-family: var(--font-mono); color: var(--text-muted);">${rec.timestamp}</td>
-        <td><code>${rec.run_id}</code></td>
-        <td><strong>${rec.action}</strong></td>
-        <td style="font-family: var(--font-mono);">${rec.target}</td>
-        <td><span class="badge-status-pill ${riskClass}">${rec.risk}</span></td>
-        <td><code>${rec.policy}</code></td>
-        <td><span class="badge-status-pill emerald">${rec.outcome}</span></td>
+        <td style="font-family: var(--font-mono); color: var(--text-muted);">${escapeHtml(rec.timestamp)}</td>
+        <td><code>${escapeHtml(rec.run_id)}</code></td>
+        <td><strong>${escapeHtml(rec.action)}</strong></td>
+        <td style="font-family: var(--font-mono);">${escapeHtml(rec.target)}</td>
+        <td><span class="badge-status-pill ${riskClass}">${escapeHtml(rec.risk)}</span></td>
+        <td><code>${escapeHtml(rec.policy)}</code></td>
+        <td><span class="badge-status-pill emerald">${escapeHtml(rec.outcome)}</span></td>
       `;
       tr.style.cursor = "pointer";
       tr.addEventListener("click", () => openAuditDetail(rec));
@@ -793,16 +814,17 @@ function renderFilteredAuditLedger(records) {
   records.forEach((rec) => {
     const tr = document.createElement("tr");
     const riskClass = rec.risk === "HIGH" ? "coral" : rec.risk === "MEDIUM" ? "amber" : "emerald";
+    const hashShort = escapeHtml((rec.provenance_hash || "").substring(0, 14));
     tr.innerHTML = `
-      <td><code>${rec.id}</code></td>
-      <td style="font-family: var(--font-mono);">${rec.timestamp}</td>
-      <td><strong>${rec.action}</strong></td>
-      <td style="font-family: var(--font-mono);">${rec.target}</td>
-      <td><span class="badge-status-pill ${riskClass}">${rec.risk}</span></td>
-      <td><code>${rec.policy}</code></td>
-      <td><code style="font-size: 0.72rem; color: var(--accent-cobalt);">${rec.provenance_hash.substring(0, 14)}...</code></td>
+      <td><code>${escapeHtml(rec.id)}</code></td>
+      <td style="font-family: var(--font-mono);">${escapeHtml(rec.timestamp)}</td>
+      <td><strong>${escapeHtml(rec.action)}</strong></td>
+      <td style="font-family: var(--font-mono);">${escapeHtml(rec.target)}</td>
+      <td><span class="badge-status-pill ${riskClass}">${escapeHtml(rec.risk)}</span></td>
+      <td><code>${escapeHtml(rec.policy)}</code></td>
+      <td><code style="font-size: 0.75rem; color: var(--accent-cobalt);">${hashShort}...</code></td>
       <td>
-        <button class="btn-copy-hash" data-copy="${rec.provenance_hash}" title="Copy SHA-256 Hash">
+        <button class="btn-copy-hash" title="Copy SHA-256 Hash">
           Copy
         </button>
       </td>
@@ -939,8 +961,8 @@ function renderDetectionsTable(detections) {
   detections.forEach((det) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><span class="badge-status-pill coral">${(det.category || "PII").toUpperCase()}</span></td>
-      <td>${det.source || "DOM"}</td>
+      <td><span class="badge-status-pill coral">${escapeHtml((det.category || "PII").toUpperCase())}</span></td>
+      <td>${escapeHtml(det.source || "DOM")}</td>
       <td>${Math.round((det.confidence || 0.9) * 100)}%</td>
     `;
     tbody.appendChild(tr);
@@ -1159,28 +1181,29 @@ function openAuditDetail(rec) {
   if (!drawer || !body) return;
 
   title.innerText = `Forensic Event ${rec.id || "Record"}`;
+  // All server-supplied fields are escaped before innerHTML injection
   body.innerHTML = `
     <div style="display: flex; flex-direction: column; gap: 1rem;">
       <div style="background: var(--surface-subtle); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
         <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono);">Action Type</div>
-        <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-top: 0.2rem;">${rec.action}</div>
+        <div style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-top: 0.2rem;">${escapeHtml(rec.action)}</div>
       </div>
 
       <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
         <div style="background: var(--surface-subtle); padding: 0.75rem; border-radius: var(--radius-md);">
-          <div style="font-size: 0.7rem; color: var(--text-muted);">Risk Tier</div>
-          <div style="font-weight: 600; margin-top: 0.2rem;">${rec.risk}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Risk Tier</div>
+          <div style="font-weight: 600; margin-top: 0.2rem;">${escapeHtml(rec.risk)}</div>
         </div>
         <div style="background: var(--surface-subtle); padding: 0.75rem; border-radius: var(--radius-md);">
-          <div style="font-size: 0.7rem; color: var(--text-muted);">Policy Decision</div>
-          <div style="font-weight: 600; margin-top: 0.2rem;">${rec.policy}</div>
+          <div style="font-size: 0.75rem; color: var(--text-muted);">Policy Decision</div>
+          <div style="font-weight: 600; margin-top: 0.2rem;">${escapeHtml(rec.policy)}</div>
         </div>
       </div>
 
       <div>
         <div style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.25rem;">Target Reference</div>
         <code style="background: var(--surface-subtle); display: block; padding: 0.6rem; border-radius: var(--radius-sm); font-size: 0.8rem; word-break: break-all;">
-          ${rec.target}
+          ${escapeHtml(rec.target)}
         </code>
       </div>
 
@@ -1190,7 +1213,7 @@ function openAuditDetail(rec) {
           <button id="btn_copy_drawer_hash" class="btn-copy-hash" style="padding: 0.1rem 0.4rem;">Copy Hash</button>
         </div>
         <code style="background: var(--surface-subtle); display: block; padding: 0.6rem; border-radius: var(--radius-sm); font-size: 0.75rem; word-break: break-all; color: var(--accent-cobalt);">
-          ${rec.provenance_hash || "dcbad4303a71be4adb8005f0fc751a6bd4979b43e11fcf0fd2654b63504c9d90"}
+          ${escapeHtml(rec.provenance_hash || "—")}
         </code>
       </div>
 
@@ -1226,7 +1249,8 @@ function setupKillSwitchBench() {
           body: JSON.stringify({ reason: "Live Dispatch Benchmark Test" }),
         });
         const data = await res.json();
-        resLabel.innerHTML = `<span style="color: var(--status-coral);">Halted: ${data.measured_dispatch_ms} ms</span> (Benchmark: 0.043 ms)`;
+        // Use escapeHtml on reflected server data before setting innerHTML
+        resLabel.innerHTML = `<span style="color: var(--status-coral);">Halted: ${escapeHtml(String(data.measured_dispatch_ms))} ms</span> (Benchmark: 0.043 ms)`;
         showToast(`Kill Switch: ${data.measured_dispatch_ms} ms dispatch latency`);
       } catch (err) {
         resLabel.innerText = "Error measuring";
@@ -1269,8 +1293,13 @@ function logSafeEvent(msg, type = "info") {
 
 function escapeHtml(text) {
   const div = document.createElement("div");
-  div.innerText = String(text);
+  div.innerText = String(text ?? "");
   return div.innerHTML;
+}
+
+// Safe text node setter — avoids innerHTML
+function safeText(el, text) {
+  if (el) el.textContent = String(text ?? "");
 }
 
 function setupShortcuts() {

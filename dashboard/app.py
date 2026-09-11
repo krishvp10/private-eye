@@ -17,7 +17,7 @@ from pathlib import Path
 from typing import Any
 
 import uvicorn
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
@@ -308,6 +308,16 @@ async def trigger_run(payload: dict[str, Any] | None = None):
     params = payload or {}
     domain = params.get("domain", "kyc")
     portal_port = params.get("port", config.PORT_PORTAL)
+
+    # --- Security: allowlist validation ---
+    # domain must be a known registered site ID; reject path traversal, shell injection, etc.
+    known_sites = {s.site_id for s in registry.get_all_sites()}
+    if domain not in known_sites:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown domain '{domain}'. Must be one of: {sorted(known_sites)}",
+        )
+
     server_port = config.PORT_SERVER
 
     # Clear step history on fresh run

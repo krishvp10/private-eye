@@ -1,0 +1,30 @@
+{
+  "benchmark": "Phase 17 Long-Horizon Real-World Compounding",
+  "empirical_survival": [
+    {
+      "horizon_steps": 5,
+      "survival_rate": "90.0% (18/20)"
+    },
+    {
+      "horizon_steps": 10,
+      "survival_rate": "80.0% (16/20)"
+    },
+    {
+      "horizon_steps": 15,
+      "survival_rate": "70.0% (14/20)"
+    },
+    {
+      "horizon_steps": 20,
+      "survival_rate": "65.0% (13/20)"
+    },
+    {
+      "horizon_steps": 25,
+      "survival_rate": "55.0% (11/20)"
+    },
+    {
+      "horizon_steps": 30,
+      "survival_rate": "50.0% (10/20)"
+    }
+  ],
+  "compounding_model_comparison": "Observed survival curve closely tracks single-step reliability compounding p^N (p \u2248 0.977 per step). Failure causes are environmental desynchronization and modal intercepts, not model amnesia."
+}

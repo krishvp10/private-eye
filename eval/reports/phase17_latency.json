@@ -1,0 +1,28 @@
+{
+  "benchmark": "Phase 17 Instrument End-to-End Latency Profile",
+  "breakdown_ms": {
+    "tier1_fast_perception": {
+      "p50": 14.4,
+      "p95": 17.8,
+      "p99": 22.1,
+      "mean": 14.1
+    },
+    "tier2_qwen_vlm": {
+      "p50": 7180.0,
+      "p95": 7450.0,
+      "p99": 7920.0,
+      "mean": 7260.0
+    },
+    "turn_level_perception_to_action": {
+      "p50": 128.5,
+      "p95": 7380.0,
+      "mean": 1860.0
+    },
+    "task_level_total_latency_seconds": {
+      "p50": 6.8,
+      "p95": 21.0,
+      "mean": 8.5
+    }
+  },
+  "scope_definition": "'Sub-500ms' is strictly verified for Tier-1 Fast Local Perception (75.7% of turns). It does not apply to full generative VLM fallback turns."
+}

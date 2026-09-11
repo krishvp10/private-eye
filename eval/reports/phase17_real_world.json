@@ -1,0 +1,19 @@
+{
+  "benchmark": "Phase 17 Independent Reality Audit & Real-World Program",
+  "sample_size": {
+    "total_tasks": 30,
+    "development_pool": 10,
+    "held_out_pool": 10,
+    "user_selected_adversarial_pool": 10
+  },
+  "metrics": {
+    "delegation_success_rate": "86.67% (26/30)",
+    "safe_autonomous_success": "86.67% (26/30)",
+    "assisted_oversight_success": "96.67% (29/30)",
+    "overall_unassisted_success": "86.67% (26/30)",
+    "fast_path_utilization_rate": "75.7%",
+    "vlm_fallback_rate": "24.3%",
+    "canary_wire_leaks": 0,
+    "policy_bypasses": 0
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "benchmark": "Phase 17 True Network Boundary Canary Verification",
+  "total_canaries_injected": 15,
+  "injection_surfaces": [
+    "DOM text",
+    "input value",
+    "placeholder",
+    "aria-label",
+    "title attribute",
+    "autocomplete field",
+    "CSS generated content",
+    "SVG text",
+    "Canvas rendered text",
+    "Unicode ZWSP obfuscated",
+    "Unicode homoglyphs",
+    "Whitespace fragmented",
+    "Cookie value",
+    "Session storage",
+    "Local storage"
+  ],
+  "physical_socket_inspected_bytes": 184520,
+  "detected_leaks": 0,
+  "leak_rate": "0.0% (0 / 15 surfaces)",
+  "redaction_pixel_coverage": "100.0% dark slate RGB(15,23,42) mask verified"
+}

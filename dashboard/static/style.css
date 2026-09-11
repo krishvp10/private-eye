@@ -1585,3 +1585,35 @@ code, kbd, samp, pre {
   }
 }
 
+/* ==========================================================================
+   PHASE 16: DATA SOURCE INDICATOR (LIVE vs STATIC DEMO)
+   ========================================================================== */
+.data-source-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-subtle);
+  letter-spacing: 0.02em;
+}
+
+.data-source-banner.demo {
+  background: var(--status-amber-bg);
+  color: var(--status-amber);
+  border-left: 3px solid var(--status-amber);
+}
+
+.data-source-banner.live {
+  background: var(--status-emerald-bg);
+  color: var(--status-emerald);
+  border-left: 3px solid var(--status-emerald);
+}
+
+.data-source-banner svg {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
