@@ -1,0 +1,82 @@
+{
+  "test_1_privacy_bypass": {
+    "unicode_obfuscated_pan_detected": false,
+    "interceptor_catches_unredacted_image_pixels": false,
+    "vulnerability_note": "CONFIRMED: When detector suffers a False Negative on image pixels, the raw visual data in image_b64 crosses the network unredacted because OutboundLeakInterceptor explicitly strips image_b64 before regex check."
+  },
+  "test_2_value_ref": {
+    "user_profile.__class__": {
+      "valid_syntax": true,
+      "resolved": false,
+      "error": "KeyError: \"Vault key 'user_profile.__class__' not found in local credential store.\""
+    },
+    "user_profile.card_number": {
+      "valid_syntax": true,
+      "resolved": true,
+      "error": null
+    },
+    "user_profile.password; DROP TABLE": {
+      "valid_syntax": false,
+      "resolved": false,
+      "error": "ValueError: Invalid value_ref 'user_profile.password; DROP TABLE'. Must follow 'namespace.key' format using allowed namespaces: {'payment', 'user_profile', 'auth', 'health'}"
+    },
+    "admin.master_key": {
+      "valid_syntax": false,
+      "resolved": false,
+      "error": "ValueError: Invalid value_ref 'admin.master_key'. Must follow 'namespace.key' format using allowed namespaces: {'payment', 'user_profile', 'auth', 'health'}"
+    },
+    "../../etc/passwd": {
+      "valid_syntax": false,
+      "resolved": false,
+      "error": "ValueError: Invalid value_ref '../../etc/passwd'. Must follow 'namespace.key' format using allowed namespaces: {'payment', 'user_profile', 'auth', 'health'}"
+    },
+    "user_profile.nonexistent_secret": {
+      "valid_syntax": true,
+      "resolved": false,
+      "error": "KeyError: \"Vault key 'user_profile.nonexistent_secret' not found in local credential store.\""
+    },
+    "payment.cvv": {
+      "valid_syntax": true,
+      "resolved": false,
+      "error": "KeyError: \"Vault key 'payment.cvv' not found in local credential store.\""
+    },
+    "user_profile.pan": {
+      "valid_syntax": true,
+      "resolved": true,
+      "error": null
+    }
+  },
+  "test_3_policy_bypass": {
+    "candidate_gate_allows_none_ref_by_default": true,
+    "candidate_gate_blocks_none_ref_when_strict": true,
+    "agent_py_calls_local_policy_engine": false,
+    "vulnerability_note": "CONFIRMED: client/agent.py does not import or invoke LocalPolicyEngine; it relies solely on FailClosedPolicy and ActionExecutor._is_destructive. Moreover, FailClosedPolicy.evaluate_candidate is called without require_ref=True."
+  },
+  "test_4_kill_switch": {
+    "measured_trigger_latency_ms": 0.0356,
+    "assert_not_engaged_raises": true,
+    "stops_in_flight_vlm_network_io": false,
+    "stops_in_flight_browser_dispatch": false,
+    "scope_summary": "Kill switch sets an in-memory boolean flag in 0.03-0.05 ms. It raises KillSwitchTriggeredError when assert_not_engaged() is polled. It does NOT interrupt in-flight HTTP requests or running browser actions."
+  },
+  "test_5_stale_state": {
+    "unknown_ref_execution_success": false,
+    "unknown_ref_error": "Unknown element ref: e999",
+    "failure_class": "grounding"
+  },
+  "test_6_long_horizon": {
+    "step_accuracy_p": 0.9846,
+    "compounding_model_predictions": {
+      "5": 92.53,
+      "10": 85.62,
+      "15": 79.23,
+      "20": 73.32,
+      "25": 67.84,
+      "30": 62.78
+    },
+    "empirical_short_5": 100.0,
+    "empirical_medium_10": 93.48,
+    "empirical_long_20": 63.33,
+    "analysis": "Survival drops from 100% at 5 steps to 93.48% at 10 steps and 63.33% at 20 steps. Theoretical Bernoulli model predicts 92.5% at 5 steps, 85.6% at 10 steps, 73.3% at 20 steps. Real environments show slightly higher survival on short steps (due to deterministic forms) and steeper compounding degradation on deep horizons (due to state-drift and error propagation)."
+  }
+}
