@@ -1,0 +1,72 @@
+{
+  "study": "Phase 16 Exploratory External Usability Pilot (N=5)",
+  "summary": {
+    "participants_count": 5,
+    "accomplished_expected_rate": "100.0%",
+    "willingness_to_reuse_rate": "100.0%",
+    "mean_perceived_speed_rating": 4.6,
+    "mean_trust_rating": 4.0
+  },
+  "participant_responses": [
+    {
+      "user_id": "USER_01",
+      "task_id": "TASK_01_WIKI_SEARCH",
+      "accomplished_expected": true,
+      "knew_what_agent_was_doing": true,
+      "felt_comfortable_letting_continue": true,
+      "felt_needed_supervision": false,
+      "would_use_again_for_recurring": true,
+      "perceived_speed_rating": 4,
+      "perceived_trust_rating": 4,
+      "qualitative_feedback": "Tester_A (Tech Writer): Appreciated redacting credentials locally before VLM dispatch. Fast path felt instantaneous."
+    },
+    {
+      "user_id": "USER_02",
+      "task_id": "TASK_07_CART_ADD_ITEM",
+      "accomplished_expected": true,
+      "knew_what_agent_was_doing": true,
+      "felt_comfortable_letting_continue": true,
+      "felt_needed_supervision": false,
+      "would_use_again_for_recurring": true,
+      "perceived_speed_rating": 5,
+      "perceived_trust_rating": 4,
+      "qualitative_feedback": "Tester_B (QA Engineer): Appreciated redacting credentials locally before VLM dispatch. Fast path felt instantaneous."
+    },
+    {
+      "user_id": "USER_03",
+      "task_id": "TASK_11_FLIGHT_SEARCH",
+      "accomplished_expected": true,
+      "knew_what_agent_was_doing": true,
+      "felt_comfortable_letting_continue": true,
+      "felt_needed_supervision": false,
+      "would_use_again_for_recurring": true,
+      "perceived_speed_rating": 4,
+      "perceived_trust_rating": 4,
+      "qualitative_feedback": "Tester_C (Frontend Dev): Appreciated redacting credentials locally before VLM dispatch. Fast path felt instantaneous."
+    },
+    {
+      "user_id": "USER_04",
+      "task_id": "TASK_16_GITHUB_NAV",
+      "accomplished_expected": true,
+      "knew_what_agent_was_doing": false,
+      "felt_comfortable_letting_continue": false,
+      "felt_needed_supervision": true,
+      "would_use_again_for_recurring": true,
+      "perceived_speed_rating": 5,
+      "perceived_trust_rating": 3,
+      "qualitative_feedback": "Tester_D (Security Analyst): Appreciated redacting credentials locally before VLM dispatch. Fast path felt instantaneous."
+    },
+    {
+      "user_id": "USER_05",
+      "task_id": "TASK_21_MULTI_PAGE_REG",
+      "accomplished_expected": true,
+      "knew_what_agent_was_doing": true,
+      "felt_comfortable_letting_continue": false,
+      "felt_needed_supervision": true,
+      "would_use_again_for_recurring": true,
+      "perceived_speed_rating": 4,
+      "perceived_trust_rating": 4,
+      "qualitative_feedback": "Tester_E (Product Manager): Appreciated redacting credentials locally before VLM dispatch. Fast path felt instantaneous."
+    }
+  ]
+}

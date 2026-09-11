@@ -1,0 +1,17 @@
+{
+  "benchmark": "Phase 16 End-to-End Latency Profile",
+  "tier1_fast_path_ms": {
+    "p50": 14.57,
+    "p95": 17.29,
+    "mean": 14.08
+  },
+  "tier2_qwen_fallback_ms": {
+    "p50": 7153.0,
+    "mean": 7240.5
+  },
+  "weighted_average_perception_latency_ms": 1276.74,
+  "full_turn_perception_to_action_ms": {
+    "p50": 120.4,
+    "mean": 1354.33
+  }
+}

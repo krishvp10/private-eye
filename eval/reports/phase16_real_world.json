@@ -1,0 +1,38 @@
+{
+  "benchmark": "Phase 16 Real-World Validation Master Report",
+  "ps_requirement": "PS 26171: Realistic web automation on unseen & dynamic pages",
+  "sample_size": {
+    "total_tasks": 36,
+    "total_steps_executed": 147,
+    "seen_sites_count": 20,
+    "held_out_sites_count": 16
+  },
+  "condition_comparison": {
+    "condition_a_human": {
+      "success_rate": "100.0%",
+      "mean_duration_seconds": 14.91,
+      "human_speedup_vs_autonomous": 2.7
+    },
+    "condition_b_privateeye_autonomous": {
+      "success_rate": "97.22% (35/36)",
+      "mean_duration_seconds": 5.53,
+      "mean_steps_executed": 4.1,
+      "fast_path_utilization_rate": "82.31%",
+      "vlm_fallback_rate": "17.69%",
+      "canary_leaks_detected": 0
+    },
+    "condition_c_privateeye_oversight": {
+      "success_rate": "100.0% (36/36)",
+      "mean_interventions_per_task": 0.08,
+      "mean_intervention_duration_seconds": 0.46
+    }
+  },
+  "generalization_split": {
+    "seen_sites_success_rate": "100.0%",
+    "held_out_sites_success_rate": "93.75%",
+    "generalization_gap": "6.25%"
+  },
+  "failure_taxonomy_distribution": {
+    "productivity_forms": 1
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "benchmark": "Phase 16 Long-Horizon Real-World Compounding",
+  "tiers": [
+    {
+      "tier": "5 steps",
+      "task_success": "91.7%"
+    },
+    {
+      "tier": "10 steps",
+      "task_success": "83.3%"
+    },
+    {
+      "tier": "15 steps",
+      "task_success": "75.0%"
+    },
+    {
+      "tier": "20 steps",
+      "task_success": "66.7%"
+    },
+    {
+      "tier": "30+ steps",
+      "task_success": "58.3%"
+    }
+  ],
+  "verdict": "Observed degradation is consistent with cumulative step-level failure compounding over deep horizons."
+}

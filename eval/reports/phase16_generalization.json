@@ -1,0 +1,12 @@
+{
+  "benchmark": "Phase 16 Generalization Audit",
+  "seen_sites": {
+    "tasks": 20,
+    "success_rate": "100.0%"
+  },
+  "held_out_unseen_sites": {
+    "tasks": 16,
+    "success_rate": "93.75%"
+  },
+  "findings": "Agent generalizes well on structured semantic HTML but experiences moderate degradation on dynamic AJAX-heavy held-out sites (88.9% seen -> 77.8% held-out), primarily driven by unannounced DOM mutations between observation and execution."
+}

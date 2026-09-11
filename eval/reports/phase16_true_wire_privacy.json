@@ -1,0 +1,136 @@
+{
+  "benchmark": "Phase 16 True Network Boundary Privacy Red-Team",
+  "ps_requirement": "PS 26171: Physical wire isolation & privacy preservation",
+  "summary": {
+    "total_canary_vectors_tested": 10,
+    "total_http_requests_captured": 10,
+    "total_wire_bytes_inspected": 136044,
+    "exact_canary_leaks": 0,
+    "transformed_canary_leaks": 0,
+    "visual_pixel_leaks": 0,
+    "false_negative_rate": "0.0%",
+    "wire_privacy_integrity": "100% Zero-Leak Verified across all 10 injection surfaces"
+  },
+  "tested_vectors": [
+    {
+      "test_id": "V01_DOM_TEXT",
+      "surface": "dom_text",
+      "category": "pan",
+      "canary_token": "PE_CANARY_DOM_TEXT_6B671D15",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 44.4,
+      "passed": true
+    },
+    {
+      "test_id": "V02_INPUT_VALUE",
+      "surface": "input_value",
+      "category": "pan",
+      "canary_token": "PE_CANARY_INPUT_VALUE_106CA63A",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 44.41,
+      "passed": true
+    },
+    {
+      "test_id": "V03_PLACEHOLDER",
+      "surface": "placeholder",
+      "category": "pan",
+      "canary_token": "PE_CANARY_PLACEHOLDER_3A7E9795",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 44.4,
+      "passed": true
+    },
+    {
+      "test_id": "V04_ARIA_LABEL",
+      "surface": "aria_label",
+      "category": "pan",
+      "canary_token": "PE_CANARY_ARIA_LABEL_CF63ADA1",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 44.41,
+      "passed": true
+    },
+    {
+      "test_id": "V05_TITLE_ATTR",
+      "surface": "title_attribute",
+      "category": "pan",
+      "canary_token": "PE_CANARY_TITLE_ATTRIBUTE_545533AC",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 44.4,
+      "passed": true
+    },
+    {
+      "test_id": "V06_AUTOCOMPLETE",
+      "surface": "autocomplete",
+      "category": "card",
+      "canary_token": "PE_CANARY_AUTOCOMPLETE_1F5CD526",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 26.73,
+      "passed": true
+    },
+    {
+      "test_id": "V07_CSS_CONTENT",
+      "surface": "css_generated",
+      "category": "password",
+      "canary_token": "PE_CANARY_CSS_GENERATED_156F191C",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 1.0,
+      "passed": true
+    },
+    {
+      "test_id": "V08_SVG_VECTOR",
+      "surface": "svg_text",
+      "category": "aadhaar",
+      "canary_token": "PE_CANARY_SVG_TEXT_39F2E06B",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 26.73,
+      "passed": true
+    },
+    {
+      "test_id": "V09_CANVAS_PIXEL",
+      "surface": "canvas_pixels",
+      "category": "pan",
+      "canary_token": "PE_CANARY_CANVAS_PIXELS_DA234E7E",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 44.4,
+      "passed": true
+    },
+    {
+      "test_id": "V10_UNICODE_OBFUSCATED",
+      "surface": "unicode_zwsp",
+      "category": "pan",
+      "canary_token": "PE_CANARY_UNICODE_ZWSP_E1C3B592",
+      "injected_string": "PE_CANAR...",
+      "exact_leak_detected": false,
+      "transformed_leak_detected": false,
+      "pixel_masked_on_wire": true,
+      "interior_mean_brightness": 44.41,
+      "passed": true
+    }
+  ]
+}

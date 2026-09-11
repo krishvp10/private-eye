@@ -1,0 +1,21 @@
+{
+  "finding_a_visual_false_negative": {
+    "reproduced": false,
+    "clean_matches": 1,
+    "obfuscated_matches": 1,
+    "obfuscated_string_preview": "AB[ZWSP]...4F",
+    "severity": "HIGH"
+  },
+  "finding_b_policy_engine_decoupling": {
+    "reproduced": false,
+    "policy_engine_imported_in_agent": true,
+    "agent_has_policy_engine_attr": true,
+    "severity": "HIGH"
+  },
+  "finding_c_outbound_screenshot_bypass": {
+    "reproduced": false,
+    "leak_detected_in_image_b64": true,
+    "severity": "HIGH"
+  },
+  "all_p0_findings_reproduced": false
+}

@@ -1,0 +1,11 @@
+{
+  "benchmark": "Phase 16 UX & Explainability Audit",
+  "candidate_transparency": "SafeCandidate ranking scores and reasoning exposed in telemetry",
+  "policy_transparency": "Every blocked action emits clear formal failure class and policy reason",
+  "recovery_transparency": "State transitions record retry counts and post-condition status",
+  "complex_form_metric_reconciliation": {
+    "metric_1": "Field-Level Grounding Accuracy = 95.0% (19/20 fields accurately localized and filled)",
+    "metric_2": "Scenario Task Completion = 100.0% (4/4 multi-step scenarios successfully completed)",
+    "explanation": "Field accuracy measures individual input fields, whereas scenario completion measures whether the overall form was successfully verified and submitted."
+  }
+}

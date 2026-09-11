@@ -6,7 +6,7 @@
 - **Candidate Recall@5:** `100.0%`
 - **Wrong Target Rate:** `11.3%`
 - **Unknown Target Rate:** `0.0%`
-- **Evaluation Latency:** `15.3 ms` (~`0.1 ms/case`)
+- **Evaluation Latency:** `13.7 ms` (~`0.09 ms/case`)
 
 ## Performance by Category
 
